@@ -1,0 +1,41 @@
+{
+  "expo": {
+    "name": "expo-mapbox-navigation-example",
+    "slug": "expo-mapbox-navigation-example",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "light",
+    "splash": {
+      "image": "./assets/splash.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#ffffff"
+    },
+    "assetBundlePatterns": [
+      "**/*"
+    ],
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.ismaeland.expomapboxnavigation.example"
+    },
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/adaptive-icon.png",
+        "backgroundColor": "#ffffff"
+      },
+      "package": "com.ismaeland.expomapboxnavigation.example"
+    },
+    "web": {
+      "favicon": "./assets/favicon.png"
+    },
+    "plugins":[
+      [
+        "expo-mapbox-navigation",
+        {
+          "secretKey": "mapbox_secret_key"
+        }
+      ]
+      
+    ]
+  }
+}

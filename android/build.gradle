@@ -1,0 +1,113 @@
+apply plugin: 'com.android.library'
+apply plugin: 'kotlin-android'
+apply plugin: 'maven-publish'
+
+group = 'com.ismaeland.expomapboxnavigation'
+version = '0.1.0'
+
+buildscript {
+  def expoModulesCorePlugin = new File(project(":expo-modules-core").projectDir.absolutePath, "ExpoModulesCorePlugin.gradle")
+  if (expoModulesCorePlugin.exists()) {
+    apply from: expoModulesCorePlugin
+    applyKotlinExpoModulesCorePlugin()
+  }
+
+  // Simple helper that allows the root project to override versions declared by this library.
+  ext.safeExtGet = { prop, fallback ->
+    rootProject.ext.has(prop) ? rootProject.ext.get(prop) : fallback
+  }
+
+  // Ensures backward compatibility
+  ext.getKotlinVersion = {
+    if (ext.has("kotlinVersion")) {
+      ext.kotlinVersion()
+    } else {
+      ext.safeExtGet("kotlinVersion", "1.6.10")
+    }
+  }
+
+  repositories {
+    mavenCentral()
+  }
+
+  dependencies {
+    classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:${getKotlinVersion()}")
+  }
+}
+
+afterEvaluate {
+  publishing {
+    publications {
+      release(MavenPublication) {
+        from components.release
+      }
+    }
+    repositories {
+      maven {
+        url = mavenLocal().url
+      }
+    }
+  }
+}
+
+android {
+  compileSdkVersion safeExtGet("compileSdkVersion", 31)
+  minSdkVersion 21
+
+  compileOptions {
+    // sourceCompatibility JavaVersion.VERSION_11
+    // targetCompatibility JavaVersion.VERSION_11
+    sourceCompatibility JavaVersion.VERSION_1_8
+    targetCompatibility JavaVersion.VERSION_1_8
+
+  }
+
+  kotlinOptions {
+   // jvmTarget = JavaVersion.VERSION_11.majorVersion
+    jvmTarget = "1.8"
+  }
+
+  buildFeatures {
+    viewBinding true
+  }
+
+  namespace "com.ismaeland.expomapboxnavigation"
+  defaultConfig {
+    minSdkVersion safeExtGet("minSdkVersion", 21)
+    targetSdkVersion safeExtGet("targetSdkVersion", 31)
+    versionCode 1
+    versionName "0.1.0"
+  }
+  lintOptions {
+    abortOnError false
+  }
+  publishing {
+    singleVariant("release") {
+      withSourcesJar()
+    }
+  }
+}
+
+repositories {
+  google()
+  mavenCentral()
+}
+
+dependencies {
+  implementation project(':expo-modules-core')
+  implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:${getKotlinVersion()}"
+  implementation 'com.facebook.react:react-native:0.70.8'
+  implementation "com.mapbox.navigation:android:2.14.0"
+  implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.7.21"
+  implementation "androidx.core:core-ktx:1.9.0"
+  implementation "com.google.android.material:material:1.7.0"
+  implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.5.1'
+  implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.5.1'
+  implementation "androidx.appcompat:appcompat:1.5.1"
+  implementation "androidx.cardview:cardview:1.0.0"
+  implementation "androidx.constraintlayout:constraintlayout:2.1.4"
+  implementation "com.google.android.gms:play-services-location:20.0.0"
+  implementation "com.squareup.leakcanary:leakcanary-android:2.9.1"
+  implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.4"
+  implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4"
+}
