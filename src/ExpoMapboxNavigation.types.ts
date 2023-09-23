@@ -3,5 +3,5 @@ export type ChangeEventPayload = {
 };
 
 export type ExpoMapboxNavigationViewProps = {
-  name: string;
+  destination: number[];
 };
