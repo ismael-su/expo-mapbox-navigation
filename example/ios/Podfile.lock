@@ -15,6 +15,7 @@ PODS:
     - ExpoModulesCore
   - ExpoMapboxNavigation (0.1.0):
     - ExpoModulesCore
+    - MapboxNavigation (~> 2.14)
   - ExpoModulesCore (1.5.11):
     - RCT-Folly (= 2021.07.22.00)
     - React-Core
@@ -35,6 +36,32 @@ PODS:
     - hermes-engine/Pre-built (= 0.72.4)
   - hermes-engine/Pre-built (0.72.4)
   - libevent (2.1.12)
+  - MapboxCommon (23.8.0)
+  - MapboxCoreMaps (10.16.0):
+    - MapboxCommon (~> 23.8)
+  - MapboxCoreNavigation (2.16.0):
+    - MapboxDirections (~> 2.11.1)
+    - MapboxMobileEvents (~> 1.0)
+    - MapboxNavigationNative (~> 157.0.0)
+  - MapboxDirections (2.11.1):
+    - Polyline (~> 5.0)
+    - Turf (~> 2.6.1)
+  - MapboxMaps (10.16.0):
+    - MapboxCommon (= 23.8.0)
+    - MapboxCoreMaps (= 10.16.0)
+    - MapboxMobileEvents (= 1.0.10)
+    - Turf (~> 2.0)
+  - MapboxMobileEvents (1.0.10)
+  - MapboxNavigation (2.16.0):
+    - MapboxCoreNavigation (= 2.16.0)
+    - MapboxMaps (~> 10.16.0)
+    - MapboxMobileEvents (~> 1.0)
+    - MapboxSpeech (~> 2.0)
+    - Solar-dev (~> 3.0)
+  - MapboxNavigationNative (157.0.0):
+    - MapboxCommon (~> 23.8)
+  - MapboxSpeech (2.1.1)
+  - Polyline (5.1.0)
   - RCT-Folly (2021.07.22.00):
     - boost
     - DoubleConversion
@@ -446,6 +473,8 @@ PODS:
     - React-logger (= 0.72.4)
     - React-perflogger (= 0.72.4)
   - SocketRocket (0.6.1)
+  - Solar-dev (3.0.1)
+  - Turf (2.6.1)
   - Yoga (1.14.0)
 
 DEPENDENCIES:
@@ -503,7 +532,19 @@ SPEC REPOS:
   trunk:
     - fmt
     - libevent
+    - MapboxCommon
+    - MapboxCoreMaps
+    - MapboxCoreNavigation
+    - MapboxDirections
+    - MapboxMaps
+    - MapboxMobileEvents
+    - MapboxNavigation
+    - MapboxNavigationNative
+    - MapboxSpeech
+    - Polyline
     - SocketRocket
+    - Solar-dev
+    - Turf
 
 EXTERNAL SOURCES:
   boost:
@@ -611,7 +652,7 @@ SPEC CHECKSUMS:
   EXFont: 738c44c390953ebcbab075a4848bfbef025fd9ee
   Expo: 8a2d2c235bcbe4f41774562a0635bd74c174858c
   ExpoKeepAwake: be4cbd52d9b177cde0fd66daa1913afa3161fc1d
-  ExpoMapboxNavigation: 9ca433030741d80eeb666f998aff93cfcf847d6f
+  ExpoMapboxNavigation: b6dfd2d6513b24260582504dd75caf73d1bf8887
   ExpoModulesCore: 51cb2e7ab4c8da14be3f40b66d54c1781002e99d
   FBLazyVector: 5d4a3b7f411219a45a6d952f77d2c0a6c9989da5
   FBReactNativeSpec: 3fc2d478e1c4b08276f9dd9128f80ec6d5d85c1f
@@ -619,6 +660,16 @@ SPEC CHECKSUMS:
   glog: 04b94705f318337d7ead9e6d17c019bd9b1f6b1b
   hermes-engine: 81191603c4eaa01f5e4ae5737a9efcf64756c7b2
   libevent: 4049cae6c81cdb3654a443be001fb9bdceff7913
+  MapboxCommon: 8592a003eae487508461d452d62cfc5906a9682a
+  MapboxCoreMaps: faa14a797417dc32088c98019a3ce72e46cda5cd
+  MapboxCoreNavigation: 9414a9ba6681070f1186cca16c14d65d5663d700
+  MapboxDirections: 31d61b8369d5dde6f6828f72905ab9a7e054cd2c
+  MapboxMaps: f10aecadbfb7cf96368852ca313101eb4171da53
+  MapboxMobileEvents: de50b3a4de180dd129c326e09cd12c8adaaa46d6
+  MapboxNavigation: e781ce4c3b987180a0eb46145e3118c465eb8e92
+  MapboxNavigationNative: 2953310e4e05fcc3b335bdbeee861347272ac38f
+  MapboxSpeech: cd25ef99c3a3d2e0da72620ff558276ea5991a77
+  Polyline: 2a1f29f87f8d9b7de868940f4f76deb8c678a5b1
   RCT-Folly: 424b8c9a7a0b9ab2886ffe9c3b041ef628fd4fb1
   RCTRequired: c0569ecc035894e4a68baecb30fe6a7ea6e399f9
   RCTTypeSafety: e90354072c21236e0bcf1699011e39acd25fea2f
@@ -652,6 +703,8 @@ SPEC CHECKSUMS:
   React-utils: b79f2411931f9d3ea5781404dcbb2fa8a837e13a
   ReactCommon: 4b2bdcb50a3543e1c2b2849ad44533686610826d
   SocketRocket: f32cd54efbe0f095c4d7594881e52619cfe80b17
+  Solar-dev: 4612dc9878b9fed2667d23b327f1d4e54e16e8d0
+  Turf: 469ce2c3d22e5e8e4818d5a3b254699a5c89efa4
   Yoga: 3efc43e0d48686ce2e8c60f99d4e6bd349aff981
 
 PODFILE CHECKSUM: 7f30c09fe2494a168d4a6dddff22a067df1a51c7

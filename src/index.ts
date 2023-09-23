@@ -23,4 +23,8 @@ export function addChangeListener(listener: (event: ChangeEventPayload) => void)
   return emitter.addListener<ChangeEventPayload>('onChange', listener);
 }
 
-export { ExpoMapboxNavigationView, ExpoMapboxNavigationViewProps, ChangeEventPayload };
+export {
+    ExpoMapboxNavigationView as NavigationView, 
+    ExpoMapboxNavigationViewProps as NavigationViewProps , 
+    ChangeEventPayload 
+};

@@ -36,8 +36,9 @@ public class ExpoMapboxNavigationModule: Module {
     // view definition: Prop, Events.
     View(ExpoMapboxNavigationView.self) {
       // Defines a setter for the `name` prop.
-      Prop("name") { (view: ExpoMapboxNavigationView, prop: String) in
+      Prop("destination") { (view: ExpoMapboxNavigationView, prop: [Double]) in
         print(prop)
+          view.setDestination(dest: prop)
       }
     }
   }

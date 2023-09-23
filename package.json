@@ -28,7 +28,9 @@
   "author": "Ismael OM <ismael@ismaeland.com> (https://github.com/ismael-su)",
   "license": "MIT",
   "homepage": "https://github.com/ismael-su/expo-mapbox-navigation#readme",
-  "dependencies": {},
+  "dependencies": {
+    "expo-location": "^16.3.0"
+  },
   "devDependencies": {
     "@types/react": "^18.0.25",
     "expo-module-scripts": "^3.0.11",
