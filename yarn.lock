@@ -2729,11 +2729,6 @@ expect@^29.0.0:
     jest-message-util "^29.7.0"
     jest-util "^29.7.0"
 
-expo-location@^16.3.0:
-  version "16.3.0"
-  resolved "https://registry.yarnpkg.com/expo-location/-/expo-location-16.3.0.tgz#efe7a3a0134f8309622f09c96631b50933405a20"
-  integrity sha512-AAiuzfVxyWkARb/QYBL2GgfhbWVb8rMpUlE37Uu+q7mLwZtKwcLMfG6UK2PtpFRVS8QW1baxEOV9SxMbtXsjrw==
-
 expo-module-scripts@^3.0.11:
   version "3.1.0"
   resolved "https://registry.yarnpkg.com/expo-module-scripts/-/expo-module-scripts-3.1.0.tgz#3915a9e2486e27f0e315b2f12bcdca608ba28c30"

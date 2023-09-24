@@ -13,7 +13,7 @@ PODS:
     - ExpoModulesCore
   - ExpoKeepAwake (12.3.0):
     - ExpoModulesCore
-  - ExpoMapboxNavigation (0.1.0):
+  - ExpoMapboxNavigation (1.5.1):
     - ExpoModulesCore
     - MapboxNavigation (~> 2.14)
   - ExpoModulesCore (1.5.11):
@@ -652,7 +652,7 @@ SPEC CHECKSUMS:
   EXFont: 738c44c390953ebcbab075a4848bfbef025fd9ee
   Expo: 8a2d2c235bcbe4f41774562a0635bd74c174858c
   ExpoKeepAwake: be4cbd52d9b177cde0fd66daa1913afa3161fc1d
-  ExpoMapboxNavigation: b6dfd2d6513b24260582504dd75caf73d1bf8887
+  ExpoMapboxNavigation: 1858f753adf9691860403fe4e133f6c8ad6e4a88
   ExpoModulesCore: 51cb2e7ab4c8da14be3f40b66d54c1781002e99d
   FBLazyVector: 5d4a3b7f411219a45a6d952f77d2c0a6c9989da5
   FBReactNativeSpec: 3fc2d478e1c4b08276f9dd9128f80ec6d5d85c1f

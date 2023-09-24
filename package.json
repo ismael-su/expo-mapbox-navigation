@@ -1,6 +1,6 @@
 {
   "name": "expo-mapbox-navigation",
-  "version": "1.5.1",
+  "version": "1.5.2",
   "description": "Mapbox navigation SDK expo module",
   "main": "build/index.js",
   "types": "build/index.d.ts",
@@ -28,9 +28,7 @@
   "author": "Ismael OM <ismael@ismaeland.com> (https://github.com/ismael-su)",
   "license": "MIT",
   "homepage": "https://github.com/ismael-su/expo-mapbox-navigation#readme",
-  "dependencies": {
-    "expo-location": "^16.3.0"
-  },
+  "dependencies": {},
   "devDependencies": {
     "@types/react": "^18.0.25",
     "expo-module-scripts": "^3.0.11",
