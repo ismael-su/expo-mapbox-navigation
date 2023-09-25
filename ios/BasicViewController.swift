@@ -10,21 +10,22 @@ import MapboxNavigation
 import MapboxDirections
 
 class BasicViewController: UIViewController {
-    var simulationIsEnabled = true
+    var simulationIsEnabled = false
     
     var origin: CLLocationCoordinate2D!
     var destination: CLLocationCoordinate2D!
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        start()
+        //start()
         
         
     }
     
-    func start(){
-        origin = CLLocationCoordinate2DMake(37.77440680146262, -122.43539772352648)
-        destination = CLLocationCoordinate2DMake(37.76556957793795, -122.42409811526268)
+    func start(destination: CLLocationCoordinate2D){
+        origin = CLLocationCoordinate2DMake(destination.latitude-0.09, destination.longitude)
+        //origin = CLLocationCoordinate2DMake(37.77440680146262, -122.43539772352648)
+        //destination = CLLocationCoordinate2DMake(37.76556957793795, -122.42409811526268)
         
         let options = NavigationRouteOptions(coordinates: [origin, destination])
         

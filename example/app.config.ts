@@ -24,7 +24,11 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
     supportsTablet: true,
     bundleIdentifier: "com.ismael.expomapboxnavigation.example",
     infoPlist: {
-      MBXAccessToken: process.env.MBXAccessToken
+      MBXAccessToken: process.env.MBXAccessToken,
+      locationAlwaysAndWhenInUsePermission: "Allow $(PRODUCT_NAME) to use your location",
+      locationAlwaysPermission: "Allow $(PRODUCT_NAME) to use your location",
+      locationWhenInUsePermission: "Allow $(PRODUCT_NAME) to use your location",
+
     }
   },
   android: {
@@ -36,6 +40,16 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
   },
   web: {
     favicon: "./assets/favicon.png"
-  }
+  },
+  plugins: [
+    [
+      "expo-location",
+      {
+        locationAlwaysAndWhenInUsePermission: "Allow $(PRODUCT_NAME) to use your location",
+        locationAlwaysPermission: "Allow $(PRODUCT_NAME) to use your location",
+        locationWhenInUsePermission: "Allow $(PRODUCT_NAME) to use your location",
+      }
+    ]
+  ]
   
 });

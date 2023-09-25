@@ -20,6 +20,9 @@ class CustomNavigationCameraViewController: UIViewController {
 
     var destination: CLLocationCoordinate2D!
     
+    private let passiveLocationManager = PassiveLocationManager()
+    private lazy var passiveLocationProvider = PassiveLocationProvider(locationManager: passiveLocationManager)
+    
     // MARK: - UIViewController lifecycle methods
     
     override func viewDidLoad() {
@@ -53,6 +56,10 @@ class CustomNavigationCameraViewController: UIViewController {
         navigationMapView.addGestureRecognizer(longPressGestureRecognizer)
         
         view.addSubview(navigationMapView)
+        
+        let locationProvider: LocationProvider = passiveLocationProvider
+        navigationMapView.mapView.location.overrideLocationProvider(with: locationProvider)
+        passiveLocationProvider.startUpdatingLocation()
     }
     
     func setupStartNavigationButton() {
@@ -98,9 +105,13 @@ class CustomNavigationCameraViewController: UIViewController {
     }
     
     func start(){
-        /*
+        
         NSLog("ISMAEL" + String(destination.latitude))
-        guard let userLocation = navigationMapView.mapView.location.latestLocation else { return }
+        guard let userLocation = navigationMapView.mapView.location.latestLocation else {
+            NSLog("ISMAEL NO LOCATION ACCESS")
+            return
+            
+        }
          
         let location = CLLocation(latitude: userLocation.coordinate.latitude,
         longitude: userLocation.coordinate.longitude)
@@ -108,8 +119,9 @@ class CustomNavigationCameraViewController: UIViewController {
         let userWaypoint = Waypoint(location: location,
         heading: userLocation.heading,
         name: "Votre Position")
-         
-        let destinationWaypoint = Waypoint(coordinate: destination, name: "Votre destination")
+        let dest = CLLocationCoordinate2D(latitude: userLocation.coordinate.latitude + 0.05, longitude: userLocation.coordinate.longitude)
+        let destinationWaypoint = Waypoint(coordinate: dest, name: "Votre destination")
+       // let destinationWaypoint = Waypoint(coordinate: destination, name: "Votre destination")
                  
         let navigationRouteOptions = NavigationRouteOptions(waypoints: [userWaypoint, destinationWaypoint])
         
@@ -128,7 +140,7 @@ class CustomNavigationCameraViewController: UIViewController {
                 self?.navigationMapView.showWaypoints(on: route)
             }
         }
-         */
+         
     }
     
     @objc func handleLongPress(_ gesture: UILongPressGestureRecognizer) {
