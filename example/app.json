@@ -1,0 +1,59 @@
+{
+  "expo": {
+    "name": "Expo Mapbox Navigation Example",
+    "slug": "expo_mapbox_navigation_example",
+    "version": "1.0.0",
+    "icon": "./assets/images/icon.png",
+    "scheme": "myapp",
+    "userInterfaceStyle": "automatic",
+    "splash": {
+      "image": "./assets/images/splash.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#ffffff"
+    },
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.example.expo-mapbox-navigation"
+    },
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/images/adaptive-icon.png",
+        "backgroundColor": "#ffffff"
+      },
+      "package": "com.example.expo_mapbox_navigation"
+    },
+    "web": {
+      "favicon": "./assets/images/favicon.png"
+    },
+    "plugins": [
+      [
+        "expo-build-properties",
+        {
+          "android": {
+            "minSdkVersion": 23,
+            "compileSdkVersion": 34,
+            "targetSdkVersion": 34,
+            "buildToolsVersion": "34.0.0"
+          },
+          "ios": {
+            "deploymentTarget": "14.0",
+            "useFrameworks": "static"
+          }
+        }
+      ],
+      [
+        "@rnmapbox/maps",
+        {
+          "RNMapboxMapsDownloadToken": "<DOWNLOAD_TOKEN>",
+          "RNMapboxMapsVersion": "11.3.0"
+        }
+      ],
+      [
+        "../app.plugin.js",
+        {
+          "accessToken": "<TOKEN>"
+        }
+      ]
+    ]
+  }
+}

@@ -1,0 +1,1851 @@
+// swift-interface-format-version: 1.0
+// swift-compiler-version: Apple Swift version 5.9.2 (swiftlang-5.9.2.2.56 clang-1500.1.0.2.5)
+// swift-module-flags: -target arm64-apple-ios14.0-simulator -enable-objc-interop -enable-library-evolution -swift-version 5 -enforce-exclusivity=checked -O -module-name MapboxDirections
+// swift-module-flags-ignorable: -enable-bare-slash-regex
+import CarPlay
+import CoreGraphics
+import CoreLocation
+import CoreLocation
+import Foundation
+import Swift
+import Turf
+import UIKit
+import _Concurrency
+import _StringProcessing
+import _SwiftConcurrencyShims
+public struct AdministrativeRegion : Swift.Codable, Swift.Equatable, Turf.ForeignMemberContainer, Swift.Sendable {
+  public var foreignMembers: Turf.JSONObject
+  public var countryCodeAlpha3: Swift.String?
+  public var countryCode: Swift.String
+  public init(countryCode: Swift.String, countryCodeAlpha3: Swift.String)
+  public init(from decoder: any Swift.Decoder) throws
+  public func encode(to encoder: any Swift.Encoder) throws
+  public static func == (a: MapboxDirections.AdministrativeRegion, b: MapboxDirections.AdministrativeRegion) -> Swift.Bool
+}
+public struct Amenity : Swift.Codable, Swift.Equatable, Swift.Sendable {
+  public let name: Swift.String?
+  public let brand: Swift.String?
+  public let type: MapboxDirections.AmenityType
+  public init(type: MapboxDirections.AmenityType, name: Swift.String? = nil, brand: Swift.String? = nil)
+  public init(from decoder: any Swift.Decoder) throws
+  public func encode(to encoder: any Swift.Encoder) throws
+  public static func == (lhs: MapboxDirections.Amenity, rhs: MapboxDirections.Amenity) -> Swift.Bool
+}
+public enum AmenityType : Swift.String, Swift.Codable, Swift.Equatable, Swift.Sendable {
+  case undefined
+  case gasStation
+  case electricChargingStation
+  case toilet
+  case coffee
+  case restaurant
+  case snack
+  case ATM
+  case info
+  case babyCare
+  case facilitiesForDisabled
+  case shop
+  case telephone
+  case hotel
+  case hotSpring
+  case shower
+  case picnicShelter
+  case post
+  case fax
+  public init?(rawValue: Swift.String)
+  public typealias RawValue = Swift.String
+  public var rawValue: Swift.String {
+    get
+  }
+}
+public struct AttributeOptions : MapboxDirections.CustomValueOptionSet, Swift.CustomStringConvertible, Swift.Equatable, Swift.Sendable {
+  public var rawValue: Swift.Int
+  public var customOptionsByRawValue: [Swift.Int : Swift.String]
+  public init(rawValue: Swift.Int)
+  public init()
+  public static let closures: MapboxDirections.AttributeOptions
+  public static let distance: MapboxDirections.AttributeOptions
+  public static let expectedTravelTime: MapboxDirections.AttributeOptions
+  public static let speed: MapboxDirections.AttributeOptions
+  public static let congestionLevel: MapboxDirections.AttributeOptions
+  public static let maximumSpeedLimit: MapboxDirections.AttributeOptions
+  public static let numericCongestionLevel: MapboxDirections.AttributeOptions
+  public static let trafficTendency: MapboxDirections.AttributeOptions
+  public init?(descriptions: [Swift.String])
+  public var description: Swift.String {
+    get
+  }
+  public typealias ArrayLiteralElement = MapboxDirections.AttributeOptions
+  public typealias CustomValue = Swift.String
+  public typealias Element = MapboxDirections.AttributeOptions
+  public typealias RawValue = Swift.Int
+}
+extension MapboxDirections.AttributeOptions : Swift.Codable {
+  public func encode(to encoder: any Swift.Encoder) throws
+  public init(from decoder: any Swift.Decoder) throws
+}
+public struct BlockedLanes : Swift.OptionSet, Swift.CustomStringConvertible, Swift.Equatable, Swift.Sendable {
+  public var rawValue: Swift.Int
+  public init(rawValue: Swift.Int)
+  public static let left: MapboxDirections.BlockedLanes
+  public static let leftCenter: MapboxDirections.BlockedLanes
+  public static let leftTurnLane: MapboxDirections.BlockedLanes
+  public static let center: MapboxDirections.BlockedLanes
+  public static let right: MapboxDirections.BlockedLanes
+  public static let rightCenter: MapboxDirections.BlockedLanes
+  public static let rightTurnLane: MapboxDirections.BlockedLanes
+  public static let highOccupancyVehicle: MapboxDirections.BlockedLanes
+  public static let side: MapboxDirections.BlockedLanes
+  public static let shoulder: MapboxDirections.BlockedLanes
+  public static let median: MapboxDirections.BlockedLanes
+  public static let lane1: MapboxDirections.BlockedLanes
+  public static let lane2: MapboxDirections.BlockedLanes
+  public static let lane3: MapboxDirections.BlockedLanes
+  public static let lane4: MapboxDirections.BlockedLanes
+  public static let lane5: MapboxDirections.BlockedLanes
+  public static let lane6: MapboxDirections.BlockedLanes
+  public static let lane7: MapboxDirections.BlockedLanes
+  public static let lane8: MapboxDirections.BlockedLanes
+  public static let lane9: MapboxDirections.BlockedLanes
+  public static let lane10: MapboxDirections.BlockedLanes
+  public init?(descriptions: [Swift.String])
+  public var description: Swift.String {
+    get
+  }
+  public typealias ArrayLiteralElement = MapboxDirections.BlockedLanes
+  public typealias Element = MapboxDirections.BlockedLanes
+  public typealias RawValue = Swift.Int
+}
+extension MapboxDirections.BlockedLanes : Swift.Codable {
+  public func encode(to encoder: any Swift.Encoder) throws
+  public init(from decoder: any Swift.Decoder) throws
+}
+public enum CongestionLevel : Swift.String, Swift.Codable, Swift.CaseIterable, Swift.Equatable, Swift.Sendable {
+  case unknown
+  case low
+  case moderate
+  case heavy
+  case severe
+  public init?(rawValue: Swift.String)
+  public typealias AllCases = [MapboxDirections.CongestionLevel]
+  public typealias RawValue = Swift.String
+  public static var allCases: [MapboxDirections.CongestionLevel] {
+    get
+  }
+  public var rawValue: Swift.String {
+    get
+  }
+}
+public typealias NumericCongestionLevel = Swift.Int
+public struct Credentials : Swift.Equatable, Swift.Sendable {
+  public let accessToken: Swift.String?
+  public let host: Foundation.URL
+  public var skuToken: Swift.String? {
+    get
+  }
+  public init(accessToken token: Swift.String? = nil, host: Foundation.URL? = nil)
+  public init(requestURL url: Foundation.URL)
+  public static func == (a: MapboxDirections.Credentials, b: MapboxDirections.Credentials) -> Swift.Bool
+}
+@available(*, deprecated, renamed: "Credentials")
+public typealias DirectionsCredentials = MapboxDirections.Credentials
+public enum CustomOptionComparisonPolicy : Swift.Equatable, Swift.Sendable {
+  case equal
+  case equalOrNull
+  case rawValueEqual
+  public func hash(into hasher: inout Swift.Hasher)
+  public static func == (a: MapboxDirections.CustomOptionComparisonPolicy, b: MapboxDirections.CustomOptionComparisonPolicy) -> Swift.Bool
+  public var hashValue: Swift.Int {
+    get
+  }
+}
+public protocol CustomValueOptionSet : Swift.OptionSet where Self == Self.Element, Self.RawValue : Swift.FixedWidthInteger {
+  associatedtype Element = Self
+  associatedtype CustomValue : Swift.Equatable
+  var rawValue: Self.RawValue { get set }
+  var customOptionsByRawValue: [Self.RawValue : Self.CustomValue] { get set }
+  init(rawValue: Self.RawValue)
+  func contains(_ member: Self.Element, comparisonPolicy: MapboxDirections.CustomOptionComparisonPolicy) -> Swift.Bool
+  func union(_ other: Self.Element, comparisonPolicy: MapboxDirections.CustomOptionComparisonPolicy) -> Self.Element
+  mutating func formUnion(_ other: Self, comparisonPolicy: MapboxDirections.CustomOptionComparisonPolicy)
+  func intersection(_ other: Self.Element, comparisonPolicy: MapboxDirections.CustomOptionComparisonPolicy) -> Self.Element
+  mutating func formIntersection(_ other: Self, comparisonPolicy: MapboxDirections.CustomOptionComparisonPolicy)
+  func symmetricDifference(_ other: Self.Element, comparisonPolicy: MapboxDirections.CustomOptionComparisonPolicy) -> Self.Element
+  mutating func formSymmetricDifference(_ other: Self.Element, comparisonPolicy: MapboxDirections.CustomOptionComparisonPolicy)
+  func subtracting(_ other: Self.Element, comparisonPolicy: MapboxDirections.CustomOptionComparisonPolicy) -> Self.Element
+  mutating func subtract(_ other: Self.Element, comparisonPolicy: MapboxDirections.CustomOptionComparisonPolicy)
+  mutating func insert(_ newMember: Self.Element, comparisonPolicy: MapboxDirections.CustomOptionComparisonPolicy) -> (inserted: Swift.Bool, memberAfterInsert: Self.Element)
+  mutating func remove(_ member: Self.Element, comparisonPolicy: MapboxDirections.CustomOptionComparisonPolicy) -> Self.Element?
+  mutating func update(with newMember: Self.Element, comparisonPolicy: MapboxDirections.CustomOptionComparisonPolicy) -> Self.Element?
+  mutating func update(customOption: (Self.RawValue, Self.CustomValue), comparisonPolicy: MapboxDirections.CustomOptionComparisonPolicy) -> Self.Element?
+  func isSubset(of other: Self.Element, comparisonPolicy: MapboxDirections.CustomOptionComparisonPolicy) -> Swift.Bool
+  func isSuperset(of other: Self.Element, comparisonPolicy: MapboxDirections.CustomOptionComparisonPolicy) -> Swift.Bool
+  func isStrictSubset(of other: Self.Element, comparisonPolicy: MapboxDirections.CustomOptionComparisonPolicy) -> Swift.Bool
+  func isStrictSuperset(of other: Self.Element, comparisonPolicy: MapboxDirections.CustomOptionComparisonPolicy) -> Swift.Bool
+  func isDisjoint(with other: Self.Element, comparisonPolicy: MapboxDirections.CustomOptionComparisonPolicy) -> Swift.Bool
+}
+extension MapboxDirections.CustomValueOptionSet {
+  @discardableResult
+  public func contains(_ member: Self.Element, comparisonPolicy: MapboxDirections.CustomOptionComparisonPolicy) -> Swift.Bool
+  @discardableResult
+  @inlinable public mutating func insert(_ newMember: Self.Element, comparisonPolicy: MapboxDirections.CustomOptionComparisonPolicy) -> (inserted: Swift.Bool, memberAfterInsert: Self.Element) {
+        if contains(newMember, comparisonPolicy: comparisonPolicy) {
+            return (false, intersection(newMember, comparisonPolicy: comparisonPolicy))
+        } else {
+            rawValue = rawValue | newMember.rawValue
+            customOptionsByRawValue.merge(newMember.customOptionsByRawValue) { current, _ in current }
+            return (true, newMember)
+        }
+    }
+  @discardableResult
+  @inlinable public mutating func remove(_ member: Self.Element, comparisonPolicy: MapboxDirections.CustomOptionComparisonPolicy) -> Self.Element? {
+        let intersection = intersection(member, comparisonPolicy: comparisonPolicy)
+        if intersection.rawValue == 0 {
+            return nil
+        } else {
+            rawValue -= intersection.rawValue
+            customOptionsByRawValue = customOptionsByRawValue.filter { key, _ in
+                rawValue & key != 0
+            }
+            return intersection
+        }
+    }
+  @discardableResult
+  @inlinable public mutating func update(with newMember: Self.Element, comparisonPolicy: MapboxDirections.CustomOptionComparisonPolicy) -> Self.Element? {
+        let intersection = intersection(newMember, comparisonPolicy: comparisonPolicy)
+
+        if intersection.rawValue == 0 {
+            // insert
+            rawValue = rawValue | newMember.rawValue
+            customOptionsByRawValue.merge(newMember.customOptionsByRawValue) { current, _ in current }
+            return nil
+        } else {
+            // update
+            rawValue = rawValue | newMember.rawValue
+            customOptionsByRawValue.merge(intersection.customOptionsByRawValue) { _, new in new }
+            return intersection
+        }
+    }
+  public mutating func formIntersection(_ other: Self.Element, comparisonPolicy: MapboxDirections.CustomOptionComparisonPolicy)
+  public mutating func subtract(_ other: Self.Element, comparisonPolicy: MapboxDirections.CustomOptionComparisonPolicy)
+  @discardableResult
+  @inlinable public func union(_ other: Self.Element, comparisonPolicy: MapboxDirections.CustomOptionComparisonPolicy) -> Self.Element {
+        var union = self
+        union.formUnion(other, comparisonPolicy: comparisonPolicy)
+        return union
+    }
+  @discardableResult
+  @inlinable public func intersection(_ other: Self.Element, comparisonPolicy: MapboxDirections.CustomOptionComparisonPolicy) -> Self.Element {
+        var intersection = self
+        intersection.formIntersection(other, comparisonPolicy: comparisonPolicy)
+        return intersection
+    }
+  @discardableResult
+  @inlinable public func symmetricDifference(_ other: Self.Element, comparisonPolicy: MapboxDirections.CustomOptionComparisonPolicy) -> Self.Element {
+        var difference = self
+        difference.formSymmetricDifference(other, comparisonPolicy: comparisonPolicy)
+        return difference
+    }
+  @discardableResult
+  @inlinable public mutating func update(customOption: (Self.RawValue, Self.CustomValue), comparisonPolicy: MapboxDirections.CustomOptionComparisonPolicy) -> Self.Element? {
+        var newMember = Self(rawValue: customOption.0)
+        newMember.customOptionsByRawValue[customOption.0] = customOption.1
+        return update(with: newMember, comparisonPolicy: comparisonPolicy)
+    }
+  @inlinable public mutating func formUnion(_ other: Self, comparisonPolicy: MapboxDirections.CustomOptionComparisonPolicy) {
+        _ = update(with: other, comparisonPolicy: comparisonPolicy)
+    }
+  @inlinable public mutating func formSymmetricDifference(_ other: Self.Element, comparisonPolicy: MapboxDirections.CustomOptionComparisonPolicy) {
+        let intersection = intersection(other, comparisonPolicy: comparisonPolicy)
+        _ = remove(other, comparisonPolicy: comparisonPolicy)
+        _ = insert(
+            other.subtracting(
+                intersection,
+                comparisonPolicy: comparisonPolicy
+            ),
+            comparisonPolicy: comparisonPolicy
+        )
+    }
+  @discardableResult
+  @inlinable public func subtracting(_ other: Self.Element, comparisonPolicy: MapboxDirections.CustomOptionComparisonPolicy) -> Self.Element {
+        var substracted = self
+        substracted.subtract(other, comparisonPolicy: comparisonPolicy)
+        return substracted
+    }
+  @discardableResult
+  @inlinable public func isSubset(of other: Self.Element, comparisonPolicy: MapboxDirections.CustomOptionComparisonPolicy) -> Swift.Bool {
+        return intersection(other, comparisonPolicy: comparisonPolicy) == self
+    }
+  @discardableResult
+  @inlinable public func isDisjoint(with other: Self.Element, comparisonPolicy: MapboxDirections.CustomOptionComparisonPolicy) -> Swift.Bool {
+        return intersection(other, comparisonPolicy: comparisonPolicy).isEmpty
+    }
+  @discardableResult
+  @inlinable public func isSuperset(of other: Self.Element, comparisonPolicy: MapboxDirections.CustomOptionComparisonPolicy) -> Swift.Bool {
+        return other.isSubset(of: self, comparisonPolicy: comparisonPolicy)
+    }
+  @discardableResult
+  @inlinable public func isStrictSuperset(of other: Self.Element, comparisonPolicy: MapboxDirections.CustomOptionComparisonPolicy) -> Swift.Bool {
+        return isSuperset(of: other, comparisonPolicy: comparisonPolicy) && rawValue > other.rawValue
+    }
+  @discardableResult
+  @inlinable public func isStrictSubset(of other: Self.Element, comparisonPolicy: MapboxDirections.CustomOptionComparisonPolicy) -> Swift.Bool {
+        return other.isStrictSuperset(of: self, comparisonPolicy: comparisonPolicy)
+    }
+}
+extension MapboxDirections.CustomValueOptionSet {
+  @discardableResult
+  @inlinable public func contains(_ member: Self.Element) -> Swift.Bool {
+        return contains(member, comparisonPolicy: .equal)
+    }
+  @discardableResult
+  @inlinable public func union(_ other: Self) -> Self {
+        return union(other, comparisonPolicy: .equal)
+    }
+  @discardableResult
+  @inlinable public func intersection(_ other: Self) -> Self {
+        return intersection(other, comparisonPolicy: .equal)
+    }
+  @discardableResult
+  @inlinable public func symmetricDifference(_ other: Self) -> Self {
+        return symmetricDifference(other, comparisonPolicy: .equal)
+    }
+  @discardableResult
+  @inlinable public mutating func insert(_ newMember: Self.Element) -> (inserted: Swift.Bool, memberAfterInsert: Self.Element) {
+        return insert(newMember, comparisonPolicy: .equal)
+    }
+  @discardableResult
+  @inlinable public mutating func remove(_ member: Self.Element) -> Self.Element? {
+        return remove(member, comparisonPolicy: .equal)
+    }
+  @discardableResult
+  @inlinable public mutating func update(with newMember: Self.Element) -> Self.Element? {
+        return update(with: newMember, comparisonPolicy: .equal)
+    }
+  @inlinable public mutating func formUnion(_ other: Self) {
+        formUnion(other, comparisonPolicy: .equal)
+    }
+  @inlinable public mutating func formIntersection(_ other: Self) {
+        formIntersection(other, comparisonPolicy: .equal)
+    }
+  @inlinable public mutating func formSymmetricDifference(_ other: Self) {
+        formSymmetricDifference(other, comparisonPolicy: .equal)
+    }
+  @discardableResult
+  @inlinable public func subtracting(_ other: Self) -> Self {
+        return subtracting(other, comparisonPolicy: .equal)
+    }
+  @discardableResult
+  @inlinable public func isSubset(of other: Self) -> Swift.Bool {
+        return isSubset(of: other, comparisonPolicy: .equal)
+    }
+  @discardableResult
+  @inlinable public func isDisjoint(with other: Self) -> Swift.Bool {
+        return isDisjoint(with: other, comparisonPolicy: .equal)
+    }
+  @discardableResult
+  @inlinable public func isSuperset(of other: Self) -> Swift.Bool {
+        return isSuperset(of: other, comparisonPolicy: .equal)
+    }
+  @inlinable public mutating func subtract(_ other: Self) {
+        subtract(other, comparisonPolicy: .equal)
+    }
+}
+public let MBDirectionsErrorDomain: Swift.String
+open class Directions : @unchecked Swift.Sendable {
+  #if compiler(>=5.3) && $Sendable
+  public typealias RouteCompletionHandler = @Sendable (_ result: Swift.Result<MapboxDirections.RouteResponse, MapboxDirections.DirectionsError>) -> Swift.Void
+  #endif
+  #if compiler(>=5.3) && $Sendable
+  public typealias MatchCompletionHandler = @Sendable (_ result: Swift.Result<MapboxDirections.MapMatchingResponse, MapboxDirections.DirectionsError>) -> Swift.Void
+  #endif
+  #if compiler(>=5.3) && $Sendable
+  public typealias RouteRefreshCompletionHandler = @Sendable (_ credentials: MapboxDirections.Credentials, _ result: Swift.Result<MapboxDirections.RouteRefreshResponse, MapboxDirections.DirectionsError>) -> Swift.Void
+  #endif
+  public static let shared: MapboxDirections.Directions
+  final public let credentials: MapboxDirections.Credentials
+  public init(credentials: MapboxDirections.Credentials = .init(), urlSession: Foundation.URLSession = .shared, processingQueue: Dispatch.DispatchQueue = .global(qos: .userInitiated))
+  #if compiler(>=5.3) && $Sendable
+  @discardableResult
+  open func calculate(_ options: MapboxDirections.RouteOptions, completionHandler: @escaping MapboxDirections.Directions.RouteCompletionHandler) -> Foundation.URLSessionDataTask
+  #endif
+  #if compiler(>=5.3) && $Sendable
+  @discardableResult
+  open func calculate(_ options: MapboxDirections.MatchOptions, completionHandler: @escaping MapboxDirections.Directions.MatchCompletionHandler) -> Foundation.URLSessionDataTask
+  #endif
+  #if compiler(>=5.3) && $Sendable
+  @discardableResult
+  open func calculateRoutes(matching options: MapboxDirections.MatchOptions, completionHandler: @escaping MapboxDirections.Directions.RouteCompletionHandler) -> Foundation.URLSessionDataTask
+  #endif
+  #if compiler(>=5.3) && $Sendable
+  @discardableResult
+  open func refreshRoute(responseIdentifier: Swift.String, routeIndex: Swift.Int, fromLegAtIndex startLegIndex: Swift.Int = 0, completionHandler: @escaping MapboxDirections.Directions.RouteRefreshCompletionHandler) -> Foundation.URLSessionDataTask?
+  #endif
+  #if compiler(>=5.3) && $Sendable
+  @discardableResult
+  open func refreshRoute(responseIdentifier: Swift.String, routeIndex: Swift.Int, fromLegAtIndex startLegIndex: Swift.Int = 0, currentRouteShapeIndex: Swift.Int, completionHandler: @escaping MapboxDirections.Directions.RouteRefreshCompletionHandler) -> Foundation.URLSessionDataTask?
+  #endif
+  open func urlRequest(forRefreshing responseIdentifier: Swift.String, routeIndex: Swift.Int, fromLegAtIndex startLegIndex: Swift.Int) -> Foundation.URLRequest
+  open func urlRequest(forRefreshing responseIdentifier: Swift.String, routeIndex: Swift.Int, fromLegAtIndex startLegIndex: Swift.Int, currentRouteShapeIndex: Swift.Int) -> Foundation.URLRequest
+  open func url(forCalculating options: MapboxDirections.DirectionsOptions) -> Foundation.URL
+  open func url(forCalculating options: MapboxDirections.DirectionsOptions, httpMethod: Swift.String) -> Foundation.URL
+  open func urlRequest(forCalculating options: MapboxDirections.DirectionsOptions) -> Foundation.URLRequest
+  @objc deinit
+}
+@available(*, unavailable)
+extension MapboxDirections.Directions : @unchecked Swift.Sendable {
+}
+extension Swift.CodingUserInfoKey {
+  public static let options: Swift.CodingUserInfoKey
+  public static let httpResponse: Swift.CodingUserInfoKey
+  public static let credentials: Swift.CodingUserInfoKey
+  public static let tracepoints: Swift.CodingUserInfoKey
+  public static let responseIdentifier: Swift.CodingUserInfoKey
+  public static let routeIndex: Swift.CodingUserInfoKey
+  public static let startLegIndex: Swift.CodingUserInfoKey
+}
+public enum DirectionsError : Foundation.LocalizedError {
+  public init(code: Swift.String?, message: Swift.String?, response: Foundation.URLResponse?, underlyingError error: (any Swift.Error)?)
+  case network(Foundation.URLError)
+  case noData
+  case invalidInput(message: Swift.String?)
+  case invalidResponse(Foundation.URLResponse?)
+  case unableToRoute
+  case noMatches
+  case tooManyCoordinates
+  case unableToLocate
+  case profileNotFound
+  case requestTooLarge
+  case rateLimited(rateLimitInterval: Foundation.TimeInterval?, rateLimit: Swift.UInt?, resetTime: Foundation.Date?)
+  case unknown(response: Foundation.URLResponse?, underlying: (any Swift.Error)?, code: Swift.String?, message: Swift.String?)
+  public var failureReason: Swift.String? {
+    get
+  }
+  public var recoverySuggestion: Swift.String? {
+    get
+  }
+}
+extension MapboxDirections.DirectionsError : Swift.Equatable {
+  public static func == (lhs: MapboxDirections.DirectionsError, rhs: MapboxDirections.DirectionsError) -> Swift.Bool
+}
+public enum DirectionsCodingError : Swift.Error {
+  case missingOptions
+  case missingCredentials
+  public static func == (a: MapboxDirections.DirectionsCodingError, b: MapboxDirections.DirectionsCodingError) -> Swift.Bool
+  public func hash(into hasher: inout Swift.Hasher)
+  public var hashValue: Swift.Int {
+    get
+  }
+}
+public enum RouteShapeFormat : Swift.String, Swift.Codable, Swift.Equatable, Swift.Sendable {
+  case geoJSON
+  case polyline
+  case polyline6
+  public init?(rawValue: Swift.String)
+  public typealias RawValue = Swift.String
+  public var rawValue: Swift.String {
+    get
+  }
+}
+public enum RouteShapeResolution : Swift.String, Swift.Codable, Swift.Equatable, Swift.Sendable {
+  case none
+  case low
+  case full
+  public init?(rawValue: Swift.String)
+  public typealias RawValue = Swift.String
+  public var rawValue: Swift.String {
+    get
+  }
+}
+public enum MeasurementSystem : Swift.String, Swift.Codable, Swift.Equatable, Swift.Sendable {
+  case imperial
+  case metric
+  public init?(rawValue: Swift.String)
+  public typealias RawValue = Swift.String
+  public var rawValue: Swift.String {
+    get
+  }
+}
+@available(*, deprecated, renamed: "DirectionsPriority")
+public typealias MBDirectionsPriority = MapboxDirections.DirectionsPriority
+public struct DirectionsPriority : Swift.Hashable, Swift.RawRepresentable, Swift.Codable, Swift.Equatable, Swift.Sendable {
+  public init(rawValue: Swift.Double)
+  public var rawValue: Swift.Double
+  public typealias RawValue = Swift.Double
+}
+open class DirectionsOptions : Swift.Codable {
+  required public init(waypoints: [MapboxDirections.Waypoint], profileIdentifier: MapboxDirections.ProfileIdentifier? = nil, queryItems: [Foundation.URLQueryItem]? = nil)
+  convenience public init?(url: Foundation.URL)
+  public func encode(to encoder: any Swift.Encoder) throws
+  required public init(from decoder: any Swift.Decoder) throws
+  public var waypoints: [MapboxDirections.Waypoint]
+  public var profileIdentifier: MapboxDirections.ProfileIdentifier
+  public var includesSteps: Swift.Bool
+  public var shapeFormat: MapboxDirections.RouteShapeFormat
+  public var routeShapeResolution: MapboxDirections.RouteShapeResolution
+  public var attributeOptions: MapboxDirections.AttributeOptions
+  public var locale: Foundation.Locale {
+    get
+    set
+  }
+  public var includesSpokenInstructions: Swift.Bool
+  public var distanceMeasurementSystem: MapboxDirections.MeasurementSystem
+  public var includesVisualInstructions: Swift.Bool
+  public var fetchStartDate: Foundation.Date?
+  public var urlQueryItems: [Foundation.URLQueryItem] {
+    get
+  }
+  @objc deinit
+}
+extension MapboxDirections.DirectionsOptions : Swift.Equatable {
+  public static func == (lhs: MapboxDirections.DirectionsOptions, rhs: MapboxDirections.DirectionsOptions) -> Swift.Bool
+}
+@available(*, unavailable)
+extension MapboxDirections.DirectionsOptions : @unchecked Swift.Sendable {
+}
+public enum DirectionsResultCodingKeys : Swift.String, Swift.CodingKey, Swift.CaseIterable {
+  case shape
+  case legs
+  case distance
+  case expectedTravelTime
+  case typicalTravelTime
+  case directionsOptions
+  case speechLocale
+  public init?(rawValue: Swift.String)
+  public init?(stringValue: Swift.String)
+  public init?(intValue: Swift.Int)
+  public typealias AllCases = [MapboxDirections.DirectionsResultCodingKeys]
+  public typealias RawValue = Swift.String
+  public static var allCases: [MapboxDirections.DirectionsResultCodingKeys] {
+    get
+  }
+  public var intValue: Swift.Int? {
+    get
+  }
+  public var rawValue: Swift.String {
+    get
+  }
+  public var stringValue: Swift.String {
+    get
+  }
+}
+public struct DirectionsCodingKey : Swift.CodingKey {
+  public var intValue: Swift.Int? {
+    get
+  }
+  public init?(intValue: Swift.Int)
+  public let stringValue: Swift.String
+  public init(stringValue: Swift.String)
+  public static func directionsResult(_ key: MapboxDirections.DirectionsResultCodingKeys) -> MapboxDirections.DirectionsCodingKey
+}
+public protocol DirectionsResult : Swift.Decodable, Swift.Encodable, Swift.Equatable, Turf.ForeignMemberContainer {
+  var shape: Turf.LineString? { get }
+  var legs: [MapboxDirections.RouteLeg] { get set }
+  var distance: Turf.LocationDistance { get }
+  var expectedTravelTime: Foundation.TimeInterval { get set }
+  var typicalTravelTime: Foundation.TimeInterval? { get set }
+  var speechLocale: Foundation.Locale? { get set }
+  var fetchStartDate: Foundation.Date? { get set }
+  var responseEndDate: Foundation.Date? { get set }
+  var responseContainsSpeechLocale: Swift.Bool { get }
+  var legSeparators: [MapboxDirections.Waypoint?] { get set }
+}
+extension MapboxDirections.DirectionsResult {
+  public var legSeparators: [MapboxDirections.Waypoint?] {
+    get
+    set
+  }
+}
+public enum DrivingSide : Swift.String, Swift.Codable, Swift.Equatable, Swift.Sendable {
+  case left
+  case right
+  public init?(rawValue: Swift.String)
+  public typealias RawValue = Swift.String
+  public var rawValue: Swift.String {
+    get
+  }
+}
+public typealias LocationSpeed = CoreLocation.CLLocationSpeed
+public typealias LocationAccuracy = CoreLocation.CLLocationAccuracy
+public protocol ForeignMemberContainerClass : AnyObject {
+  var foreignMembers: Turf.JSONObject { get set }
+  func decodeForeignMembers<WellKnownCodingKeys>(notKeyedBy codingKeys: WellKnownCodingKeys.Type, with decoder: any Swift.Decoder) throws where WellKnownCodingKeys : Swift.CaseIterable, WellKnownCodingKeys : Swift.CodingKey
+  func encodeForeignMembers(to encoder: any Swift.Encoder) throws
+}
+extension MapboxDirections.ForeignMemberContainerClass {
+  public func decodeForeignMembers<WellKnownCodingKeys>(notKeyedBy _: WellKnownCodingKeys.Type, with decoder: any Swift.Decoder) throws where WellKnownCodingKeys : Swift.CaseIterable, WellKnownCodingKeys : Swift.CodingKey
+  public func encodeForeignMembers(to encoder: any Swift.Encoder) throws
+}
+extension Turf.BoundingBox : Swift.CustomStringConvertible {
+  public var description: Swift.String {
+    get
+  }
+}
+public enum GeometryError : Foundation.LocalizedError {
+  case cannotDecodePolyline(precision: Swift.Double)
+  public var failureReason: Swift.String? {
+    get
+  }
+  public var recoverySuggestion: Swift.String? {
+    get
+  }
+}
+extension Turf.JSONValue : @unchecked Swift.Sendable {
+}
+extension Turf.LineString : @unchecked Swift.Sendable {
+}
+extension CarPlay.CPSearchTemplate : @unchecked Swift.Sendable {
+}
+extension CarPlay.CPListItem : @unchecked Swift.Sendable {
+}
+extension CarPlay.CPTemplate : @unchecked Swift.Sendable {
+}
+public struct Incident : Swift.Codable, Swift.Equatable, Turf.ForeignMemberContainer, Swift.Sendable {
+  public var foreignMembers: Turf.JSONObject
+  public var congestionForeignMembers: Turf.JSONObject
+  public enum Kind : Swift.String, Swift.Sendable {
+    case accident
+    case congestion
+    case construction
+    case disabledVehicle
+    case laneRestriction
+    case massTransit
+    case miscellaneous
+    case otherNews
+    case plannedEvent
+    case roadClosure
+    case roadHazard
+    case weather
+    case undefined
+    public init?(rawValue: Swift.String)
+    public typealias RawValue = Swift.String
+    public var rawValue: Swift.String {
+      get
+    }
+  }
+  public enum Impact : Swift.String, Swift.Codable, Swift.Sendable {
+    case unknown
+    case critical
+    case major
+    case minor
+    case low
+    public init?(rawValue: Swift.String)
+    public typealias RawValue = Swift.String
+    public var rawValue: Swift.String {
+      get
+    }
+  }
+  public var identifier: Swift.String
+  public var kind: MapboxDirections.Incident.Kind? {
+    get
+  }
+  public var description: Swift.String
+  public var creationDate: Foundation.Date
+  public var startDate: Foundation.Date
+  public var endDate: Foundation.Date
+  public var impact: MapboxDirections.Incident.Impact?
+  public var subtype: Swift.String?
+  public var subtypeDescription: Swift.String?
+  public var countryCodeAlpha3: Swift.String?
+  public var countryCode: Swift.String?
+  public var roadIsClosed: Swift.Bool?
+  public var longDescription: Swift.String?
+  public var numberOfBlockedLanes: Swift.Int?
+  public var congestionLevel: MapboxDirections.NumericCongestionLevel?
+  public var affectedRoadNames: [Swift.String]?
+  public var alertCodes: Swift.Set<Swift.Int>
+  public var lanesBlocked: MapboxDirections.BlockedLanes?
+  public var shapeIndexRange: Swift.Range<Swift.Int>
+  public init(identifier: Swift.String, type: MapboxDirections.Incident.Kind, description: Swift.String, creationDate: Foundation.Date, startDate: Foundation.Date, endDate: Foundation.Date, impact: MapboxDirections.Incident.Impact?, subtype: Swift.String?, subtypeDescription: Swift.String?, alertCodes: Swift.Set<Swift.Int>, lanesBlocked: MapboxDirections.BlockedLanes?, shapeIndexRange: Swift.Range<Swift.Int>, countryCodeAlpha3: Swift.String? = nil, countryCode: Swift.String? = nil, roadIsClosed: Swift.Bool? = nil, longDescription: Swift.String? = nil, numberOfBlockedLanes: Swift.Int? = nil, congestionLevel: MapboxDirections.NumericCongestionLevel? = nil, affectedRoadNames: [Swift.String]? = nil)
+  public init(from decoder: any Swift.Decoder) throws
+  public func encode(to encoder: any Swift.Encoder) throws
+  public static func == (a: MapboxDirections.Incident, b: MapboxDirections.Incident) -> Swift.Bool
+}
+public struct Interchange : Swift.Codable, Swift.Equatable, Swift.Sendable {
+  public let name: Swift.String?
+  public init(name: Swift.String?)
+  public static func == (a: MapboxDirections.Interchange, b: MapboxDirections.Interchange) -> Swift.Bool
+  public func encode(to encoder: any Swift.Encoder) throws
+  public init(from decoder: any Swift.Decoder) throws
+}
+public struct Intersection : Turf.ForeignMemberContainer, Swift.Equatable, Swift.Sendable {
+  public var foreignMembers: Turf.JSONObject
+  public var lanesForeignMembers: [Turf.JSONObject]
+  public init(location: MapboxDirections.LocationCoordinate2D, headings: [Turf.LocationDirection], approachIndex: Swift.Int, outletIndex: Swift.Int, outletIndexes: Foundation.IndexSet, approachLanes: [MapboxDirections.LaneIndication]?, usableApproachLanes: Foundation.IndexSet?, preferredApproachLanes: Foundation.IndexSet?, usableLaneIndication: MapboxDirections.ManeuverDirection?, outletRoadClasses: MapboxDirections.RoadClasses? = nil, tollCollection: MapboxDirections.TollCollection? = nil, tunnelName: Swift.String? = nil, restStop: MapboxDirections.RestStop? = nil, isUrban: Swift.Bool? = nil, regionCode: Swift.String? = nil, outletMapboxStreetsRoadClass: MapboxDirections.MapboxStreetsRoadClass? = nil, railroadCrossing: Swift.Bool? = nil, trafficSignal: Swift.Bool? = nil, stopSign: Swift.Bool? = nil, yieldSign: Swift.Bool? = nil, interchange: MapboxDirections.Interchange? = nil, junction: MapboxDirections.Junction? = nil)
+  public let location: MapboxDirections.LocationCoordinate2D
+  public let headings: [Turf.LocationDirection]
+  public let outletIndexes: Foundation.IndexSet
+  public let approachIndex: Swift.Int?
+  public let outletIndex: Swift.Int?
+  public let outletRoadClasses: MapboxDirections.RoadClasses?
+  public let outletMapboxStreetsRoadClass: MapboxDirections.MapboxStreetsRoadClass?
+  public let tunnelName: Swift.String?
+  public let tollCollection: MapboxDirections.TollCollection?
+  public let restStop: MapboxDirections.RestStop?
+  public let isUrban: Swift.Bool?
+  public var regionCode: Swift.String? {
+    get
+  }
+  public let approachLanes: [MapboxDirections.LaneIndication]?
+  public let usableApproachLanes: Foundation.IndexSet?
+  public let preferredApproachLanes: Foundation.IndexSet?
+  public let usableLaneIndication: MapboxDirections.ManeuverDirection?
+  public let railroadCrossing: Swift.Bool?
+  public let trafficSignal: Swift.Bool?
+  public let stopSign: Swift.Bool?
+  public let yieldSign: Swift.Bool?
+  public let interchange: MapboxDirections.Interchange?
+  public let junction: MapboxDirections.Junction?
+}
+extension MapboxDirections.Intersection : Swift.Codable {
+  public func encode(to encoder: any Swift.Encoder) throws
+  public init(from decoder: any Swift.Decoder) throws
+}
+extension MapboxDirections.Intersection {
+  public static func == (lhs: MapboxDirections.Intersection, rhs: MapboxDirections.Intersection) -> Swift.Bool
+}
+public enum IsochroneError : Foundation.LocalizedError {
+  public init(code: Swift.String?, message: Swift.String?, response: Foundation.URLResponse?, underlyingError error: (any Swift.Error)?)
+  case network(Foundation.URLError)
+  case invalidResponse(Foundation.URLResponse?)
+  case noData
+  case unableToLocate
+  case profileNotFound
+  case invalidInput(message: Swift.String?)
+  case rateLimited(rateLimitInterval: Foundation.TimeInterval?, rateLimit: Swift.UInt?, resetTime: Foundation.Date?)
+  case unknown(response: Foundation.URLResponse?, underlying: (any Swift.Error)?, code: Swift.String?, message: Swift.String?)
+}
+public struct IsochroneOptions : Swift.Equatable, Swift.Sendable {
+  public init(centerCoordinate: MapboxDirections.LocationCoordinate2D, contours: MapboxDirections.IsochroneOptions.Contours, profileIdentifier: MapboxDirections.ProfileIdentifier = .automobile)
+  public enum ContourFormat : Swift.Equatable, Swift.Sendable {
+    case lineString
+    case polygon
+    public func hash(into hasher: inout Swift.Hasher)
+    public static func == (a: MapboxDirections.IsochroneOptions.ContourFormat, b: MapboxDirections.IsochroneOptions.ContourFormat) -> Swift.Bool
+    public var hashValue: Swift.Int {
+      get
+    }
+  }
+  public var profileIdentifier: MapboxDirections.ProfileIdentifier
+  public var centerCoordinate: MapboxDirections.LocationCoordinate2D
+  public var contours: MapboxDirections.IsochroneOptions.Contours
+  public var contoursFormat: MapboxDirections.IsochroneOptions.ContourFormat
+  public var denoisingFactor: Swift.Float?
+  public var simplificationTolerance: Turf.LocationDistance?
+  public var urlQueryItems: [Foundation.URLQueryItem] {
+    get
+  }
+  public static func == (a: MapboxDirections.IsochroneOptions, b: MapboxDirections.IsochroneOptions) -> Swift.Bool
+}
+extension MapboxDirections.IsochroneOptions {
+  public enum Contours : Swift.Equatable, Swift.Sendable {
+    public struct Definition<Unt> : Swift.Equatable, Swift.Sendable where Unt : Foundation.Dimension, Unt : Swift.Sendable {
+      public var value: Foundation.Measurement<Unt>
+      public var color: MapboxDirections.IsochroneOptions.Color?
+      public init(value: Foundation.Measurement<Unt>, color: MapboxDirections.IsochroneOptions.Color? = nil)
+      public init(value: Swift.Double, unit: Unt, color: MapboxDirections.IsochroneOptions.Color? = nil)
+      public static func == (a: MapboxDirections.IsochroneOptions.Contours.Definition<Unt>, b: MapboxDirections.IsochroneOptions.Contours.Definition<Unt>) -> Swift.Bool
+    }
+    case byExpectedTravelTimes([MapboxDirections.IsochroneOptions.Contours.Definition<Foundation.UnitDuration>])
+    case byDistances([MapboxDirections.IsochroneOptions.Contours.Definition<Foundation.UnitLength>])
+    public static func == (a: MapboxDirections.IsochroneOptions.Contours, b: MapboxDirections.IsochroneOptions.Contours) -> Swift.Bool
+  }
+}
+extension MapboxDirections.IsochroneOptions {
+  public typealias Color = UIKit.UIColor
+}
+open class Isochrones : @unchecked Swift.Sendable {
+  public typealias Session = (options: MapboxDirections.IsochroneOptions, credentials: MapboxDirections.Credentials)
+  #if compiler(>=5.3) && $Sendable
+  public typealias IsochroneCompletionHandler = @_Concurrency.MainActor @Sendable (_ result: Swift.Result<Turf.FeatureCollection, MapboxDirections.IsochroneError>) -> Swift.Void
+  #endif
+  final public let credentials: MapboxDirections.Credentials
+  public static let shared: MapboxDirections.Isochrones
+  public init(credentials: MapboxDirections.Credentials = .init(), urlSession: Foundation.URLSession = .shared, processingQueue: Dispatch.DispatchQueue = .global(qos: .userInitiated))
+  #if compiler(>=5.3) && $Sendable
+  @discardableResult
+  open func calculate(_ options: MapboxDirections.IsochroneOptions, completionHandler: @escaping MapboxDirections.Isochrones.IsochroneCompletionHandler) -> Foundation.URLSessionDataTask
+  #endif
+  open func url(forCalculating options: MapboxDirections.IsochroneOptions) -> Foundation.URL
+  open func urlRequest(forCalculating options: MapboxDirections.IsochroneOptions) -> Foundation.URLRequest
+  @objc deinit
+}
+@available(*, unavailable)
+extension MapboxDirections.Isochrones : @unchecked Swift.Sendable {
+}
+public struct Junction : Swift.Codable, Swift.Equatable, Swift.Sendable {
+  public let name: Swift.String?
+  public init(name: Swift.String?)
+  public static func == (a: MapboxDirections.Junction, b: MapboxDirections.Junction) -> Swift.Bool
+  public func encode(to encoder: any Swift.Encoder) throws
+  public init(from decoder: any Swift.Decoder) throws
+}
+public struct LaneIndication : Swift.OptionSet, Swift.CustomStringConvertible, Swift.Sendable {
+  public var rawValue: Swift.Int
+  public init(rawValue: Swift.Int)
+  public static let sharpRight: MapboxDirections.LaneIndication
+  public static let right: MapboxDirections.LaneIndication
+  public static let slightRight: MapboxDirections.LaneIndication
+  public static let straightAhead: MapboxDirections.LaneIndication
+  public static let slightLeft: MapboxDirections.LaneIndication
+  public static let left: MapboxDirections.LaneIndication
+  public static let sharpLeft: MapboxDirections.LaneIndication
+  public static let uTurn: MapboxDirections.LaneIndication
+  public init?(descriptions: [Swift.String])
+  public var descriptions: [Swift.String] {
+    get
+  }
+  public var description: Swift.String {
+    get
+  }
+  public typealias ArrayLiteralElement = MapboxDirections.LaneIndication
+  public typealias Element = MapboxDirections.LaneIndication
+  public typealias RawValue = Swift.Int
+}
+extension MapboxDirections.LaneIndication : Swift.Codable {
+  public init(from decoder: any Swift.Decoder) throws
+  public func encode(to encoder: any Swift.Encoder) throws
+}
+public struct MapMatchingResponse : Turf.ForeignMemberContainer {
+  public var foreignMembers: Turf.JSONObject
+  public let httpResponse: Foundation.HTTPURLResponse?
+  public var matches: [MapboxDirections.Match]?
+  public var tracepoints: [MapboxDirections.Match.Tracepoint?]?
+  public let options: MapboxDirections.MatchOptions
+  public let credentials: MapboxDirections.Credentials
+  public var created: Foundation.Date
+}
+extension MapboxDirections.MapMatchingResponse : Swift.Codable {
+  public init(httpResponse: Foundation.HTTPURLResponse?, matches: [MapboxDirections.Match]? = nil, tracepoints: [MapboxDirections.Match.Tracepoint]? = nil, options: MapboxDirections.MatchOptions, credentials: MapboxDirections.Credentials)
+  public init(from decoder: any Swift.Decoder) throws
+  public func encode(to encoder: any Swift.Encoder) throws
+}
+@available(*, unavailable)
+extension MapboxDirections.MapMatchingResponse : @unchecked Swift.Sendable {
+}
+public enum Weight : Swift.Equatable, Swift.Sendable {
+  case routability(value: Swift.Float)
+  case other(value: Swift.Float, metric: Swift.String)
+  public init(value: Swift.Float, metric: Swift.String)
+  public static func == (a: MapboxDirections.Weight, b: MapboxDirections.Weight) -> Swift.Bool
+}
+public struct Match : MapboxDirections.DirectionsResult {
+  public enum CodingKeys : Swift.String, Swift.CodingKey, Swift.CaseIterable {
+    case confidence
+    case weight
+    case weightName
+    public init?(rawValue: Swift.String)
+    public init?(stringValue: Swift.String)
+    public init?(intValue: Swift.Int)
+    public typealias AllCases = [MapboxDirections.Match.CodingKeys]
+    public typealias RawValue = Swift.String
+    public static var allCases: [MapboxDirections.Match.CodingKeys] {
+      get
+    }
+    public var intValue: Swift.Int? {
+      get
+    }
+    public var rawValue: Swift.String {
+      get
+    }
+    public var stringValue: Swift.String {
+      get
+    }
+  }
+  public var shape: Turf.LineString?
+  public var legs: [MapboxDirections.RouteLeg]
+  public var distance: Turf.LocationDistance
+  public var expectedTravelTime: Foundation.TimeInterval
+  public var typicalTravelTime: Foundation.TimeInterval?
+  public var speechLocale: Foundation.Locale?
+  public var fetchStartDate: Foundation.Date?
+  public var responseEndDate: Foundation.Date?
+  public var responseContainsSpeechLocale: Swift.Bool
+  public var foreignMembers: Turf.JSONObject
+  public init(legs: [MapboxDirections.RouteLeg], shape: Turf.LineString?, distance: Turf.LocationDistance, expectedTravelTime: Foundation.TimeInterval, confidence: Swift.Float, weight: MapboxDirections.Weight)
+  public init(from decoder: any Swift.Decoder) throws
+  public func encode(to encoder: any Swift.Encoder) throws
+  public var weight: MapboxDirections.Weight
+  public var confidence: Swift.Float
+  public static func == (a: MapboxDirections.Match, b: MapboxDirections.Match) -> Swift.Bool
+}
+extension MapboxDirections.Match : Swift.CustomStringConvertible {
+  public var description: Swift.String {
+    get
+  }
+}
+extension MapboxDirections.DirectionsCodingKey {
+  public static func match(_ key: MapboxDirections.Match.CodingKeys) -> MapboxDirections.DirectionsCodingKey
+}
+@_inheritsConvenienceInitializers open class MatchOptions : MapboxDirections.DirectionsOptions, @unchecked Swift.Sendable {
+  convenience public init(locations: [CoreLocation.CLLocation], profileIdentifier: MapboxDirections.ProfileIdentifier? = nil, queryItems: [Foundation.URLQueryItem]? = nil)
+  convenience public init(coordinates: [MapboxDirections.LocationCoordinate2D], profileIdentifier: MapboxDirections.ProfileIdentifier? = nil, queryItems: [Foundation.URLQueryItem]? = nil)
+  required public init(waypoints: [MapboxDirections.Waypoint], profileIdentifier: MapboxDirections.ProfileIdentifier? = nil, queryItems: [Foundation.URLQueryItem]? = nil)
+  override public func encode(to encoder: any Swift.Encoder) throws
+  required public init(from decoder: any Swift.Decoder) throws
+  open var resamplesTraces: Swift.Bool
+  @available(*, deprecated, message: "Use Waypoint.separatesLegs instead.")
+  open var waypointIndices: Foundation.IndexSet?
+  override open var urlQueryItems: [Foundation.URLQueryItem] {
+    get
+  }
+  @objc deinit
+}
+@available(*, unavailable)
+extension MapboxDirections.MatchOptions : @unchecked Swift.Sendable {
+}
+extension MapboxDirections.MatchOptions {
+  public static func == (lhs: MapboxDirections.MatchOptions, rhs: MapboxDirections.MatchOptions) -> Swift.Bool
+}
+extension MapboxDirections.Match {
+  public struct Tracepoint : Swift.Codable, Swift.Equatable, Swift.Sendable {
+    public var coordinate: MapboxDirections.LocationCoordinate2D
+    public var countOfAlternatives: Swift.Int
+    public var name: Swift.String?
+    public var matchingIndex: Swift.Int
+    public var waypointIndex: Swift.Int
+    public init(from decoder: any Swift.Decoder) throws
+    public func encode(to encoder: any Swift.Encoder) throws
+    public init(coordinate: MapboxDirections.LocationCoordinate2D, countOfAlternatives: Swift.Int, name: Swift.String? = nil, matchingIndex: Swift.Int = 0, waypointIndex: Swift.Int = 0)
+    public static func == (a: MapboxDirections.Match.Tracepoint, b: MapboxDirections.Match.Tracepoint) -> Swift.Bool
+  }
+}
+extension MapboxDirections.Match.Tracepoint : Swift.CustomStringConvertible {
+  public var description: Swift.String {
+    get
+  }
+}
+public enum MapboxStreetsRoadClass : Swift.String, Swift.Codable, Swift.Equatable, Swift.Sendable {
+  case motorway
+  case motorwayLink
+  case trunk
+  case trunkLink
+  case primary
+  case primaryLink
+  case secondary
+  case secondaryLink
+  case tertiary
+  case tertiaryLink
+  case street
+  case streetLimited
+  case pedestrian
+  case construction
+  case track
+  case service
+  case ferry
+  case path
+  case majorRail
+  case minorRail
+  case serviceRail
+  case aerialway
+  case golf
+  case undefined
+  public init?(rawValue: Swift.String)
+  public typealias RawValue = Swift.String
+  public var rawValue: Swift.String {
+    get
+  }
+}
+open class Matrix : @unchecked Swift.Sendable {
+  public typealias Session = (options: MapboxDirections.MatrixOptions, credentials: MapboxDirections.Credentials)
+  #if compiler(>=5.3) && $Sendable
+  public typealias MatrixCompletionHandler = @Sendable (_ result: Swift.Result<MapboxDirections.MatrixResponse, MapboxDirections.MatrixError>) -> Swift.Void
+  #endif
+  final public let credentials: MapboxDirections.Credentials
+  public static let shared: MapboxDirections.Matrix
+  public init(credentials: MapboxDirections.Credentials = .init(), urlSession: Foundation.URLSession = .shared, processingQueue: Dispatch.DispatchQueue = .global(qos: .userInitiated))
+  #if compiler(>=5.3) && $Sendable
+  @discardableResult
+  open func calculate(_ options: MapboxDirections.MatrixOptions, completionHandler: @escaping MapboxDirections.Matrix.MatrixCompletionHandler) -> Foundation.URLSessionDataTask
+  #endif
+  open func url(forCalculating options: MapboxDirections.MatrixOptions) -> Foundation.URL
+  open func urlRequest(forCalculating options: MapboxDirections.MatrixOptions) -> Foundation.URLRequest
+  @objc deinit
+}
+public enum MatrixError : Foundation.LocalizedError {
+  public init(code: Swift.String?, message: Swift.String?, response: Foundation.URLResponse?, underlyingError error: (any Swift.Error)?)
+  case network(Foundation.URLError)
+  case invalidResponse(Foundation.URLResponse?)
+  case noData
+  case noRoute
+  case profileNotFound
+  case invalidInput(message: Swift.String?)
+  case rateLimited(rateLimitInterval: Foundation.TimeInterval?, rateLimit: Swift.UInt?, resetTime: Foundation.Date?)
+  case unknown(response: Foundation.URLResponse?, underlying: (any Swift.Error)?, code: Swift.String?, message: Swift.String?)
+}
+public class MatrixOptions : Swift.Codable {
+  public init(sources: [MapboxDirections.Waypoint], destinations: [MapboxDirections.Waypoint], profileIdentifier: MapboxDirections.ProfileIdentifier)
+  public var profileIdentifier: MapboxDirections.ProfileIdentifier
+  public var waypoints: [MapboxDirections.Waypoint] {
+    get
+  }
+  public var attributeOptions: MapboxDirections.AttributeOptions
+  public var destinations: [MapboxDirections.Waypoint] {
+    get
+    set
+  }
+  public var sources: [MapboxDirections.Waypoint] {
+    get
+    set
+  }
+  public func encode(to encoder: any Swift.Encoder) throws
+  required public init(from decoder: any Swift.Decoder) throws
+  public var urlQueryItems: [Foundation.URLQueryItem] {
+    get
+  }
+  @objc deinit
+}
+@available(*, unavailable)
+extension MapboxDirections.MatrixOptions : @unchecked Swift.Sendable {
+}
+extension MapboxDirections.MatrixOptions : Swift.Equatable {
+  public static func == (lhs: MapboxDirections.MatrixOptions, rhs: MapboxDirections.MatrixOptions) -> Swift.Bool
+}
+public struct MatrixResponse : Swift.Sendable {
+  public typealias DistanceMatrix = [[Turf.LocationDistance?]]
+  public typealias DurationMatrix = [[Foundation.TimeInterval?]]
+  public let httpResponse: Foundation.HTTPURLResponse?
+  public let destinations: [MapboxDirections.Waypoint]?
+  public let sources: [MapboxDirections.Waypoint]?
+  public let distances: MapboxDirections.MatrixResponse.DistanceMatrix?
+  public let travelTimes: MapboxDirections.MatrixResponse.DurationMatrix?
+  public func distance(from sourceIndex: Swift.Int, to destinationIndex: Swift.Int) -> Turf.LocationDistance?
+  public func travelTime(from sourceIndex: Swift.Int, to destinationIndex: Swift.Int) -> Foundation.TimeInterval?
+}
+extension MapboxDirections.MatrixResponse : Swift.Codable {
+  public init(httpResponse: Foundation.HTTPURLResponse?, distances: MapboxDirections.MatrixResponse.DistanceMatrix?, travelTimes: MapboxDirections.MatrixResponse.DurationMatrix?, destinations: [MapboxDirections.Waypoint]?, sources: [MapboxDirections.Waypoint]?)
+  public init(from decoder: any Swift.Decoder) throws
+  public func encode(to encoder: any Swift.Encoder) throws
+}
+public typealias OfflineVersion = Swift.String
+#if compiler(>=5.3) && $Sendable
+public typealias OfflineDownloaderCompletionHandler = @Sendable (_ location: Foundation.URL?, _ response: Foundation.URLResponse?, _ error: (any Swift.Error)?) -> Swift.Void
+#endif
+#if compiler(>=5.3) && $Sendable
+public typealias OfflineDownloaderProgressHandler = @Sendable (_ bytesWritten: Swift.Int64, _ totalBytesWritten: Swift.Int64, _ totalBytesExpectedToWrite: Swift.Int64) -> Swift.Void
+#endif
+#if compiler(>=5.3) && $Sendable
+public typealias OfflineVersionsHandler = @Sendable (_ version: [MapboxDirections.OfflineVersion]?, _ error: (any Swift.Error)?) -> Swift.Void
+#endif
+public protocol OfflineDirectionsProtocol {
+  #if compiler(>=5.3) && $Sendable
+  func fetchAvailableOfflineVersions(completionHandler: @escaping MapboxDirections.OfflineVersionsHandler) -> Foundation.URLSessionDataTask
+  #endif
+  #if compiler(>=5.3) && $Sendable
+  func downloadTiles(in coordinateBounds: Turf.BoundingBox, version: MapboxDirections.OfflineVersion, completionHandler: @escaping MapboxDirections.OfflineDownloaderCompletionHandler) -> Foundation.URLSessionDownloadTask
+  #endif
+}
+extension MapboxDirections.Directions : MapboxDirections.OfflineDirectionsProtocol {
+  public var availableVersionsURL: Foundation.URL {
+    get
+  }
+  public func tilesURL(for coordinateBounds: Turf.BoundingBox, version: MapboxDirections.OfflineVersion) -> Foundation.URL
+  #if compiler(>=5.3) && $Sendable
+  @discardableResult
+  public func fetchAvailableOfflineVersions(completionHandler: @escaping MapboxDirections.OfflineVersionsHandler) -> Foundation.URLSessionDataTask
+  #endif
+  #if compiler(>=5.3) && $Sendable
+  @discardableResult
+  public func downloadTiles(in coordinateBounds: Turf.BoundingBox, version: MapboxDirections.OfflineVersion, completionHandler: @escaping MapboxDirections.OfflineDownloaderCompletionHandler) -> Foundation.URLSessionDownloadTask
+  #endif
+}
+public typealias LocationCoordinate2D = CoreLocation.CLLocationCoordinate2D
+public struct Polyline {
+  public let coordinates: [MapboxDirections.LocationCoordinate2D]?
+  public let encodedPolyline: Swift.String
+  public let levels: [Swift.UInt32]?
+  public let encodedLevels: Swift.String?
+  public var locations: [CoreLocation.CLLocation]? {
+    get
+  }
+  public init(coordinates: [MapboxDirections.LocationCoordinate2D], levels: [Swift.UInt32]? = nil, precision: Swift.Double = 1e5)
+  public init(encodedPolyline: Swift.String, encodedLevels: Swift.String? = nil, precision: Swift.Double = 1e5)
+  public init(locations: [CoreLocation.CLLocation], levels: [Swift.UInt32]? = nil, precision: Swift.Double = 1e5)
+}
+public func encodeCoordinates(_ coordinates: [MapboxDirections.LocationCoordinate2D], precision: Swift.Double = 1e5) -> Swift.String
+public func encodeLocations(_ locations: [CoreLocation.CLLocation], precision: Swift.Double = 1e5) -> Swift.String
+public func encodeLevels(_ levels: [Swift.UInt32]) -> Swift.String
+public func decodePolyline(_ encodedPolyline: Swift.String, precision: Swift.Double = 1e5) -> [MapboxDirections.LocationCoordinate2D]?
+public func decodePolyline(_ encodedPolyline: Swift.String, precision: Swift.Double = 1e5) -> [CoreLocation.CLLocation]?
+public func decodeLevels(_ encodedLevels: Swift.String) -> [Swift.UInt32]?
+public struct ProfileIdentifier : Swift.Codable, Swift.Hashable, Swift.RawRepresentable, Swift.Sendable {
+  public init(rawValue: Swift.String)
+  public var rawValue: Swift.String
+  public static let automobile: MapboxDirections.ProfileIdentifier
+  public static let automobileAvoidingTraffic: MapboxDirections.ProfileIdentifier
+  public static let cycling: MapboxDirections.ProfileIdentifier
+  public static let walking: MapboxDirections.ProfileIdentifier
+  public typealias RawValue = Swift.String
+}
+@available(*, deprecated, renamed: "ProfileIdentifier")
+public typealias MBDirectionsProfileIdentifier = MapboxDirections.ProfileIdentifier
+@available(*, deprecated, renamed: "ProfileIdentifier")
+public typealias DirectionsProfileIdentifier = MapboxDirections.ProfileIdentifier
+public struct RefreshedRoute : Turf.ForeignMemberContainer, Swift.Equatable {
+  public var foreignMembers: Turf.JSONObject
+  public var legs: [MapboxDirections.RefreshedRouteLeg]
+  public static func == (a: MapboxDirections.RefreshedRoute, b: MapboxDirections.RefreshedRoute) -> Swift.Bool
+}
+extension MapboxDirections.RefreshedRoute : Swift.Codable {
+  public init(from decoder: any Swift.Decoder) throws
+  public func encode(to encoder: any Swift.Encoder) throws
+}
+public struct RefreshedRouteLeg : Turf.ForeignMemberContainer, Swift.Equatable {
+  public var foreignMembers: Turf.JSONObject
+  public var attributes: MapboxDirections.RouteLeg.Attributes
+  public var incidents: [MapboxDirections.Incident]?
+  public var closures: [MapboxDirections.RouteLeg.Closure]?
+  public static func == (a: MapboxDirections.RefreshedRouteLeg, b: MapboxDirections.RefreshedRouteLeg) -> Swift.Bool
+}
+extension MapboxDirections.RefreshedRouteLeg : Swift.Codable {
+  public init(from decoder: any Swift.Decoder) throws
+  public func encode(to encoder: any Swift.Encoder) throws
+}
+public struct RestStop : Swift.Codable, Swift.Equatable, Turf.ForeignMemberContainer, Swift.Sendable {
+  public var foreignMembers: Turf.JSONObject
+  public enum StopType : Swift.String, Swift.Codable, Swift.Sendable {
+    case serviceArea
+    case restArea
+    public init?(rawValue: Swift.String)
+    public typealias RawValue = Swift.String
+    public var rawValue: Swift.String {
+      get
+    }
+  }
+  public let type: MapboxDirections.RestStop.StopType
+  public let name: Swift.String?
+  public let amenities: [MapboxDirections.Amenity]?
+  public init(type: MapboxDirections.RestStop.StopType)
+  public init(type: MapboxDirections.RestStop.StopType, name: Swift.String?, amenities: [MapboxDirections.Amenity]?)
+  public init(from decoder: any Swift.Decoder) throws
+  public func encode(to encoder: any Swift.Encoder) throws
+  public static func == (lhs: MapboxDirections.RestStop, rhs: MapboxDirections.RestStop) -> Swift.Bool
+}
+public struct RoadClassExclusionViolation : Swift.Equatable, Swift.Sendable {
+  public var roadClasses: MapboxDirections.RoadClasses
+  public var routeIndex: Swift.Int
+  public var legIndex: Swift.Int
+  public var stepIndex: Swift.Int
+  public var intersectionIndex: Swift.Int
+  public static func == (a: MapboxDirections.RoadClassExclusionViolation, b: MapboxDirections.RoadClassExclusionViolation) -> Swift.Bool
+}
+public struct RoadClasses : Swift.OptionSet, Swift.CustomStringConvertible, Swift.Sendable, Swift.Equatable {
+  public var rawValue: Swift.Int
+  public init(rawValue: Swift.Int)
+  public static let toll: MapboxDirections.RoadClasses
+  public static let restricted: MapboxDirections.RoadClasses
+  public static let motorway: MapboxDirections.RoadClasses
+  public static let ferry: MapboxDirections.RoadClasses
+  public static let tunnel: MapboxDirections.RoadClasses
+  public static let highOccupancyVehicle2: MapboxDirections.RoadClasses
+  public static let highOccupancyVehicle3: MapboxDirections.RoadClasses
+  public static let highOccupancyToll: MapboxDirections.RoadClasses
+  public static let unpaved: MapboxDirections.RoadClasses
+  public static let cashTollOnly: MapboxDirections.RoadClasses
+  public init?(descriptions: [Swift.String])
+  public var description: Swift.String {
+    get
+  }
+  public typealias ArrayLiteralElement = MapboxDirections.RoadClasses
+  public typealias Element = MapboxDirections.RoadClasses
+  public typealias RawValue = Swift.Int
+}
+extension MapboxDirections.RoadClasses : Swift.Codable {
+  public func encode(to encoder: any Swift.Encoder) throws
+  public init(from decoder: any Swift.Decoder) throws
+}
+public struct Route : MapboxDirections.DirectionsResult {
+  public enum CodingKeys : Swift.String, Swift.CodingKey, Swift.CaseIterable {
+    case tollPrices
+    public init?(rawValue: Swift.String)
+    public init?(stringValue: Swift.String)
+    public init?(intValue: Swift.Int)
+    public typealias AllCases = [MapboxDirections.Route.CodingKeys]
+    public typealias RawValue = Swift.String
+    public static var allCases: [MapboxDirections.Route.CodingKeys] {
+      get
+    }
+    public var intValue: Swift.Int? {
+      get
+    }
+    public var rawValue: Swift.String {
+      get
+    }
+    public var stringValue: Swift.String {
+      get
+    }
+  }
+  public var shape: Turf.LineString?
+  public var legs: [MapboxDirections.RouteLeg]
+  public var distance: Turf.LocationDistance
+  public var expectedTravelTime: Foundation.TimeInterval
+  public var typicalTravelTime: Foundation.TimeInterval?
+  public var speechLocale: Foundation.Locale?
+  public var fetchStartDate: Foundation.Date?
+  public var responseEndDate: Foundation.Date?
+  public var responseContainsSpeechLocale: Swift.Bool
+  public var foreignMembers: Turf.JSONObject
+  public init(legs: [MapboxDirections.RouteLeg], shape: Turf.LineString?, distance: Turf.LocationDistance, expectedTravelTime: Foundation.TimeInterval, typicalTravelTime: Foundation.TimeInterval? = nil)
+  public init(from decoder: any Swift.Decoder) throws
+  public func encode(to encoder: any Swift.Encoder) throws
+  public var tollPrices: [MapboxDirections.TollPrice]?
+}
+extension MapboxDirections.Route : Swift.CustomStringConvertible {
+  public var description: Swift.String {
+    get
+  }
+}
+extension MapboxDirections.Route : Swift.Equatable {
+  public static func == (lhs: MapboxDirections.Route, rhs: MapboxDirections.Route) -> Swift.Bool
+}
+public struct RouteLeg : Swift.Codable, Turf.ForeignMemberContainer, Swift.Equatable, Swift.Sendable {
+  public var foreignMembers: Turf.JSONObject
+  public var attributesForeignMembers: Turf.JSONObject
+  public enum CodingKeys : Swift.String, Swift.CodingKey, Swift.CaseIterable {
+    case source
+    case destination
+    case steps
+    case name
+    case distance
+    case expectedTravelTime
+    case typicalTravelTime
+    case profileIdentifier
+    case annotation
+    case administrativeRegions
+    case incidents
+    case viaWaypoints
+    case closures
+    public init?(rawValue: Swift.String)
+    public init?(stringValue: Swift.String)
+    public init?(intValue: Swift.Int)
+    public typealias AllCases = [MapboxDirections.RouteLeg.CodingKeys]
+    public typealias RawValue = Swift.String
+    public static var allCases: [MapboxDirections.RouteLeg.CodingKeys] {
+      get
+    }
+    public var intValue: Swift.Int? {
+      get
+    }
+    public var rawValue: Swift.String {
+      get
+    }
+    public var stringValue: Swift.String {
+      get
+    }
+  }
+  public init(steps: [MapboxDirections.RouteStep], name: Swift.String, distance: Turf.LocationDistance, expectedTravelTime: Foundation.TimeInterval, typicalTravelTime: Foundation.TimeInterval? = nil, profileIdentifier: MapboxDirections.ProfileIdentifier)
+  public init(from decoder: any Swift.Decoder) throws
+  public func encode(to encoder: any Swift.Encoder) throws
+  public var source: MapboxDirections.Waypoint?
+  public var destination: MapboxDirections.Waypoint?
+  public let steps: [MapboxDirections.RouteStep]
+  public var segmentRangesByStep: [Swift.Range<Swift.Int>] {
+    mutating get
+  }
+  public var segmentDistances: [Turf.LocationDistance]?
+  public var expectedSegmentTravelTimes: [Foundation.TimeInterval]?
+  public var segmentSpeeds: [MapboxDirections.LocationSpeed]?
+  public var segmentCongestionLevels: [MapboxDirections.CongestionLevel]?
+  public var segmentNumericCongestionLevels: [MapboxDirections.NumericCongestionLevel?]?
+  public var segmentMaximumSpeedLimits: [Foundation.Measurement<Foundation.UnitSpeed>?]?
+  public var closures: [MapboxDirections.RouteLeg.Closure]?
+  public var trafficTendencies: [MapboxDirections.TrafficTendency]?
+  public func regionCode(atStepIndex stepIndex: Swift.Int, intersectionIndex: Swift.Int) -> Swift.String?
+  public let name: Swift.String
+  public let distance: Turf.LocationDistance
+  public var expectedTravelTime: Foundation.TimeInterval
+  public var administrativeRegions: [MapboxDirections.AdministrativeRegion]?
+  public var incidents: [MapboxDirections.Incident]?
+  public var viaWaypoints: [MapboxDirections.SilentWaypoint]?
+  public var typicalTravelTime: Foundation.TimeInterval?
+  public let profileIdentifier: MapboxDirections.ProfileIdentifier
+}
+extension MapboxDirections.RouteLeg : Swift.CustomStringConvertible {
+  public var description: Swift.String {
+    get
+  }
+}
+extension MapboxDirections.RouteLeg {
+  public struct Closure : Swift.Codable, Swift.Equatable, Turf.ForeignMemberContainer, Swift.Sendable {
+    public var foreignMembers: Turf.JSONObject
+    public var shapeIndexRange: Swift.Range<Swift.Int>
+    public init(from decoder: any Swift.Decoder) throws
+    public func encode(to encoder: any Swift.Encoder) throws
+    public static func == (a: MapboxDirections.RouteLeg.Closure, b: MapboxDirections.RouteLeg.Closure) -> Swift.Bool
+  }
+}
+extension Swift.Array where Element == MapboxDirections.RouteLeg {
+  public mutating func populate(waypoints: [MapboxDirections.Waypoint])
+}
+extension MapboxDirections.RouteLeg {
+  public static func == (lhs: MapboxDirections.RouteLeg, rhs: MapboxDirections.RouteLeg) -> Swift.Bool
+}
+extension MapboxDirections.RouteLeg {
+  public struct Attributes : Swift.Equatable, Turf.ForeignMemberContainer {
+    public var foreignMembers: Turf.JSONObject
+    public var segmentDistances: [Turf.LocationDistance]?
+    public var expectedSegmentTravelTimes: [Foundation.TimeInterval]?
+    public var segmentSpeeds: [MapboxDirections.LocationSpeed]?
+    public var segmentCongestionLevels: [MapboxDirections.CongestionLevel]?
+    public var segmentNumericCongestionLevels: [MapboxDirections.NumericCongestionLevel?]?
+    public var segmentMaximumSpeedLimits: [Foundation.Measurement<Foundation.UnitSpeed>?]?
+    public var trafficTendencies: [MapboxDirections.TrafficTendency]?
+    public static func == (a: MapboxDirections.RouteLeg.Attributes, b: MapboxDirections.RouteLeg.Attributes) -> Swift.Bool
+  }
+}
+extension MapboxDirections.RouteLeg.Attributes : Swift.Codable {
+  public init(from decoder: any Swift.Decoder) throws
+  public func encode(to encoder: any Swift.Encoder) throws
+}
+@_inheritsConvenienceInitializers open class RouteOptions : MapboxDirections.DirectionsOptions {
+  required public init(waypoints: [MapboxDirections.Waypoint], profileIdentifier: MapboxDirections.ProfileIdentifier? = nil, queryItems: [Foundation.URLQueryItem]? = nil)
+  convenience public init(locations: [CoreLocation.CLLocation], profileIdentifier: MapboxDirections.ProfileIdentifier? = nil, queryItems: [Foundation.URLQueryItem]? = nil)
+  convenience public init(coordinates: [MapboxDirections.LocationCoordinate2D], profileIdentifier: MapboxDirections.ProfileIdentifier? = nil, queryItems: [Foundation.URLQueryItem]? = nil)
+  override public func encode(to encoder: any Swift.Encoder) throws
+  required public init(from decoder: any Swift.Decoder) throws
+  convenience public init(matchOptions: MapboxDirections.MatchOptions)
+  open var allowsUTurnAtWaypoint: Swift.Bool
+  open var roadClassesToAvoid: MapboxDirections.RoadClasses
+  open var roadClassesToAllow: MapboxDirections.RoadClasses
+  open var alleyPriority: MapboxDirections.DirectionsPriority?
+  open var walkwayPriority: MapboxDirections.DirectionsPriority?
+  open var speed: MapboxDirections.LocationSpeed?
+  open var arriveBy: Foundation.Date?
+  open var departAt: Foundation.Date?
+  open var includesAlternativeRoutes: Swift.Bool
+  open var includesExitRoundaboutManeuver: Swift.Bool
+  open var refreshingEnabled: Swift.Bool
+  open var maximumHeight: Foundation.Measurement<Foundation.UnitLength>?
+  open var maximumWidth: Foundation.Measurement<Foundation.UnitLength>?
+  open var maximumWeight: Foundation.Measurement<Foundation.UnitMass>?
+  open var initialManeuverAvoidanceRadius: Turf.LocationDistance? {
+    get
+    set
+  }
+  open var includesTollPrices: Swift.Bool
+  override open var urlQueryItems: [Foundation.URLQueryItem] {
+    get
+  }
+  @objc deinit
+}
+@available(*, unavailable)
+extension MapboxDirections.RouteOptions : @unchecked Swift.Sendable {
+}
+public struct RouteRefreshResponse : Turf.ForeignMemberContainer, Swift.Equatable {
+  public var foreignMembers: Turf.JSONObject
+  public let httpResponse: Foundation.HTTPURLResponse?
+  public let identifier: Swift.String
+  public var routeIndex: Swift.Int
+  public var startLegIndex: Swift.Int
+  public var route: MapboxDirections.RefreshedRoute
+  public let credentials: MapboxDirections.Credentials
+  public var created: Foundation.Date
+  public static func == (a: MapboxDirections.RouteRefreshResponse, b: MapboxDirections.RouteRefreshResponse) -> Swift.Bool
+}
+extension MapboxDirections.RouteRefreshResponse : Swift.Codable {
+  public init(from decoder: any Swift.Decoder) throws
+  public func encode(to encoder: any Swift.Encoder) throws
+}
+extension MapboxDirections.Route {
+  public struct RefreshParameters : Swift.Sendable {
+    public struct PropertiesToMerge : Swift.OptionSet, Swift.Sendable {
+      public var rawValue: Swift.Int
+      public init(rawValue: Swift.Int)
+      public static let annotations: MapboxDirections.Route.RefreshParameters.PropertiesToMerge
+      public static let incidents: MapboxDirections.Route.RefreshParameters.PropertiesToMerge
+      public static let closures: MapboxDirections.Route.RefreshParameters.PropertiesToMerge
+      public static let everything: MapboxDirections.Route.RefreshParameters.PropertiesToMerge
+      public typealias ArrayLiteralElement = MapboxDirections.Route.RefreshParameters.PropertiesToMerge
+      public typealias Element = MapboxDirections.Route.RefreshParameters.PropertiesToMerge
+      public typealias RawValue = Swift.Int
+    }
+    public struct StartingIndex : Swift.Sendable {
+      public let legIndex: Swift.Int
+      public let legShapeIndex: Swift.Int
+      public init(legIndex: Swift.Int, legShapeIndex: Swift.Int)
+    }
+    public var propertiesToMerge: MapboxDirections.Route.RefreshParameters.PropertiesToMerge
+    public var startingIndex: MapboxDirections.Route.RefreshParameters.StartingIndex?
+    public init(propertiesToMerge: MapboxDirections.Route.RefreshParameters.PropertiesToMerge = .everything, startingIndex: MapboxDirections.Route.RefreshParameters.StartingIndex? = nil)
+  }
+  public mutating func refresh(from refreshedRoute: any MapboxDirections.RouteRefreshSource, refreshParameters: MapboxDirections.Route.RefreshParameters = RefreshParameters())
+  public mutating func refreshLegAttributes(from refreshedRoute: any MapboxDirections.RouteRefreshSource)
+  public mutating func refreshLegAttributes(from refreshedRoute: any MapboxDirections.RouteRefreshSource, legIndex: Swift.Int, legShapeIndex: Swift.Int)
+  public mutating func refreshLegIncidents(from refreshedRoute: any MapboxDirections.RouteRefreshSource)
+  public mutating func refreshLegIncidents(from refreshedRoute: any MapboxDirections.RouteRefreshSource, legIndex: Swift.Int, legShapeIndex: Swift.Int)
+  public mutating func refreshLegClosures(from refreshedRoute: any MapboxDirections.RouteRefreshSource, legIndex: Swift.Int = 0, legShapeIndex: Swift.Int = 0)
+}
+public protocol RouteRefreshSource {
+  var refreshedLegs: [any MapboxDirections.RouteLegRefreshSource] { get }
+}
+public protocol RouteLegRefreshSource {
+  var refreshedAttributes: MapboxDirections.RouteLeg.Attributes { get }
+  var refreshedIncidents: [MapboxDirections.Incident]? { get }
+  var refreshedClosures: [MapboxDirections.RouteLeg.Closure]? { get }
+}
+extension MapboxDirections.RouteLegRefreshSource {
+  public var refreshedIncidents: [MapboxDirections.Incident]? {
+    get
+  }
+  public var refreshedClosures: [MapboxDirections.RouteLeg.Closure]? {
+    get
+  }
+}
+extension MapboxDirections.Route : MapboxDirections.RouteRefreshSource {
+  public var refreshedLegs: [any MapboxDirections.RouteLegRefreshSource] {
+    get
+  }
+}
+extension MapboxDirections.RouteLeg : MapboxDirections.RouteLegRefreshSource {
+  public var refreshedAttributes: MapboxDirections.RouteLeg.Attributes {
+    get
+  }
+  public var refreshedIncidents: [MapboxDirections.Incident]? {
+    get
+  }
+  public var refreshedClosures: [MapboxDirections.RouteLeg.Closure]? {
+    get
+  }
+}
+extension MapboxDirections.RefreshedRoute : MapboxDirections.RouteRefreshSource {
+  public var refreshedLegs: [any MapboxDirections.RouteLegRefreshSource] {
+    get
+  }
+}
+extension MapboxDirections.RefreshedRouteLeg : MapboxDirections.RouteLegRefreshSource {
+  public var refreshedAttributes: MapboxDirections.RouteLeg.Attributes {
+    get
+  }
+  public var refreshedIncidents: [MapboxDirections.Incident]? {
+    get
+  }
+  public var refreshedClosures: [MapboxDirections.RouteLeg.Closure]? {
+    get
+  }
+}
+public enum ResponseOptions {
+  case route(MapboxDirections.RouteOptions)
+  case match(MapboxDirections.MatchOptions)
+}
+@available(*, unavailable)
+extension MapboxDirections.ResponseOptions : @unchecked Swift.Sendable {
+}
+public struct RouteResponse : Turf.ForeignMemberContainer {
+  public var foreignMembers: Turf.JSONObject
+  public let httpResponse: Foundation.HTTPURLResponse?
+  public let identifier: Swift.String?
+  public var routes: [MapboxDirections.Route]? {
+    get
+    set
+  }
+  public let waypoints: [MapboxDirections.Waypoint]?
+  public let options: MapboxDirections.ResponseOptions
+  public let credentials: MapboxDirections.Credentials
+  public var created: Foundation.Date
+  public var roadClassExclusionViolations: [MapboxDirections.RoadClassExclusionViolation]? {
+    get
+  }
+}
+@available(*, unavailable)
+extension MapboxDirections.RouteResponse : @unchecked Swift.Sendable {
+}
+extension MapboxDirections.RouteResponse : Swift.Codable {
+  public init(httpResponse: Foundation.HTTPURLResponse?, identifier: Swift.String? = nil, routes: [MapboxDirections.Route]? = nil, waypoints: [MapboxDirections.Waypoint]? = nil, options: MapboxDirections.ResponseOptions, credentials: MapboxDirections.Credentials)
+  public init(matching response: MapboxDirections.MapMatchingResponse, options: MapboxDirections.MatchOptions, credentials: MapboxDirections.Credentials) throws
+  public init(from decoder: any Swift.Decoder) throws
+  public func encode(to encoder: any Swift.Encoder) throws
+}
+extension MapboxDirections.RouteResponse {
+  public func exclusionViolations(routeIndex: Swift.Int, legIndex: Swift.Int? = nil) -> Swift.LazyFilterSequence<[MapboxDirections.RoadClassExclusionViolation]>
+  public func exclusionViolations(routeIndex: Swift.Int, legIndex: Swift.Int, stepIndex: Swift.Int? = nil) -> Swift.LazyFilterSequence<[MapboxDirections.RoadClassExclusionViolation]>
+  public func exclusionViolations(routeIndex: Swift.Int, legIndex: Swift.Int, stepIndex: Swift.Int, intersectionIndex: Swift.Int?) -> Swift.LazyFilterSequence<[MapboxDirections.RoadClassExclusionViolation]>
+}
+public enum TransportType : Swift.String, Swift.Codable, Swift.Equatable, Swift.Sendable {
+  case automobile
+  case ferry
+  case movableBridge
+  case inaccessible
+  case walking
+  case cycling
+  case train
+  public init(from decoder: any Swift.Decoder) throws
+  public init?(rawValue: Swift.String)
+  public typealias RawValue = Swift.String
+  public var rawValue: Swift.String {
+    get
+  }
+}
+public enum ManeuverType : Swift.String, Swift.Codable, Swift.Equatable, Swift.Sendable {
+  case depart
+  case turn
+  case `continue`
+  case passNameChange
+  case merge
+  case takeOnRamp
+  case takeOffRamp
+  case reachFork
+  case reachEnd
+  case useLane
+  case takeRoundabout
+  case takeRotary
+  case turnAtRoundabout
+  case exitRoundabout
+  case exitRotary
+  case heedWarning
+  case arrive
+  public init?(rawValue: Swift.String)
+  public typealias RawValue = Swift.String
+  public var rawValue: Swift.String {
+    get
+  }
+}
+public enum ManeuverDirection : Swift.String, Swift.Codable, Swift.Equatable, Swift.Sendable {
+  case sharpRight
+  case right
+  case slightRight
+  case straightAhead
+  case slightLeft
+  case left
+  case sharpLeft
+  case uTurn
+  case undefined
+  public init(from decoder: any Swift.Decoder) throws
+  public init?(rawValue: Swift.String)
+  public typealias RawValue = Swift.String
+  public var rawValue: Swift.String {
+    get
+  }
+}
+public enum SignStandard : Swift.String, Swift.Codable, Swift.Equatable, Swift.Sendable {
+  case mutcd
+  case viennaConvention
+  public init?(rawValue: Swift.String)
+  public typealias RawValue = Swift.String
+  public var rawValue: Swift.String {
+    get
+  }
+}
+public struct RouteStep : Swift.Codable, Turf.ForeignMemberContainer, Swift.Equatable, Swift.Sendable {
+  public var foreignMembers: Turf.JSONObject
+  public var maneuverForeignMembers: Turf.JSONObject
+  public init(transportType: MapboxDirections.TransportType, maneuverLocation: Turf.LocationCoordinate2D, maneuverType: MapboxDirections.ManeuverType, maneuverDirection: MapboxDirections.ManeuverDirection? = nil, instructions: Swift.String, initialHeading: Turf.LocationDirection? = nil, finalHeading: Turf.LocationDirection? = nil, drivingSide: MapboxDirections.DrivingSide, exitCodes: [Swift.String]? = nil, exitNames: [Swift.String]? = nil, phoneticExitNames: [Swift.String]? = nil, distance: Turf.LocationDistance, expectedTravelTime: Foundation.TimeInterval, typicalTravelTime: Foundation.TimeInterval? = nil, names: [Swift.String]? = nil, phoneticNames: [Swift.String]? = nil, codes: [Swift.String]? = nil, destinationCodes: [Swift.String]? = nil, destinations: [Swift.String]? = nil, intersections: [MapboxDirections.Intersection]? = nil, speedLimitSignStandard: MapboxDirections.SignStandard? = nil, speedLimitUnit: Foundation.UnitSpeed? = nil, instructionsSpokenAlongStep: [MapboxDirections.SpokenInstruction]? = nil, instructionsDisplayedAlongStep: [MapboxDirections.VisualInstructionBanner]? = nil, administrativeAreaContainerByIntersection: [Swift.Int?]? = nil, segmentIndicesByIntersection: [Swift.Int?]? = nil)
+  public func encode(to encoder: any Swift.Encoder) throws
+  public init(from decoder: any Swift.Decoder) throws
+  public var shape: Turf.LineString?
+  public let transportType: MapboxDirections.TransportType
+  public let maneuverLocation: Turf.LocationCoordinate2D
+  public let maneuverType: MapboxDirections.ManeuverType
+  public let maneuverDirection: MapboxDirections.ManeuverDirection?
+  public let instructions: Swift.String
+  public let initialHeading: Turf.LocationDirection?
+  public let finalHeading: Turf.LocationDirection?
+  public let drivingSide: MapboxDirections.DrivingSide
+  public var exitIndex: Swift.Int?
+  public let exitCodes: [Swift.String]?
+  public let exitNames: [Swift.String]?
+  public let phoneticExitNames: [Swift.String]?
+  public let distance: Turf.LocationDistance
+  public var expectedTravelTime: Foundation.TimeInterval
+  public var typicalTravelTime: Foundation.TimeInterval?
+  public let names: [Swift.String]?
+  public let phoneticNames: [Swift.String]?
+  public let codes: [Swift.String]?
+  public let destinationCodes: [Swift.String]?
+  public let destinations: [Swift.String]?
+  public let intersections: [MapboxDirections.Intersection]?
+  public let administrativeAreaContainerByIntersection: [Swift.Int?]?
+  public let segmentIndicesByIntersection: [Swift.Int?]?
+  public let speedLimitSignStandard: MapboxDirections.SignStandard?
+  public let speedLimitUnit: Foundation.UnitSpeed?
+  public let instructionsSpokenAlongStep: [MapboxDirections.SpokenInstruction]?
+  public let instructionsDisplayedAlongStep: [MapboxDirections.VisualInstructionBanner]?
+}
+extension MapboxDirections.RouteStep : Swift.CustomStringConvertible {
+  public var description: Swift.String {
+    get
+  }
+}
+extension MapboxDirections.RouteStep {
+  public static func == (lhs: MapboxDirections.RouteStep, rhs: MapboxDirections.RouteStep) -> Swift.Bool
+}
+public struct SilentWaypoint : Swift.Codable, Swift.Equatable, Turf.ForeignMemberContainer, Swift.Sendable {
+  public var foreignMembers: Turf.JSONObject
+  public enum CodingKeys : Swift.String, Swift.CodingKey {
+    case waypointIndex
+    case distanceFromStart
+    case shapeCoordinateIndex
+    public init?(rawValue: Swift.String)
+    public init?(stringValue: Swift.String)
+    public init?(intValue: Swift.Int)
+    public typealias RawValue = Swift.String
+    public var intValue: Swift.Int? {
+      get
+    }
+    public var rawValue: Swift.String {
+      get
+    }
+    public var stringValue: Swift.String {
+      get
+    }
+  }
+  public var waypointIndex: Swift.Int
+  public var distanceFromStart: Swift.Double
+  public var shapeCoordinateIndex: Swift.Int
+  public init(waypointIndex: Swift.Int, distanceFromStart: Swift.Double, shapeCoordinateIndex: Swift.Int)
+  public init(from decoder: any Swift.Decoder) throws
+  public func encode(to encoder: any Swift.Encoder) throws
+  public static func == (a: MapboxDirections.SilentWaypoint, b: MapboxDirections.SilentWaypoint) -> Swift.Bool
+}
+public struct SpokenInstruction : Swift.Codable, Turf.ForeignMemberContainer, Swift.Equatable, Swift.Sendable {
+  public var foreignMembers: Turf.JSONObject
+  public init(distanceAlongStep: Turf.LocationDistance, text: Swift.String, ssmlText: Swift.String)
+  public init(from decoder: any Swift.Decoder) throws
+  public func encode(to encoder: any Swift.Encoder) throws
+  public let distanceAlongStep: Turf.LocationDistance
+  public let text: Swift.String
+  public let ssmlText: Swift.String
+}
+extension MapboxDirections.SpokenInstruction {
+  public static func == (lhs: MapboxDirections.SpokenInstruction, rhs: MapboxDirections.SpokenInstruction) -> Swift.Bool
+}
+public struct TollCollection : Swift.Codable, Swift.Equatable, Turf.ForeignMemberContainer, Swift.Sendable {
+  public var foreignMembers: Turf.JSONObject
+  public enum CollectionType : Swift.String, Swift.Codable, Swift.Sendable {
+    case booth
+    case gantry
+    public init?(rawValue: Swift.String)
+    public typealias RawValue = Swift.String
+    public var rawValue: Swift.String {
+      get
+    }
+  }
+  public let type: MapboxDirections.TollCollection.CollectionType
+  public var name: Swift.String?
+  public init(type: MapboxDirections.TollCollection.CollectionType)
+  public init(type: MapboxDirections.TollCollection.CollectionType, name: Swift.String?)
+  public init(from decoder: any Swift.Decoder) throws
+  public func encode(to encoder: any Swift.Encoder) throws
+  public static func == (lhs: MapboxDirections.TollCollection, rhs: MapboxDirections.TollCollection) -> Swift.Bool
+}
+public struct TollPaymentMethod : Swift.Hashable, Swift.Equatable, Swift.Sendable {
+  public let identifier: Swift.String
+  public static let electronicTollCollection: MapboxDirections.TollPaymentMethod
+  public static let cash: MapboxDirections.TollPaymentMethod
+  public func hash(into hasher: inout Swift.Hasher)
+  public static func == (a: MapboxDirections.TollPaymentMethod, b: MapboxDirections.TollPaymentMethod) -> Swift.Bool
+  public var hashValue: Swift.Int {
+    get
+  }
+}
+public struct TollCategory : Swift.Hashable, Swift.Equatable, Swift.Sendable {
+  public let name: Swift.String
+  public static let small: MapboxDirections.TollCategory
+  public static let standard: MapboxDirections.TollCategory
+  public static let middle: MapboxDirections.TollCategory
+  public static let large: MapboxDirections.TollCategory
+  public static let jumbo: MapboxDirections.TollCategory
+  public func hash(into hasher: inout Swift.Hasher)
+  public static func == (a: MapboxDirections.TollCategory, b: MapboxDirections.TollCategory) -> Swift.Bool
+  public var hashValue: Swift.Int {
+    get
+  }
+}
+public struct TollPrice : Swift.Equatable, Swift.Hashable, Turf.ForeignMemberContainer, Swift.Sendable {
+  public var foreignMembers: Turf.JSONObject
+  public let currencyCode: Swift.String
+  public let paymentMethod: MapboxDirections.TollPaymentMethod
+  public let category: MapboxDirections.TollCategory
+  public let amount: Foundation.Decimal
+  public static func == (a: MapboxDirections.TollPrice, b: MapboxDirections.TollPrice) -> Swift.Bool
+  public func hash(into hasher: inout Swift.Hasher)
+  public var hashValue: Swift.Int {
+    get
+  }
+}
+public enum TrafficTendency : Swift.Int, Swift.Codable, Swift.CaseIterable, Swift.Equatable, Swift.Sendable {
+  case unknown
+  case constant
+  case increasing
+  case decreasing
+  case rapidlyIncreasing
+  case rapidlyDecreasing
+  public init?(rawValue: Swift.Int)
+  public typealias AllCases = [MapboxDirections.TrafficTendency]
+  public typealias RawValue = Swift.Int
+  public static var allCases: [MapboxDirections.TrafficTendency] {
+    get
+  }
+  public var rawValue: Swift.Int {
+    get
+  }
+}
+public struct VisualInstruction : Swift.Codable, Turf.ForeignMemberContainer, Swift.Equatable, Swift.Sendable {
+  public var foreignMembers: Turf.JSONObject
+  public init(text: Swift.String?, maneuverType: MapboxDirections.ManeuverType?, maneuverDirection: MapboxDirections.ManeuverDirection?, components: [MapboxDirections.VisualInstruction.Component], degrees: Turf.LocationDegrees? = nil)
+  public func encode(to encoder: any Swift.Encoder) throws
+  public init(from decoder: any Swift.Decoder) throws
+  public let text: Swift.String?
+  public let components: [MapboxDirections.VisualInstruction.Component]
+  public var maneuverType: MapboxDirections.ManeuverType?
+  public var maneuverDirection: MapboxDirections.ManeuverDirection?
+  public var finalHeading: Turf.LocationDegrees?
+}
+extension MapboxDirections.VisualInstruction {
+  public static func == (lhs: MapboxDirections.VisualInstruction, rhs: MapboxDirections.VisualInstruction) -> Swift.Bool
+}
+public struct VisualInstructionBanner : Swift.Codable, Turf.ForeignMemberContainer, Swift.Equatable, Swift.Sendable {
+  public var foreignMembers: Turf.JSONObject
+  public init(distanceAlongStep: Turf.LocationDistance, primary: MapboxDirections.VisualInstruction, secondary: MapboxDirections.VisualInstruction?, tertiary: MapboxDirections.VisualInstruction?, quaternary: MapboxDirections.VisualInstruction?, drivingSide: MapboxDirections.DrivingSide)
+  public func encode(to encoder: any Swift.Encoder) throws
+  public init(from decoder: any Swift.Decoder) throws
+  public let distanceAlongStep: Turf.LocationDistance
+  public let primaryInstruction: MapboxDirections.VisualInstruction
+  public let secondaryInstruction: MapboxDirections.VisualInstruction?
+  public let tertiaryInstruction: MapboxDirections.VisualInstruction?
+  public let quaternaryInstruction: MapboxDirections.VisualInstruction?
+  public var drivingSide: MapboxDirections.DrivingSide
+}
+extension MapboxDirections.VisualInstructionBanner {
+  public static func == (lhs: MapboxDirections.VisualInstructionBanner, rhs: MapboxDirections.VisualInstructionBanner) -> Swift.Bool
+}
+public typealias Scale = CoreFoundation.CGFloat
+extension MapboxDirections.VisualInstruction {
+  public enum Component : Swift.Equatable, Swift.Sendable {
+    case delimiter(text: MapboxDirections.VisualInstruction.Component.TextRepresentation)
+    case text(text: MapboxDirections.VisualInstruction.Component.TextRepresentation)
+    case image(image: MapboxDirections.VisualInstruction.Component.ImageRepresentation, alternativeText: MapboxDirections.VisualInstruction.Component.TextRepresentation)
+    case guidanceView(image: MapboxDirections.GuidanceViewImageRepresentation, alternativeText: MapboxDirections.VisualInstruction.Component.TextRepresentation)
+    case exit(text: MapboxDirections.VisualInstruction.Component.TextRepresentation)
+    case exitCode(text: MapboxDirections.VisualInstruction.Component.TextRepresentation)
+    case lane(indications: MapboxDirections.LaneIndication, isUsable: Swift.Bool, preferredDirection: MapboxDirections.ManeuverDirection?)
+  }
+}
+extension MapboxDirections.VisualInstruction.Component {
+  public struct TextRepresentation : Swift.Equatable, Swift.Sendable {
+    public init(text: Swift.String, abbreviation: Swift.String?, abbreviationPriority: Swift.Int?)
+    public let text: Swift.String
+    public let abbreviation: Swift.String?
+    public let abbreviationPriority: Swift.Int?
+    public static func == (a: MapboxDirections.VisualInstruction.Component.TextRepresentation, b: MapboxDirections.VisualInstruction.Component.TextRepresentation) -> Swift.Bool
+  }
+  public struct ImageRepresentation : Swift.Equatable, Swift.Sendable {
+    public enum Format : Swift.String, Swift.Sendable {
+      case png
+      case svg
+      public init?(rawValue: Swift.String)
+      public typealias RawValue = Swift.String
+      public var rawValue: Swift.String {
+        get
+      }
+    }
+    public init(imageBaseURL: Foundation.URL?, shield: MapboxDirections.VisualInstruction.Component.ShieldRepresentation? = nil)
+    public let imageBaseURL: Foundation.URL?
+    public let shield: MapboxDirections.VisualInstruction.Component.ShieldRepresentation?
+    public func imageURL(scale: MapboxDirections.Scale, format: MapboxDirections.VisualInstruction.Component.ImageRepresentation.Format = .png) -> Foundation.URL?
+    public static func == (a: MapboxDirections.VisualInstruction.Component.ImageRepresentation, b: MapboxDirections.VisualInstruction.Component.ImageRepresentation) -> Swift.Bool
+  }
+  public struct ShieldRepresentation : Swift.Equatable, Swift.Codable, Swift.Sendable {
+    public init(baseURL: Foundation.URL, name: Swift.String, textColor: Swift.String, text: Swift.String)
+    public let baseURL: Foundation.URL
+    public let name: Swift.String
+    public let textColor: Swift.String
+    public let text: Swift.String
+    public init(from decoder: any Swift.Decoder) throws
+    public func encode(to encoder: any Swift.Encoder) throws
+    public static func == (a: MapboxDirections.VisualInstruction.Component.ShieldRepresentation, b: MapboxDirections.VisualInstruction.Component.ShieldRepresentation) -> Swift.Bool
+  }
+}
+public struct GuidanceViewImageRepresentation : Swift.Equatable, Swift.Sendable {
+  public init(imageURL: Foundation.URL?)
+  public let imageURL: Foundation.URL?
+  public static func == (a: MapboxDirections.GuidanceViewImageRepresentation, b: MapboxDirections.GuidanceViewImageRepresentation) -> Swift.Bool
+}
+extension MapboxDirections.VisualInstruction.Component : Swift.Codable {
+  public init(from decoder: any Swift.Decoder) throws
+  public func encode(to encoder: any Swift.Encoder) throws
+}
+extension MapboxDirections.VisualInstruction.Component {
+  public static func == (lhs: MapboxDirections.VisualInstruction.Component, rhs: MapboxDirections.VisualInstruction.Component) -> Swift.Bool
+}
+public struct Waypoint : Swift.Codable, Turf.ForeignMemberContainer, Swift.Equatable, Swift.Sendable {
+  public var foreignMembers: Turf.JSONObject
+  public init(from decoder: any Swift.Decoder) throws
+  public func encode(to encoder: any Swift.Encoder) throws
+  public init(coordinate: MapboxDirections.LocationCoordinate2D, coordinateAccuracy: MapboxDirections.LocationAccuracy? = nil, name: Swift.String? = nil)
+  public init(location: CoreLocation.CLLocation, heading: CoreLocation.CLHeading? = nil, name: Swift.String? = nil)
+  public let coordinate: MapboxDirections.LocationCoordinate2D
+  public var coordinateAccuracy: MapboxDirections.LocationAccuracy?
+  public var targetCoordinate: MapboxDirections.LocationCoordinate2D?
+  public var allowsSnappingToClosedRoad: Swift.Bool
+  public var allowsSnappingToStaticallyClosedRoad: Swift.Bool
+  public var snappedDistance: Turf.LocationDistance?
+  public var layer: Swift.Int?
+  public var heading: Turf.LocationDirection?
+  public var headingAccuracy: Turf.LocationDirection?
+  public var allowsArrivingOnOppositeSide: Swift.Bool
+  public var name: Swift.String?
+  public var separatesLegs: Swift.Bool
+  public static func == (a: MapboxDirections.Waypoint, b: MapboxDirections.Waypoint) -> Swift.Bool
+}
+extension MapboxDirections.Waypoint : Swift.CustomStringConvertible {
+  public var description: Swift.String {
+    get
+  }
+}
+extension MapboxDirections.AmenityType : Swift.Hashable {}
+extension MapboxDirections.AmenityType : Swift.RawRepresentable {}
+extension MapboxDirections.CongestionLevel : Swift.Hashable {}
+extension MapboxDirections.CongestionLevel : Swift.RawRepresentable {}
+extension MapboxDirections.CustomOptionComparisonPolicy : Swift.Hashable {}
+extension MapboxDirections.DirectionsCodingError : Swift.Equatable {}
+extension MapboxDirections.DirectionsCodingError : Swift.Hashable {}
+extension MapboxDirections.RouteShapeFormat : Swift.Hashable {}
+extension MapboxDirections.RouteShapeFormat : Swift.RawRepresentable {}
+extension MapboxDirections.RouteShapeResolution : Swift.Hashable {}
+extension MapboxDirections.RouteShapeResolution : Swift.RawRepresentable {}
+extension MapboxDirections.MeasurementSystem : Swift.Hashable {}
+extension MapboxDirections.MeasurementSystem : Swift.RawRepresentable {}
+extension MapboxDirections.DirectionsResultCodingKeys : Swift.Equatable {}
+extension MapboxDirections.DirectionsResultCodingKeys : Swift.Hashable {}
+extension MapboxDirections.DirectionsResultCodingKeys : Swift.RawRepresentable {}
+extension MapboxDirections.DrivingSide : Swift.Hashable {}
+extension MapboxDirections.DrivingSide : Swift.RawRepresentable {}
+extension MapboxDirections.Incident.Kind : Swift.Equatable {}
+extension MapboxDirections.Incident.Kind : Swift.Hashable {}
+extension MapboxDirections.Incident.Kind : Swift.RawRepresentable {}
+extension MapboxDirections.Incident.Impact : Swift.Equatable {}
+extension MapboxDirections.Incident.Impact : Swift.Hashable {}
+extension MapboxDirections.Incident.Impact : Swift.RawRepresentable {}
+extension MapboxDirections.IsochroneOptions.ContourFormat : Swift.Hashable {}
+extension MapboxDirections.Match.CodingKeys : Swift.Equatable {}
+extension MapboxDirections.Match.CodingKeys : Swift.Hashable {}
+extension MapboxDirections.Match.CodingKeys : Swift.RawRepresentable {}
+extension MapboxDirections.MapboxStreetsRoadClass : Swift.Hashable {}
+extension MapboxDirections.MapboxStreetsRoadClass : Swift.RawRepresentable {}
+extension MapboxDirections.RestStop.StopType : Swift.Equatable {}
+extension MapboxDirections.RestStop.StopType : Swift.Hashable {}
+extension MapboxDirections.RestStop.StopType : Swift.RawRepresentable {}
+extension MapboxDirections.Route.CodingKeys : Swift.Equatable {}
+extension MapboxDirections.Route.CodingKeys : Swift.Hashable {}
+extension MapboxDirections.Route.CodingKeys : Swift.RawRepresentable {}
+extension MapboxDirections.RouteLeg.CodingKeys : Swift.Equatable {}
+extension MapboxDirections.RouteLeg.CodingKeys : Swift.Hashable {}
+extension MapboxDirections.RouteLeg.CodingKeys : Swift.RawRepresentable {}
+extension MapboxDirections.TransportType : Swift.Hashable {}
+extension MapboxDirections.TransportType : Swift.RawRepresentable {}
+extension MapboxDirections.ManeuverType : Swift.Hashable {}
+extension MapboxDirections.ManeuverType : Swift.RawRepresentable {}
+extension MapboxDirections.ManeuverDirection : Swift.Hashable {}
+extension MapboxDirections.ManeuverDirection : Swift.RawRepresentable {}
+extension MapboxDirections.SignStandard : Swift.Hashable {}
+extension MapboxDirections.SignStandard : Swift.RawRepresentable {}
+extension MapboxDirections.SilentWaypoint.CodingKeys : Swift.Equatable {}
+extension MapboxDirections.SilentWaypoint.CodingKeys : Swift.Hashable {}
+extension MapboxDirections.SilentWaypoint.CodingKeys : Swift.RawRepresentable {}
+extension MapboxDirections.TollCollection.CollectionType : Swift.Equatable {}
+extension MapboxDirections.TollCollection.CollectionType : Swift.Hashable {}
+extension MapboxDirections.TollCollection.CollectionType : Swift.RawRepresentable {}
+extension MapboxDirections.TrafficTendency : Swift.Hashable {}
+extension MapboxDirections.TrafficTendency : Swift.RawRepresentable {}
+extension MapboxDirections.VisualInstruction.Component.ImageRepresentation.Format : Swift.Equatable {}
+extension MapboxDirections.VisualInstruction.Component.ImageRepresentation.Format : Swift.Hashable {}
+extension MapboxDirections.VisualInstruction.Component.ImageRepresentation.Format : Swift.RawRepresentable {}

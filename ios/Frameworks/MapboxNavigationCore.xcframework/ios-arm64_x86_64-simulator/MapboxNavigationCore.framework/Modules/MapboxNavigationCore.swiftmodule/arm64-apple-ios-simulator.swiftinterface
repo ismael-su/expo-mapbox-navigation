@@ -1,0 +1,2365 @@
+// swift-interface-format-version: 1.0
+// swift-compiler-version: Apple Swift version 5.9.2 (swiftlang-5.9.2.2.56 clang-1500.1.0.2.5)
+// swift-module-flags: -target arm64-apple-ios14.0-simulator -enable-objc-interop -enable-library-evolution -swift-version 5 -enforce-exclusivity=checked -O -module-name MapboxNavigationCore
+// swift-module-flags-ignorable: -enable-bare-slash-regex
+import AVFAudio
+import AVFoundation
+import AVKit
+import CarPlay
+import Combine
+import CommonCrypto
+import CoreGraphics
+import CoreLocation
+import Dispatch
+import Foundation
+import Foundation/*.Bundle*/
+import Foundation/*.ProcessInfo*/
+import Foundation/*.URL*/
+import MapboxCommon_Private.MBXLog_Internal
+import MapboxCommon
+import MapboxCommon_Private
+import MapboxDirections
+import MapboxMaps
+import MapboxNavigationNative
+import MapboxNavigationNative/*.NavigationStatus*/
+import MapboxNavigationNative/*.UpcomingRouteAlert*/
+import MapboxNavigationNative_Private
+import Network
+import OSLog
+import Swift
+import SwiftUI/*.ColorScheme*/
+import Turf
+import UIKit
+import _Concurrency
+import _MapboxNavigationUXPrivate
+import _StringProcessing
+import _SwiftConcurrencyShims
+public struct ApiConfiguration : Swift.Sendable, Swift.Equatable {
+  public static var `default`: MapboxNavigationCore.ApiConfiguration {
+    get
+  }
+  public let accessToken: Swift.String
+  public init(accessToken: Swift.String)
+  public static func == (a: MapboxNavigationCore.ApiConfiguration, b: MapboxNavigationCore.ApiConfiguration) -> Swift.Bool
+}
+public struct SkuTokenProvider : Swift.Sendable {
+  public let skuToken: @Sendable () -> Swift.String?
+  #if compiler(>=5.3) && $Sendable
+  public init(skuToken: @escaping @Sendable () -> Swift.String?)
+  #endif
+}
+extension Foundation.NSNotification.Name {
+  public static let navigationDidSwitchToFallbackVersion: Foundation.Notification.Name
+  public static let navigationDidSwitchToTargetVersion: Foundation.Notification.Name
+}
+extension Foundation.NSNotification.Name {
+  public static let electronicHorizonDidUpdatePosition: Foundation.Notification.Name
+  public static let electronicHorizonDidEnterRoadObject: Foundation.Notification.Name
+  public static let electronicHorizonDidExitRoadObject: Foundation.Notification.Name
+  public static let electronicHorizonDidPassRoadObject: Foundation.Notification.Name
+}
+extension MapboxNavigationCore.RoadGraph {
+  public struct NotificationUserInfoKey : Swift.Hashable, Swift.Equatable, Swift.RawRepresentable, Swift.Sendable {
+    public typealias RawValue = Swift.String
+    public var rawValue: Swift.String
+    public init(rawValue: Swift.String)
+    public static let positionKey: MapboxNavigationCore.RoadGraph.NotificationUserInfoKey
+    public static let treeKey: MapboxNavigationCore.RoadGraph.NotificationUserInfoKey
+    public static let updatesMostProbablePathKey: MapboxNavigationCore.RoadGraph.NotificationUserInfoKey
+    public static let distancesByRoadObjectKey: MapboxNavigationCore.RoadGraph.NotificationUserInfoKey
+    public static let roadObjectIdentifierKey: MapboxNavigationCore.RoadGraph.NotificationUserInfoKey
+    public static let didTransitionAtEndpointKey: MapboxNavigationCore.RoadGraph.NotificationUserInfoKey
+  }
+}
+extension AVFAudio.AVAudioSession {
+  public func tryDuckAudio() -> (any Swift.Error)?
+  public func tryUnduckAudio() -> (any Swift.Error)?
+}
+extension Foundation.Bundle {
+  public var backgroundModes: Swift.Set<Swift.String> {
+    get
+  }
+  public static let mapboxNavigationUXCore: Foundation.Bundle
+  public func image(named: Swift.String) -> UIKit.UIImage?
+}
+public typealias CongestionRange = Swift.Range<MapboxDirections.NumericCongestionLevel>
+public struct CongestionRangesConfiguration : Swift.Equatable, Swift.Sendable {
+  public var low: MapboxNavigationCore.CongestionRange
+  public var moderate: MapboxNavigationCore.CongestionRange
+  public var heavy: MapboxNavigationCore.CongestionRange
+  public var severe: MapboxNavigationCore.CongestionRange
+  public init(low: MapboxNavigationCore.CongestionRange, moderate: MapboxNavigationCore.CongestionRange, heavy: MapboxNavigationCore.CongestionRange, severe: MapboxNavigationCore.CongestionRange)
+  public static var `default`: MapboxNavigationCore.CongestionRangesConfiguration {
+    get
+  }
+  public static func == (a: MapboxNavigationCore.CongestionRangesConfiguration, b: MapboxNavigationCore.CongestionRangesConfiguration) -> Swift.Bool
+}
+extension MapboxDirections.CongestionLevel {
+  public var asCPTimeRemainingColor: CarPlay.CPTimeRemainingColor {
+    get
+  }
+}
+extension MapboxDirections.RouteLeg {
+  public func resolveCongestionLevels(using configuration: MapboxNavigationCore.CongestionRangesConfiguration) -> [MapboxNavigationCore.CongestionLevel]?
+}
+extension Foundation.Locale {
+  public static var preferredLocalLanguageCountryCode: Swift.String {
+    get
+  }
+  public static var nationalizedCurrent: Foundation.Locale {
+    get
+  }
+}
+extension MapboxDirections.MapboxStreetsRoadClass {
+  public var isRamp: Swift.Bool {
+    get
+  }
+}
+extension MapboxDirections.MeasurementSystem {
+  public init(_ lengthUnit: Foundation.LengthFormatter.Unit)
+}
+extension Turf.Geometry : @unchecked Swift.Sendable {
+}
+extension Turf.LineString : @unchecked Swift.Sendable {
+}
+extension MapboxDirections.RouteLeg {
+  public var shape: Turf.LineString {
+    get
+  }
+  public var streetsRoadClasses: [MapboxDirections.MapboxStreetsRoadClass?] {
+    get
+  }
+  public var roadClasses: [MapboxNavigationCore.RoadClasses?] {
+    get
+  }
+}
+extension Swift.Array {
+  public func filterKeepingFirstAndLast(_ isIncluded: (Element) throws -> Swift.Bool) rethrows -> [Element]
+  public func splitExceptAtStartAndEnd(maxSplits: Swift.Int = .max, omittingEmptySubsequences: Swift.Bool = true, whereSeparator isSeparator: (Element) throws -> Swift.Bool) rethrows -> [Swift.ArraySlice<Element>]
+}
+extension Foundation.NSAttributedString {
+  public func pronounced(_ pronunciation: Swift.String) -> Foundation.NSAttributedString
+}
+extension Swift.String {
+  public func minimumEditDistance(to word: Swift.String) -> Swift.Int
+}
+public enum ActiveNavigationFeedbackType : MapboxNavigationCore.FeedbackType {
+  case closure
+  case poorRoute
+  case wrongSpeedLimit
+  case badRoute
+  case illegalTurn
+  case roadClosed
+  case incorrectLaneGuidance
+  case other
+  public var typeKey: Swift.String {
+    get
+  }
+  public var subtypeKey: Swift.String? {
+    get
+  }
+  public static func == (a: MapboxNavigationCore.ActiveNavigationFeedbackType, b: MapboxNavigationCore.ActiveNavigationFeedbackType) -> Swift.Bool
+  public func hash(into hasher: inout Swift.Hasher)
+  public var hashValue: Swift.Int {
+    get
+  }
+}
+public enum FeedbackSource : Swift.Int, Swift.CustomStringConvertible, Swift.Sendable {
+  case user
+  case reroute
+  case unknown
+  public var description: Swift.String {
+    get
+  }
+  public init?(rawValue: Swift.Int)
+  public typealias RawValue = Swift.Int
+  public var rawValue: Swift.Int {
+    get
+  }
+}
+extension Network.NWPathMonitor : @unchecked Swift.Sendable {
+}
+@_hasMissingDesignatedInitializers final public class NavigationEventsManager : Swift.Sendable {
+  final public var userInfo: [Swift.String : Swift.String?]? {
+    get
+    set
+  }
+  #if compiler(>=5.3) && $AsyncAwait
+  final public func createFeedback(screenshotOption: MapboxNavigationCore.FeedbackScreenshotOption = .automatic) async -> MapboxNavigationCore.FeedbackEvent?
+  #endif
+  final public func sendActiveNavigationFeedback(_ feedback: MapboxNavigationCore.FeedbackEvent, type: MapboxNavigationCore.ActiveNavigationFeedbackType, description: Swift.String? = nil)
+  final public func sendPassiveNavigationFeedback(_ feedback: MapboxNavigationCore.FeedbackEvent, type: MapboxNavigationCore.PassiveNavigationFeedbackType, description: Swift.String? = nil)
+  #if compiler(>=5.3) && $AsyncAwait
+  final public func sendActiveNavigationFeedback(_ feedback: MapboxNavigationCore.FeedbackEvent, type: MapboxNavigationCore.ActiveNavigationFeedbackType, description: Swift.String?, source: MapboxNavigationCore.FeedbackSource) async -> MapboxNavigationCore.UserFeedback?
+  #endif
+  #if compiler(>=5.3) && $AsyncAwait
+  final public func sendNavigationFeedback(_ feedback: MapboxNavigationCore.FeedbackEvent, type: any MapboxNavigationCore.FeedbackType, description: Swift.String?, source: MapboxNavigationCore.FeedbackSource) async throws -> MapboxNavigationCore.UserFeedback?
+  #endif
+  #if compiler(>=5.3) && $AsyncAwait
+  final public func sendPassiveNavigationFeedback(_ feedback: MapboxNavigationCore.FeedbackEvent, type: MapboxNavigationCore.PassiveNavigationFeedbackType, description: Swift.String?, source: MapboxNavigationCore.FeedbackSource) async -> MapboxNavigationCore.UserFeedback?
+  #endif
+  final public func sendCarPlayConnectEvent()
+  final public func sendCarPlayDisconnectEvent()
+  @objc deinit
+}
+extension MapboxNavigationNative.EventsMetadata : @unchecked Swift.Sendable {
+}
+extension MapboxNavigationNative.ScreenshotFormat : @unchecked Swift.Sendable {
+}
+public struct FeedbackEvent : Swift.Codable, Swift.Equatable, Swift.Sendable {
+  public let metadata: MapboxNavigationCore.FeedbackMetadata
+  public var contents: [Swift.String : Any] {
+    get
+  }
+  public static func == (a: MapboxNavigationCore.FeedbackEvent, b: MapboxNavigationCore.FeedbackEvent) -> Swift.Bool
+  public func encode(to encoder: any Swift.Encoder) throws
+  public init(from decoder: any Swift.Decoder) throws
+}
+public struct FeedbackMetadata : Swift.Sendable, Swift.Equatable {
+  public static func == (lhs: MapboxNavigationCore.FeedbackMetadata, rhs: MapboxNavigationCore.FeedbackMetadata) -> Swift.Bool
+  public let screenshot: Swift.String?
+  public var contents: [Swift.String : Any] {
+    get
+  }
+}
+extension MapboxNavigationCore.FeedbackMetadata : Swift.Codable {
+  public init(from decoder: any Swift.Decoder) throws
+  public func encode(to encoder: any Swift.Encoder) throws
+}
+extension MapboxNavigationNative.UserFeedbackHandle : @unchecked Swift.Sendable {
+}
+extension MapboxNavigationNative.UserFeedbackMetadata : @unchecked Swift.Sendable {
+}
+extension MapboxNavigationNative.UserFeedbackMetadata : Swift.Encodable {
+  public func encode(to encoder: any Swift.Encoder) throws
+}
+public enum FeedbackScreenshotOption : Swift.Sendable {
+  case automatic
+  case custom(UIKit.UIImage)
+}
+public protocol FeedbackType : Swift.Sendable {
+  var typeKey: Swift.String { get }
+  var subtypeKey: Swift.String? { get }
+}
+public struct UserFeedback : @unchecked Swift.Sendable {
+  public let description: Swift.String?
+  public let type: any MapboxNavigationCore.FeedbackType
+  public let source: MapboxNavigationCore.FeedbackSource
+  public let screenshot: Swift.String?
+  public let location: CoreLocation.CLLocation
+}
+public enum PassiveNavigationFeedbackType : MapboxNavigationCore.FeedbackType {
+  case poorGPS
+  case incorrectMapData
+  case accident
+  case camera
+  case traffic
+  case wrongSpeedLimit
+  case other
+  public var typeKey: Swift.String {
+    get
+  }
+  public var subtypeKey: Swift.String? {
+    get
+  }
+  public static func == (a: MapboxNavigationCore.PassiveNavigationFeedbackType, b: MapboxNavigationCore.PassiveNavigationFeedbackType) -> Swift.Bool
+  public func hash(into hasher: inout Swift.Hasher)
+  public var hashValue: Swift.Int {
+    get
+  }
+}
+public enum SearchFeedbackType : MapboxNavigationCore.FeedbackType {
+  case incorrectName
+  case incorrectAddress
+  case incorrectLocation
+  case missingResult
+  case other
+  public var typeKey: Swift.String {
+    get
+  }
+  public var subtypeKey: Swift.String? {
+    get
+  }
+  public static func == (a: MapboxNavigationCore.SearchFeedbackType, b: MapboxNavigationCore.SearchFeedbackType) -> Swift.Bool
+  public func hash(into hasher: inout Swift.Hasher)
+  public var hashValue: Swift.Int {
+    get
+  }
+}
+#if compiler(>=5.3) && $Actors
+public actor CopilotService {
+  public var mapboxCopilot: MapboxNavigationCore.MapboxCopilot? {
+    get
+  }
+  public func setActive(_ isActive: Swift.Bool)
+  public var isActive: Swift.Bool {
+    get
+  }
+  public func setDelegate(_ delegate: any MapboxNavigationCore.MapboxCopilotDelegate)
+  weak public var delegate: (any MapboxNavigationCore.MapboxCopilotDelegate)? {
+    get
+  }
+  #if compiler(>=5.3) && $Sendable
+  public init(accessToken: Swift.String, navNativeVersion: Swift.String, historyRecording: any MapboxNavigationCore.HistoryRecording, isActive: Swift.Bool = true, log: (@Sendable (Swift.String) -> Swift.Void)? = nil)
+  #endif
+  @objc deinit
+  @available(iOS 13.0, tvOS 13.0, watchOS 6.0, macOS 10.15, *)
+  @_semantics("defaultActor") nonisolated final public var unownedExecutor: _Concurrency.UnownedSerialExecutor {
+    get
+  }
+}
+#endif
+public protocol NavigationHistoryEvent {
+  associatedtype Payload : Swift.Encodable
+  var eventType: Swift.String { get }
+  var payload: Self.Payload { get }
+}
+public enum NavigationHistoryEvents {
+}
+extension MapboxNavigationCore.NavigationHistoryEvents {
+  public struct Coordinate : Swift.Encodable, Swift.Sendable {
+    public init(_ coordinate: CoreLocation.CLLocationCoordinate2D)
+    public func encode(to encoder: any Swift.Encoder) throws
+  }
+  public struct RoutablePoint : Swift.Encodable, Swift.Sendable {
+    public var coordinates: MapboxNavigationCore.NavigationHistoryEvents.Coordinate
+    public init(coordinates: MapboxNavigationCore.NavigationHistoryEvents.Coordinate)
+    public func encode(to encoder: any Swift.Encoder) throws
+  }
+  public struct SearchResultUsed : Swift.Sendable {
+    public enum Provider : Swift.String, Swift.Encodable, Swift.Sendable {
+      case mapbox
+      public init?(rawValue: Swift.String)
+      public typealias RawValue = Swift.String
+      public var rawValue: Swift.String {
+        get
+      }
+    }
+    public struct Payload : Swift.Encodable, Swift.Sendable {
+      public var provider: MapboxNavigationCore.NavigationHistoryEvents.SearchResultUsed.Provider
+      public var id: Swift.String
+      public var name: Swift.String
+      public var address: Swift.String
+      public var coordinate: MapboxNavigationCore.NavigationHistoryEvents.Coordinate
+      public var routablePoint: [MapboxNavigationCore.NavigationHistoryEvents.RoutablePoint]?
+      public init(provider: MapboxNavigationCore.NavigationHistoryEvents.SearchResultUsed.Provider, id: Swift.String, name: Swift.String, address: Swift.String, coordinate: MapboxNavigationCore.NavigationHistoryEvents.Coordinate, routablePoint: [MapboxNavigationCore.NavigationHistoryEvents.RoutablePoint]?)
+      public func encode(to encoder: any Swift.Encoder) throws
+    }
+    public let eventType: Swift.String
+    public var payload: MapboxNavigationCore.NavigationHistoryEvents.SearchResultUsed.Payload
+    public init(payload: MapboxNavigationCore.NavigationHistoryEvents.SearchResultUsed.Payload)
+  }
+}
+extension MapboxNavigationCore.NavigationHistoryEvents {
+  public struct SearchResults : Swift.Sendable {
+    public struct SearchResult : Swift.Encodable, Swift.Sendable {
+      public var id: Swift.String
+      public var name: Swift.String
+      public var address: Swift.String
+      public var coordinate: MapboxNavigationCore.NavigationHistoryEvents.Coordinate?
+      public var routablePoint: [MapboxNavigationCore.NavigationHistoryEvents.RoutablePoint]?
+      public init(id: Swift.String, name: Swift.String, address: Swift.String, coordinate: MapboxNavigationCore.NavigationHistoryEvents.Coordinate? = nil, routablePoint: [MapboxNavigationCore.NavigationHistoryEvents.RoutablePoint]? = nil)
+      public func encode(to encoder: any Swift.Encoder) throws
+    }
+    public struct Payload : Swift.Encodable, Swift.Sendable {
+      public var provider: MapboxNavigationCore.NavigationHistoryEvents.SearchResultUsed.Provider
+      public var request: Swift.String
+      public var response: Swift.String?
+      public var error: Swift.String?
+      public var searchQuery: Swift.String
+      public var results: [MapboxNavigationCore.NavigationHistoryEvents.SearchResults.SearchResult]?
+      public init(provider: MapboxNavigationCore.NavigationHistoryEvents.SearchResultUsed.Provider, request: Swift.String, response: Swift.String? = nil, error: Swift.String? = nil, searchQuery: Swift.String, results: [MapboxNavigationCore.NavigationHistoryEvents.SearchResults.SearchResult]? = nil)
+      public func encode(to encoder: any Swift.Encoder) throws
+    }
+    public let eventType: Swift.String
+    public var payload: MapboxNavigationCore.NavigationHistoryEvents.SearchResults.Payload
+    public init(payload: MapboxNavigationCore.NavigationHistoryEvents.SearchResults.Payload)
+  }
+}
+#if compiler(>=5.3) && $Actors
+@_hasMissingDesignatedInitializers public actor MapboxCopilot {
+  #if compiler(>=5.3) && $Sendable
+  public typealias Log = @Sendable (Swift.String) -> Swift.Void
+  #endif
+  public struct Options : Swift.Sendable {
+    #if compiler(>=5.3) && $Sendable
+    public init(accessToken: Swift.String, userId: Swift.String, navNativeVersion: Swift.String, sdkVersion: Swift.String, sdkName: Swift.String, packageName: Swift.String, log: (@Sendable (Swift.String) -> Swift.Void)? = nil)
+    #endif
+  }
+  public var currentSession: MapboxNavigationCore.NavigationSession? {
+    get
+  }
+  public func setDelegate(_ delegate: (any MapboxNavigationCore.MapboxCopilotDelegate)?)
+  weak public var delegate: (any MapboxNavigationCore.MapboxCopilotDelegate)? {
+    get
+  }
+  @_Concurrency.MainActor public convenience init(options: MapboxNavigationCore.MapboxCopilot.Options, historyProvider: any MapboxNavigationCore.NavigationHistoryProviderProtocol)
+  @discardableResult
+  public func startActiveGuidanceSession(requestIdentifier: Swift.String?, route: any Swift.Encodable, searchResultUsed: MapboxNavigationCore.NavigationHistoryEvents.SearchResultUsed? = nil) throws -> Swift.String
+  @discardableResult
+  public func startFreeDriveSession() throws -> Swift.String
+  public func arrive()
+  public func completeNavigationSession() throws
+  public func reportSearchResults(_ event: MapboxNavigationCore.NavigationHistoryEvents.SearchResults) throws
+  @objc deinit
+  @available(iOS 13.0, tvOS 13.0, watchOS 6.0, macOS 10.15, *)
+  @_semantics("defaultActor") nonisolated final public var unownedExecutor: _Concurrency.UnownedSerialExecutor {
+    get
+  }
+}
+#endif
+public protocol MapboxCopilotDelegate : AnyObject, Swift.Sendable {
+  #if compiler(>=5.3) && $Actors
+  func copilot(_ copilot: MapboxNavigationCore.MapboxCopilot, didFinishRecording session: MapboxNavigationCore.NavigationSession)
+  #endif
+  #if compiler(>=5.3) && $Actors
+  func copilot(_ copilot: MapboxNavigationCore.MapboxCopilot, didUploadHistoryFileForSession session: MapboxNavigationCore.NavigationSession)
+  #endif
+  #if compiler(>=5.3) && $Actors
+  func copilot(_ copilot: MapboxNavigationCore.MapboxCopilot, didEncounterError error: MapboxNavigationCore.CopilotError)
+  #endif
+}
+public struct CopilotError : Swift.Error {
+}
+public enum NavigationHistoryFormat : Swift.Codable, Swift.Equatable, Swift.Sendable {
+  case json
+  case protobuf
+  case unknown(Swift.String)
+  public init(from decoder: any Swift.Decoder) throws
+  public func encode(to encoder: any Swift.Encoder) throws
+  public static func == (lhs: MapboxNavigationCore.NavigationHistoryFormat, rhs: MapboxNavigationCore.NavigationHistoryFormat) -> Swift.Bool
+}
+public enum NavigationHistoryProviderError : Swift.Error, Swift.Sendable {
+  case noHistory
+  case notFound(_: Swift.String)
+}
+public protocol NavigationHistoryProviderProtocol : AnyObject {
+  typealias Filepath = Swift.String
+  typealias DumpResult = Swift.Result<(Self.Filepath, MapboxNavigationCore.NavigationHistoryFormat), MapboxNavigationCore.NavigationHistoryProviderError>
+  func startRecording()
+  func pushEvent<T>(event: T) throws where T : MapboxNavigationCore.NavigationHistoryEvent
+  #if compiler(>=5.3) && $Sendable
+  func dumpHistory(_ completion: @escaping @Sendable (Self.DumpResult) -> Swift.Void)
+  #endif
+}
+public struct NavigationSession : Swift.Codable, Swift.Equatable, @unchecked Swift.Sendable {
+  public enum SessionType : Swift.String, Swift.Codable {
+    case activeGuidance
+    case freeDrive
+    public init?(rawValue: Swift.String)
+    public typealias RawValue = Swift.String
+    public var rawValue: Swift.String {
+      get
+    }
+  }
+  public enum State : Swift.String, Swift.Codable {
+    case inProgress
+    case local
+    case uploading
+    public init?(rawValue: Swift.String)
+    public typealias RawValue = Swift.String
+    public var rawValue: Swift.String {
+      get
+    }
+  }
+  public let id: Swift.String
+  public let startedAt: Foundation.Date
+  public let userId: Swift.String
+  public var sessionType: MapboxNavigationCore.NavigationSession.SessionType {
+    get
+  }
+  public var accessToken: Swift.String {
+    get
+  }
+  public var state: MapboxNavigationCore.NavigationSession.State {
+    get
+  }
+  public var routeId: Swift.String? {
+    get
+  }
+  public var endedAt: Foundation.Date? {
+    get
+  }
+  public var historyError: Swift.String? {
+    get
+  }
+  public var appMode: Swift.String {
+    get
+  }
+  public var appVersion: Swift.String {
+    get
+  }
+  public var navigationSdkVersion: Swift.String {
+    get
+  }
+  public var navigationNativeSdkVersion: Swift.String {
+    get
+  }
+  public var tokenOwner: Swift.String? {
+    get
+  }
+  public var appSessionId: Swift.String {
+    get
+  }
+  public static func == (a: MapboxNavigationCore.NavigationSession, b: MapboxNavigationCore.NavigationSession) -> Swift.Bool
+  public func encode(to encoder: any Swift.Encoder) throws
+  public init(from decoder: any Swift.Decoder) throws
+}
+public protocol HistoryEvent {
+  var timestamp: Foundation.TimeInterval { get }
+}
+public struct RouteAssignmentHistoryEvent : MapboxNavigationCore.HistoryEvent {
+  public let timestamp: Foundation.TimeInterval
+  public let navigationRoutes: MapboxNavigationCore.NavigationRoutes
+}
+public struct LocationUpdateHistoryEvent : MapboxNavigationCore.HistoryEvent {
+  public let timestamp: Foundation.TimeInterval
+  public let location: CoreLocation.CLLocation
+}
+@_hasMissingDesignatedInitializers public class UnknownHistoryEvent : MapboxNavigationCore.HistoryEvent {
+  final public let timestamp: Foundation.TimeInterval
+  @objc deinit
+}
+public struct UserPushedHistoryEvent : MapboxNavigationCore.HistoryEvent {
+  public let timestamp: Foundation.TimeInterval
+  public let type: Swift.String
+  public let properties: Swift.String
+}
+public struct History {
+  public var events: [any MapboxNavigationCore.HistoryEvent] {
+    get
+  }
+  public var initialRoute: MapboxNavigationCore.NavigationRoutes? {
+    get
+  }
+  public var rawLocations: [CoreLocation.CLLocation] {
+    get
+  }
+}
+#if compiler(>=5.3) && $RethrowsProtocol
+public struct HistoryReader : _Concurrency.AsyncSequence {
+  public typealias Element = MapboxNavigationCore.HistoryEvent
+  public struct ReadOptions : Swift.OptionSet {
+    public var rawValue: Swift.UInt
+    public init(rawValue: Swift.UInt)
+    public static let omitUnknownEvents: MapboxNavigationCore.HistoryReader.ReadOptions
+    public typealias ArrayLiteralElement = MapboxNavigationCore.HistoryReader.ReadOptions
+    public typealias Element = MapboxNavigationCore.HistoryReader.ReadOptions
+    public typealias RawValue = Swift.UInt
+  }
+  public struct AsyncIterator : _Concurrency.AsyncIteratorProtocol {
+    #if compiler(>=5.3) && $AsyncAwait
+    public mutating func next() async -> (any MapboxNavigationCore.HistoryEvent)?
+    #endif
+    public typealias Element = any MapboxNavigationCore.HistoryEvent
+  }
+  public func makeAsyncIterator() -> MapboxNavigationCore.HistoryReader.AsyncIterator
+  public init?(fileUrl: Foundation.URL, readOptions: MapboxNavigationCore.HistoryReader.ReadOptions? = nil)
+  public init?(data: Foundation.Data, readOptions: MapboxNavigationCore.HistoryReader.ReadOptions? = nil)
+  #if compiler(>=5.3) && $AsyncAwait
+  public func parse() async throws -> MapboxNavigationCore.History
+  #endif
+}
+#endif
+public protocol HistoryRecording : Swift.Sendable {
+  #if compiler(>=5.3) && $Sendable
+  typealias HistoryFileWritingCompletionHandler = @Sendable (_ historyFileURL: Foundation.URL?) -> Swift.Void
+  #endif
+  func startRecordingHistory()
+  func pushHistoryEvent(type: Swift.String, jsonData: Foundation.Data?)
+  #if compiler(>=5.3) && $Sendable
+  func stopRecordingHistory(writingFileWith completionHandler: @escaping Self.HistoryFileWritingCompletionHandler)
+  #endif
+}
+extension MapboxNavigationCore.HistoryRecording {
+  public func pushHistoryEvent(type: Swift.String, value: (some Encodable)?, encoder: Foundation.JSONEncoder? = nil) throws
+  public func pushHistoryEvent(type: Swift.String, dictionary value: [Swift.String : Any?]?) throws
+}
+@_hasMissingDesignatedInitializers final public class IdleTimerManager : Swift.Sendable {
+  @_hasMissingDesignatedInitializers final public class Cancellable : Swift.Sendable {
+    @objc deinit
+  }
+  public static let shared: MapboxNavigationCore.IdleTimerManager
+  final public func disableIdleTimer() -> MapboxNavigationCore.IdleTimerManager.Cancellable
+  final public func disableIdleTimer(id: Swift.String)
+  final public func enableIdleTimer(id: Swift.String)
+  @objc deinit
+}
+@_Concurrency.MainActor public protocol CameraStateTransition : AnyObject {
+  @_Concurrency.MainActor var mapView: MapboxMaps.MapView? { get }
+  @_Concurrency.MainActor init(_ mapView: MapboxMaps.MapView)
+  @_Concurrency.MainActor func transitionTo(_ cameraOptions: MapboxMaps.CameraOptions, completion: @escaping (() -> Swift.Void))
+  @_Concurrency.MainActor func update(to cameraOptions: MapboxMaps.CameraOptions, state: MapboxNavigationCore.NavigationCameraState)
+  @_Concurrency.MainActor func cancelPendingTransition()
+}
+public struct FollowingCameraOptions : Swift.Equatable, Swift.Sendable {
+  public var defaultPitch: Swift.Double {
+    get
+    set
+  }
+  public var zoomRange: Swift.ClosedRange<Swift.Double> {
+    get
+    set
+  }
+  public var centerUpdatesAllowed: Swift.Bool
+  public var zoomUpdatesAllowed: Swift.Bool
+  public var bearingUpdatesAllowed: Swift.Bool
+  public var pitchUpdatesAllowed: Swift.Bool
+  public var paddingUpdatesAllowed: Swift.Bool
+  public var intersectionDensity: MapboxNavigationCore.IntersectionDensity
+  public var bearingSmoothing: MapboxNavigationCore.BearingSmoothing
+  public var geometryFramingAfterManeuver: MapboxNavigationCore.GeometryFramingAfterManeuver
+  public var pitchNearManeuver: MapboxNavigationCore.PitchNearManeuver
+  public var followsLocationCourse: Swift.Bool
+  public init()
+  public static func == (lhs: MapboxNavigationCore.FollowingCameraOptions, rhs: MapboxNavigationCore.FollowingCameraOptions) -> Swift.Bool
+}
+public struct IntersectionDensity : Swift.Equatable, Swift.Sendable {
+  public var enabled: Swift.Bool
+  public var averageDistanceMultiplier: Swift.Double
+  public var minimumDistanceBetweenIntersections: Swift.Double
+  public init()
+  public static func == (lhs: MapboxNavigationCore.IntersectionDensity, rhs: MapboxNavigationCore.IntersectionDensity) -> Swift.Bool
+}
+public struct BearingSmoothing : Swift.Equatable, Swift.Sendable {
+  public var enabled: Swift.Bool
+  public var maximumBearingSmoothingAngle: Swift.Double
+  public init()
+  public static func == (lhs: MapboxNavigationCore.BearingSmoothing, rhs: MapboxNavigationCore.BearingSmoothing) -> Swift.Bool
+}
+public struct GeometryFramingAfterManeuver : Swift.Equatable, Swift.Sendable {
+  public var enabled: Swift.Bool
+  public var distanceToCoalesceCompoundManeuvers: Swift.Double
+  public var distanceToFrameAfterManeuver: Swift.Double
+  public init()
+  public static func == (lhs: MapboxNavigationCore.GeometryFramingAfterManeuver, rhs: MapboxNavigationCore.GeometryFramingAfterManeuver) -> Swift.Bool
+}
+public struct PitchNearManeuver : Swift.Equatable, Swift.Sendable {
+  public var enabled: Swift.Bool
+  public var triggerDistanceToManeuver: Swift.Double
+  public init()
+  public static func == (lhs: MapboxNavigationCore.PitchNearManeuver, rhs: MapboxNavigationCore.PitchNearManeuver) -> Swift.Bool
+}
+@_Concurrency.MainActor public class NavigationCamera {
+  @_Concurrency.MainActor public var cameraStates: Combine.AnyPublisher<MapboxNavigationCore.NavigationCameraState, Swift.Never> {
+    get
+  }
+  @_Concurrency.MainActor public var viewportPadding: UIKit.UIEdgeInsets {
+    get
+    set
+  }
+  @_Concurrency.MainActor required public init(_ mapView: MapboxMaps.MapView, location: Combine.AnyPublisher<CoreLocation.CLLocation, Swift.Never>, routeProgress: Combine.AnyPublisher<MapboxNavigationCore.RouteProgress?, Swift.Never>, heading: Combine.AnyPublisher<CoreLocation.CLHeading, Swift.Never>? = nil, navigationCameraType: MapboxNavigationCore.NavigationCameraType = .mobile, viewportDataSource: (any MapboxNavigationCore.ViewportDataSource)? = nil, cameraStateTransition: (any MapboxNavigationCore.CameraStateTransition)? = nil)
+  @_Concurrency.MainActor public func update(cameraState: MapboxNavigationCore.NavigationCameraState)
+  @_Concurrency.MainActor public func stop()
+  @_Concurrency.MainActor public var viewportDataSource: any MapboxNavigationCore.ViewportDataSource
+  @_Concurrency.MainActor public var currentCameraState: MapboxNavigationCore.NavigationCameraState {
+    get
+  }
+  @_Concurrency.MainActor public var cameraStateTransition: any MapboxNavigationCore.CameraStateTransition
+  @objc deinit
+}
+extension MapboxMaps.CameraOptions : @unchecked Swift.Sendable {
+}
+public struct NavigationCameraOptions : Swift.Equatable, Swift.Sendable {
+  public var followingCamera: MapboxMaps.CameraOptions
+  public var overviewCamera: MapboxMaps.CameraOptions
+  public init(followingCamera: MapboxMaps.CameraOptions = .init(), overviewCamera: MapboxMaps.CameraOptions = .init())
+  public static func == (a: MapboxNavigationCore.NavigationCameraOptions, b: MapboxNavigationCore.NavigationCameraOptions) -> Swift.Bool
+}
+public enum NavigationCameraState : Swift.Equatable, Swift.Sendable {
+  case idle
+  case following
+  case overview
+  public func hash(into hasher: inout Swift.Hasher)
+  public static func == (a: MapboxNavigationCore.NavigationCameraState, b: MapboxNavigationCore.NavigationCameraState) -> Swift.Bool
+  public var hashValue: Swift.Int {
+    get
+  }
+}
+extension MapboxNavigationCore.NavigationCameraState : Swift.CustomDebugStringConvertible {
+  public var debugDescription: Swift.String {
+    get
+  }
+}
+@_Concurrency.MainActor public class NavigationCameraStateTransition : MapboxNavigationCore.CameraStateTransition {
+  @_Concurrency.MainActor weak public var mapView: MapboxMaps.MapView?
+  @_Concurrency.MainActor required public init(_ mapView: MapboxMaps.MapView)
+  @_Concurrency.MainActor public func transitionTo(_ cameraOptions: MapboxMaps.CameraOptions, completion: @escaping () -> Swift.Void)
+  @_Concurrency.MainActor public func cancelPendingTransition()
+  @_Concurrency.MainActor public func update(to cameraOptions: MapboxMaps.CameraOptions, state: MapboxNavigationCore.NavigationCameraState)
+  @objc deinit
+}
+public enum NavigationCameraType {
+  case carPlay
+  case mobile
+  public static func == (a: MapboxNavigationCore.NavigationCameraType, b: MapboxNavigationCore.NavigationCameraType) -> Swift.Bool
+  public func hash(into hasher: inout Swift.Hasher)
+  public var hashValue: Swift.Int {
+    get
+  }
+}
+public struct NavigationViewportDataSourceOptions : Swift.Equatable, Swift.Sendable {
+  public var followingCameraOptions: MapboxNavigationCore.FollowingCameraOptions
+  public var overviewCameraOptions: MapboxNavigationCore.OverviewCameraOptions
+  public init()
+  public init(followingCameraOptions: MapboxNavigationCore.FollowingCameraOptions, overviewCameraOptions: MapboxNavigationCore.OverviewCameraOptions)
+  public static func == (lhs: MapboxNavigationCore.NavigationViewportDataSourceOptions, rhs: MapboxNavigationCore.NavigationViewportDataSourceOptions) -> Swift.Bool
+}
+public struct OverviewCameraOptions : Swift.Equatable, Swift.Sendable {
+  public var maximumZoomLevel: Swift.Double {
+    get
+    set
+  }
+  public var centerUpdatesAllowed: Swift.Bool
+  public var zoomUpdatesAllowed: Swift.Bool
+  public var bearingUpdatesAllowed: Swift.Bool
+  public var pitchUpdatesAllowed: Swift.Bool
+  public var paddingUpdatesAllowed: Swift.Bool
+  public init()
+  public static func == (lhs: MapboxNavigationCore.OverviewCameraOptions, rhs: MapboxNavigationCore.OverviewCameraOptions) -> Swift.Bool
+}
+@_Concurrency.MainActor public class CarPlayViewportDataSource : MapboxNavigationCore.ViewportDataSource {
+  @_Concurrency.MainActor required public init(_ mapView: MapboxMaps.MapView)
+  @_Concurrency.MainActor public var options: MapboxNavigationCore.NavigationViewportDataSourceOptions {
+    get
+    set
+  }
+  @_Concurrency.MainActor public var navigationCameraOptions: Combine.AnyPublisher<MapboxNavigationCore.NavigationCameraOptions, Swift.Never> {
+    get
+  }
+  @_Concurrency.MainActor public var currentNavigationCameraOptions: MapboxNavigationCore.NavigationCameraOptions {
+    get
+  }
+  @_Concurrency.MainActor public func update(using viewportState: MapboxNavigationCore.ViewportState)
+  @objc deinit
+}
+@_Concurrency.MainActor public class MobileViewportDataSource : MapboxNavigationCore.ViewportDataSource {
+  @_Concurrency.MainActor required public init(_ mapView: MapboxMaps.MapView)
+  @_Concurrency.MainActor public var options: MapboxNavigationCore.NavigationViewportDataSourceOptions {
+    get
+    set
+  }
+  @_Concurrency.MainActor public var navigationCameraOptions: Combine.AnyPublisher<MapboxNavigationCore.NavigationCameraOptions, Swift.Never> {
+    get
+  }
+  @_Concurrency.MainActor public var currentNavigationCameraOptions: MapboxNavigationCore.NavigationCameraOptions {
+    get
+    set
+  }
+  @_Concurrency.MainActor public func update(using viewportState: MapboxNavigationCore.ViewportState)
+  @objc deinit
+}
+public struct ViewportState : Swift.Equatable, Swift.Sendable {
+  public let location: CoreLocation.CLLocation
+  public let routeProgress: MapboxNavigationCore.RouteProgress?
+  public let viewportPadding: UIKit.UIEdgeInsets
+  public let heading: CoreLocation.CLHeading?
+  public init(location: CoreLocation.CLLocation, routeProgress: MapboxNavigationCore.RouteProgress?, viewportPadding: UIKit.UIEdgeInsets, heading: CoreLocation.CLHeading?)
+  public static func == (a: MapboxNavigationCore.ViewportState, b: MapboxNavigationCore.ViewportState) -> Swift.Bool
+}
+@_Concurrency.MainActor public protocol ViewportDataSource : AnyObject {
+  @_Concurrency.MainActor var options: MapboxNavigationCore.NavigationViewportDataSourceOptions { get }
+  @_Concurrency.MainActor var navigationCameraOptions: Combine.AnyPublisher<MapboxNavigationCore.NavigationCameraOptions, Swift.Never> { get }
+  @_Concurrency.MainActor var currentNavigationCameraOptions: MapboxNavigationCore.NavigationCameraOptions { get }
+  @_Concurrency.MainActor func update(using viewportState: MapboxNavigationCore.ViewportState)
+}
+extension CoreLocation.CLHeading : @unchecked Swift.Sendable {
+}
+public struct MapPoint : Swift.Equatable, Swift.Sendable {
+  public let name: Swift.String?
+  public let coordinate: CoreLocation.CLLocationCoordinate2D
+  public init(name: Swift.String?, coordinate: CoreLocation.CLLocationCoordinate2D)
+  public static func == (a: MapboxNavigationCore.MapPoint, b: MapboxNavigationCore.MapPoint) -> Swift.Bool
+}
+extension MapboxNavigationCore.NavigationMapView : MapboxMaps.GestureManagerDelegate {
+  nonisolated public func gestureManager(_ gestureManager: MapboxMaps.GestureManager, didBegin gestureType: MapboxMaps.GestureType)
+  nonisolated public func gestureManager(_ gestureManager: MapboxMaps.GestureManager, didEnd gestureType: MapboxMaps.GestureType, willAnimate: Swift.Bool)
+  nonisolated public func gestureManager(_ gestureManager: MapboxMaps.GestureManager, didEndAnimatingFor gestureType: MapboxMaps.GestureType)
+}
+extension MapboxNavigationCore.NavigationMapView : UIKit.UIGestureRecognizerDelegate {
+  @_Concurrency.MainActor(unsafe) @objc dynamic public func gestureRecognizer(_ gestureRecognizer: UIKit.UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIKit.UIGestureRecognizer) -> Swift.Bool
+  @_Concurrency.MainActor(unsafe) @objc dynamic public func gestureRecognizer(_ gestureRecognizer: UIKit.UIGestureRecognizer, shouldRequireFailureOf otherGestureRecognizer: UIKit.UIGestureRecognizer) -> Swift.Bool
+}
+@objc @_inheritsConvenienceInitializers @_Concurrency.MainActor open class NavigationMapView : UIKit.UIView {
+  @_Concurrency.MainActor final public let mapView: MapboxMaps.MapView
+  @_Concurrency.MainActor final public let navigationCamera: MapboxNavigationCore.NavigationCamera
+  @_Concurrency.MainActor weak public var delegate: (any MapboxNavigationCore.NavigationMapViewDelegate)? {
+    get
+    set
+  }
+  @_Concurrency.MainActor public var mapViewTapGestureRecognizer: UIKit.UITapGestureRecognizer! {
+    get
+  }
+  @_Concurrency.MainActor public init(location: Combine.AnyPublisher<CoreLocation.CLLocation, Swift.Never>, routeProgress: Combine.AnyPublisher<MapboxNavigationCore.RouteProgress?, Swift.Never>, navigationCameraType: MapboxNavigationCore.NavigationCameraType = .mobile, heading: Combine.AnyPublisher<CoreLocation.CLHeading, Swift.Never>? = nil, predictiveCacheManager: MapboxNavigationCore.PredictiveCacheManager? = nil)
+  @_Concurrency.MainActor public var pointAnnotationManager: MapboxMaps.PointAnnotationManager? {
+    get
+  }
+  @available(*, unavailable)
+  @_Concurrency.MainActor @objc override dynamic public init(frame: CoreFoundation.CGRect)
+  @available(*, unavailable)
+  @_Concurrency.MainActor @objc dynamic public init()
+  @available(*, unavailable)
+  @_Concurrency.MainActor @objc required dynamic public init?(coder: Foundation.NSCoder)
+  @_Concurrency.MainActor @objc override dynamic open func safeAreaInsetsDidChange()
+  @_Concurrency.MainActor public var viewportPadding: UIKit.UIEdgeInsets {
+    get
+    set
+  }
+  @_Concurrency.MainActor public var showsIntersectionAnnotations: Swift.Bool
+  @_Concurrency.MainActor public var routeLineTracksTraversal: Swift.Bool
+  @_Concurrency.MainActor public var poiClickableAreaSize: CoreFoundation.CGFloat
+  @_Concurrency.MainActor public var showsRestrictedAreasOnRoute: Swift.Bool
+  @_Concurrency.MainActor public var routeLineOcclusionFactor: Swift.Double
+  @_Concurrency.MainActor public var congestionConfiguration: MapboxNavigationCore.CongestionConfiguration
+  @_Concurrency.MainActor public var showsTrafficOnRouteLine: Swift.Bool
+  @_Concurrency.MainActor public var tapGestureDistanceThreshold: CoreFoundation.CGFloat
+  @_Concurrency.MainActor public var showsVoiceInstructionsOnMap: Swift.Bool {
+    get
+    set
+  }
+  @_Concurrency.MainActor public var showsIntermediateWaypoints: Swift.Bool {
+    get
+    set
+  }
+  @_Concurrency.MainActor public var puckType: MapboxMaps.PuckType? {
+    get
+    set
+  }
+  @_Concurrency.MainActor public var puckBearing: MapboxMaps.PuckBearing {
+    get
+    set
+  }
+  @_Concurrency.MainActor public func update(navigationCameraState: MapboxNavigationCore.NavigationCameraState)
+  @_Concurrency.MainActor public func updateFreeDriveAlertAnnotations(_ roadObjects: [MapboxNavigationCore.RoadObjectAhead])
+  @_Concurrency.MainActor public func showcase(_ navigationRoutes: MapboxNavigationCore.NavigationRoutes, routesPresentationStyle: MapboxNavigationCore.RoutesPresentationStyle = .all(), routeAnnotationKinds: Swift.Set<MapboxNavigationCore.RouteAnnotationKind> = [.relativeDurationsOnAlternative], animated: Swift.Bool = false, duration: Foundation.TimeInterval = 1.0)
+  @_Concurrency.MainActor public func show(_ navigationRoutes: MapboxNavigationCore.NavigationRoutes, routeAnnotationKinds: Swift.Set<MapboxNavigationCore.RouteAnnotationKind>)
+  @_Concurrency.MainActor public func removeRoutes()
+  @_Concurrency.MainActor public func localizeLabels(locale: Foundation.Locale? = nil)
+  @objc deinit
+}
+@_Concurrency.MainActor public protocol NavigationMapViewDelegate : AnyObject {
+  @_Concurrency.MainActor func navigationMapView(_ navigationMapView: MapboxNavigationCore.NavigationMapView, didSelect alternativeRoute: MapboxNavigationCore.AlternativeRoute)
+  @_Concurrency.MainActor func navigationMapView(_ navigationMapView: MapboxNavigationCore.NavigationMapView, userDidTap mapPoint: MapboxNavigationCore.MapPoint)
+  @_Concurrency.MainActor func navigationMapView(_ navigationMapView: MapboxNavigationCore.NavigationMapView, userDidLongTap mapPoint: MapboxNavigationCore.MapPoint)
+  @_Concurrency.MainActor func navigationMapViewUserDidStartInteraction(_ navigationMapView: MapboxNavigationCore.NavigationMapView)
+  @_Concurrency.MainActor func navigationMapViewUserDidEndInteraction(_ navigationMapView: MapboxNavigationCore.NavigationMapView)
+  @_Concurrency.MainActor func navigationMapView(_ navigationMapView: MapboxNavigationCore.NavigationMapView, didChangeCameraState cameraState: MapboxNavigationCore.NavigationCameraState)
+  @_Concurrency.MainActor func navigationMapView(_ navigationMapView: MapboxNavigationCore.NavigationMapView, didSelect waypoint: MapboxNavigationCore.Waypoint)
+  @_Concurrency.MainActor func navigationMapView(_ navigationMapView: MapboxNavigationCore.NavigationMapView, didAdd finalDestinationAnnotation: MapboxMaps.PointAnnotation, pointAnnotationManager: MapboxMaps.PointAnnotationManager)
+}
+extension MapboxNavigationCore.NavigationMapViewDelegate {
+  @_Concurrency.MainActor public func navigationMapView(_ navigationMapView: MapboxNavigationCore.NavigationMapView, didSelect alternativeRoute: MapboxNavigationCore.AlternativeRoute)
+  @_Concurrency.MainActor public func navigationMapView(_ navigationMapView: MapboxNavigationCore.NavigationMapView, userDidTap mapPoint: MapboxNavigationCore.MapPoint)
+  @_Concurrency.MainActor public func navigationMapView(_ navigationMapView: MapboxNavigationCore.NavigationMapView, userDidLongTap mapPoint: MapboxNavigationCore.MapPoint)
+  @_Concurrency.MainActor public func navigationMapViewUserDidStartInteraction(_ navigationMapView: MapboxNavigationCore.NavigationMapView)
+  @_Concurrency.MainActor public func navigationMapViewUserDidEndInteraction(_ navigationMapView: MapboxNavigationCore.NavigationMapView)
+  @_Concurrency.MainActor public func navigationMapView(_ navigationMapView: MapboxNavigationCore.NavigationMapView, didChangeCameraState cameraState: MapboxNavigationCore.NavigationCameraState)
+  @_Concurrency.MainActor public func navigationMapView(_ navigationMapView: MapboxNavigationCore.NavigationMapView, didSelect waypoint: MapboxNavigationCore.Waypoint)
+  @_Concurrency.MainActor public func navigationMapView(_ navigationMapView: MapboxNavigationCore.NavigationMapView, didAdd finalDestinationAnnotation: MapboxMaps.PointAnnotation, pointAnnotationManager: MapboxMaps.PointAnnotationManager)
+}
+extension CoreLocation.CLLocationCoordinate2D {
+  public func projectedDistance(to coordinate: CoreLocation.CLLocationCoordinate2D) -> Swift.Double
+}
+public let RouteLineWidthByZoomLevel: [Swift.Double : Swift.Double]
+extension Swift.Dictionary where Key == Swift.Double, Value == Swift.Double {
+  public func multiplied(by factor: Swift.Double) -> Swift.Dictionary<Key, Value>
+}
+extension MapboxMaps.Puck3DConfiguration {
+  public static let navigationDefault: MapboxMaps.Puck3DConfiguration
+}
+extension MapboxMaps.Puck2DConfiguration {
+  public static let navigationDefault: MapboxMaps.Puck2DConfiguration
+}
+extension MapboxDirections.Route {
+  public var etaDistanceInfo: MapboxNavigationCore.EtaDistanceInfo? {
+    get
+  }
+  public func etaDistanceInfo(forLeg index: Swift.Int) -> MapboxNavigationCore.EtaDistanceInfo?
+}
+public enum RoutesPresentationStyle {
+  case main
+  case all(shouldFit: Swift.Bool = true)
+}
+public struct CongestionColorsConfiguration : Swift.Equatable, Swift.Sendable {
+  public var mainRouteColors: MapboxNavigationCore.CongestionColorsConfiguration.Colors
+  public var alternativeRouteColors: MapboxNavigationCore.CongestionColorsConfiguration.Colors
+  public static let `default`: MapboxNavigationCore.CongestionColorsConfiguration
+  public init(mainRouteColors: MapboxNavigationCore.CongestionColorsConfiguration.Colors, alternativeRouteColors: MapboxNavigationCore.CongestionColorsConfiguration.Colors)
+  public static func == (a: MapboxNavigationCore.CongestionColorsConfiguration, b: MapboxNavigationCore.CongestionColorsConfiguration) -> Swift.Bool
+}
+extension MapboxNavigationCore.CongestionColorsConfiguration {
+  public struct Colors : Swift.Equatable, Swift.Sendable {
+    public var low: UIKit.UIColor
+    public var moderate: UIKit.UIColor
+    public var heavy: UIKit.UIColor
+    public var severe: UIKit.UIColor
+    public var unknown: UIKit.UIColor
+    public static let defaultMainRouteColors: MapboxNavigationCore.CongestionColorsConfiguration.Colors
+    public static let defaultAlternativeRouteColors: MapboxNavigationCore.CongestionColorsConfiguration.Colors
+    public init(low: UIKit.UIColor, moderate: UIKit.UIColor, heavy: UIKit.UIColor, severe: UIKit.UIColor, unknown: UIKit.UIColor)
+    public static func == (a: MapboxNavigationCore.CongestionColorsConfiguration.Colors, b: MapboxNavigationCore.CongestionColorsConfiguration.Colors) -> Swift.Bool
+  }
+}
+public struct CongestionConfiguration : Swift.Equatable, Swift.Sendable {
+  public var colors: MapboxNavigationCore.CongestionColorsConfiguration
+  public var ranges: MapboxNavigationCore.CongestionRangesConfiguration
+  public static let `default`: MapboxNavigationCore.CongestionConfiguration
+  public init(colors: MapboxNavigationCore.CongestionColorsConfiguration, ranges: MapboxNavigationCore.CongestionRangesConfiguration)
+  public static func == (a: MapboxNavigationCore.CongestionConfiguration, b: MapboxNavigationCore.CongestionConfiguration) -> Swift.Bool
+}
+public enum RouteAnnotationKind {
+  case routeDurations
+  case relativeDurationsOnAlternative
+  case relativeDurationsOnAlternativeManuever
+  public static func == (a: MapboxNavigationCore.RouteAnnotationKind, b: MapboxNavigationCore.RouteAnnotationKind) -> Swift.Bool
+  public func hash(into hasher: inout Swift.Hasher)
+  public var hashValue: Swift.Int {
+    get
+  }
+}
+@_Concurrency.MainActor public protocol ElectronicHorizonController : Swift.Sendable {
+  @_Concurrency.MainActor var eHorizonEvents: Combine.AnyPublisher<MapboxNavigationCore.EHorizonStatus, Swift.Never> { get }
+  @_Concurrency.MainActor var roadMatching: MapboxNavigationCore.RoadMatching { get }
+  @_Concurrency.MainActor func startUpdatingEHorizon()
+  @_Concurrency.MainActor func stopUpdatingEHorizon()
+}
+@_Concurrency.MainActor public protocol MapboxNavigation {
+  @_Concurrency.MainActor func routingProvider() -> any MapboxNavigationCore.RoutingProvider
+  @_Concurrency.MainActor func tripSession() -> any MapboxNavigationCore.SessionController
+  @_Concurrency.MainActor func electronicHorizon() -> any MapboxNavigationCore.ElectronicHorizonController
+  @_Concurrency.MainActor func navigation() -> any MapboxNavigationCore.NavigationController
+  @_Concurrency.MainActor func eventsManager() -> MapboxNavigationCore.NavigationEventsManager
+  @_Concurrency.MainActor func historyRecorder() -> (any MapboxNavigationCore.HistoryRecording)?
+  #if compiler(>=5.3) && $Actors
+  @_Concurrency.MainActor func copilot() -> MapboxNavigationCore.CopilotService?
+  #endif
+}
+@_Concurrency.MainActor public protocol NavigationController : Swift.Sendable {
+  @_Concurrency.MainActor func selectAlternativeRoute(at index: Swift.Int)
+  @_Concurrency.MainActor func selectAlternativeRoute(with routeId: MapboxNavigationCore.RouteId)
+  @_Concurrency.MainActor func switchLeg(newLegIndex: Swift.Int)
+  @_Concurrency.MainActor var heading: Combine.AnyPublisher<CoreLocation.CLHeading, Swift.Never> { get }
+  @_Concurrency.MainActor var locationMatching: Combine.AnyPublisher<MapboxNavigationCore.MapMatchingState, Swift.Never> { get }
+  @_Concurrency.MainActor var currentLocationMatching: MapboxNavigationCore.MapMatchingState? { get }
+  @_Concurrency.MainActor var routeProgress: Combine.AnyPublisher<MapboxNavigationCore.RouteProgressState?, Swift.Never> { get }
+  @_Concurrency.MainActor var currentRouteProgress: MapboxNavigationCore.RouteProgressState? { get }
+  @_Concurrency.MainActor var offlineFallbacks: Combine.AnyPublisher<MapboxNavigationCore.FallbackToTilesState, Swift.Never> { get }
+  @_Concurrency.MainActor var voiceInstructions: Combine.AnyPublisher<MapboxNavigationCore.SpokenInstructionState, Swift.Never> { get }
+  @_Concurrency.MainActor var bannerInstructions: Combine.AnyPublisher<MapboxNavigationCore.VisualInstructionState, Swift.Never> { get }
+  @_Concurrency.MainActor var waypointsArrival: Combine.AnyPublisher<MapboxNavigationCore.WaypointArrivalStatus, Swift.Never> { get }
+  @_Concurrency.MainActor var rerouting: Combine.AnyPublisher<MapboxNavigationCore.ReroutingStatus, Swift.Never> { get }
+  @_Concurrency.MainActor var continuousAlternatives: Combine.AnyPublisher<MapboxNavigationCore.AlternativesStatus, Swift.Never> { get }
+  @_Concurrency.MainActor var fasterRoutes: Combine.AnyPublisher<MapboxNavigationCore.FasterRoutesStatus, Swift.Never> { get }
+  @_Concurrency.MainActor var routeRefreshing: Combine.AnyPublisher<MapboxNavigationCore.RefreshingStatus, Swift.Never> { get }
+}
+@_Concurrency.MainActor public protocol SessionController : Swift.Sendable {
+  @_Concurrency.MainActor func startFreeDrive()
+  @_Concurrency.MainActor func pauseFreeDrive()
+  @_Concurrency.MainActor func setToIdle()
+  @_Concurrency.MainActor func startActiveGuidance(with navigationRoutes: MapboxNavigationCore.NavigationRoutes, startLegIndex: Swift.Int)
+  @_Concurrency.MainActor var session: Combine.AnyPublisher<MapboxNavigationCore.Session, Swift.Never> { get }
+  @_Concurrency.MainActor var currentSession: MapboxNavigationCore.Session { get }
+  @_Concurrency.MainActor var navigationRoutes: Combine.AnyPublisher<MapboxNavigationCore.NavigationRoutes?, Swift.Never> { get }
+  @_Concurrency.MainActor var currentNavigationRoutes: MapboxNavigationCore.NavigationRoutes? { get }
+  @_Concurrency.MainActor func disableTrackingBackgroundLocationIfNeeded()
+  @_Concurrency.MainActor func restoreTrackingLocationIfNeeded()
+}
+final public class MapboxNavigationProvider {
+  final public var skuTokenProvider: MapboxNavigationCore.SkuTokenProvider {
+    get
+  }
+  final public var predictiveCacheManager: MapboxNavigationCore.PredictiveCacheManager? {
+    get
+  }
+  @_Concurrency.MainActor final public var routeVoiceController: MapboxNavigationCore.RouteVoiceController {
+    get
+  }
+  final public var coreConfig: MapboxNavigationCore.CoreConfig {
+    get
+  }
+  public init(coreConfig: MapboxNavigationCore.CoreConfig)
+  final public func apply(coreConfig: MapboxNavigationCore.CoreConfig)
+  @_Concurrency.MainActor final public var mapboxNavigation: any MapboxNavigationCore.MapboxNavigation {
+    get
+  }
+  final public func getLatestNavigationTilesetDescriptor() -> MapboxCommon.TilesetDescriptor
+  @objc deinit
+}
+extension MapboxNavigationCore.MapboxNavigationProvider : MapboxNavigationCore.MapboxNavigation {
+  @_Concurrency.MainActor final public func routingProvider() -> any MapboxNavigationCore.RoutingProvider
+  @_Concurrency.MainActor final public func tripSession() -> any MapboxNavigationCore.SessionController
+  @_Concurrency.MainActor final public func electronicHorizon() -> any MapboxNavigationCore.ElectronicHorizonController
+  @_Concurrency.MainActor final public func navigation() -> any MapboxNavigationCore.NavigationController
+  @_Concurrency.MainActor final public func eventsManager() -> MapboxNavigationCore.NavigationEventsManager
+  @_Concurrency.MainActor final public func historyRecorder() -> (any MapboxNavigationCore.HistoryRecording)?
+  #if compiler(>=5.3) && $Actors
+  @_Concurrency.MainActor final public func copilot() -> MapboxNavigationCore.CopilotService?
+  #endif
+}
+public struct AlternativeRoute : @unchecked Swift.Sendable {
+  public let route: MapboxDirections.Route
+  public typealias ID = Swift.UInt32
+  public struct RouteInfo {
+    public let distance: Turf.LocationDistance
+    public let duration: Foundation.TimeInterval
+    public init(distance: Turf.LocationDistance, duration: Foundation.TimeInterval)
+  }
+  public struct IntersectionGeometryIndices {
+    public let legIndex: Swift.Int
+    public let legGeometryIndex: Swift.Int
+    public let routeGeometryIndex: Swift.Int
+  }
+  public let id: MapboxNavigationCore.AlternativeRoute.ID
+  public let routeId: MapboxNavigationCore.RouteId
+  public let mainRouteIntersection: MapboxDirections.Intersection
+  public let mainRouteIntersectionIndices: MapboxNavigationCore.AlternativeRoute.IntersectionGeometryIndices
+  public let alternativeRouteIntersection: MapboxDirections.Intersection
+  public let alternativeRouteIntersectionIndices: MapboxNavigationCore.AlternativeRoute.IntersectionGeometryIndices
+  public let infoFromDeviationPoint: MapboxNavigationCore.AlternativeRoute.RouteInfo
+  public let infoFromOrigin: MapboxNavigationCore.AlternativeRoute.RouteInfo
+  public let distanceDelta: Turf.LocationDistance
+  public let expectedTravelTimeDelta: Foundation.TimeInterval
+  #if compiler(>=5.3) && $AsyncAwait
+  public init?(mainRoute: MapboxDirections.Route, alternativeRoute nativeRouteAlternative: MapboxNavigationNative.RouteAlternative) async
+  #endif
+}
+extension MapboxNavigationCore.AlternativeRoute : Swift.Equatable {
+  public static func == (lhs: MapboxNavigationCore.AlternativeRoute, rhs: MapboxNavigationCore.AlternativeRoute) -> Swift.Bool
+}
+public struct BorderCrossing : Swift.Equatable {
+  public let from: MapboxDirections.AdministrativeRegion
+  public let to: MapboxDirections.AdministrativeRegion
+  public init(from: MapboxDirections.AdministrativeRegion, to: MapboxDirections.AdministrativeRegion)
+  public static func == (a: MapboxNavigationCore.BorderCrossing, b: MapboxNavigationCore.BorderCrossing) -> Swift.Bool
+}
+public enum DistancedRoadObject : Swift.Sendable, Swift.Equatable {
+  case point(identifier: MapboxNavigationCore.RoadObject.Identifier, kind: MapboxNavigationCore.RoadObject.Kind, distance: CoreLocation.CLLocationDistance)
+  case gantry(identifier: MapboxNavigationCore.RoadObject.Identifier, kind: MapboxNavigationCore.RoadObject.Kind, distance: CoreLocation.CLLocationDistance)
+  case polygon(identifier: MapboxNavigationCore.RoadObject.Identifier, kind: MapboxNavigationCore.RoadObject.Kind, distanceToNearestEntry: CoreLocation.CLLocationDistance?, distanceToNearestExit: CoreLocation.CLLocationDistance?, isInside: Swift.Bool)
+  case subgraph(identifier: MapboxNavigationCore.RoadObject.Identifier, kind: MapboxNavigationCore.RoadObject.Kind, distanceToNearestEntry: CoreLocation.CLLocationDistance?, distanceToNearestExit: CoreLocation.CLLocationDistance?, isInside: Swift.Bool)
+  case line(identifier: MapboxNavigationCore.RoadObject.Identifier, kind: MapboxNavigationCore.RoadObject.Kind, distanceToEntry: CoreLocation.CLLocationDistance, distanceToExit: CoreLocation.CLLocationDistance, distanceToEnd: CoreLocation.CLLocationDistance, isEntryFromStart: Swift.Bool, length: CoreLocation.CLLocationDistance)
+  public var identifier: MapboxNavigationCore.RoadObject.Identifier {
+    get
+  }
+  public var kind: MapboxNavigationCore.RoadObject.Kind {
+    get
+  }
+  public static func == (a: MapboxNavigationCore.DistancedRoadObject, b: MapboxNavigationCore.DistancedRoadObject) -> Swift.Bool
+}
+public struct ElectronicHorizonConfig : Swift.Equatable, Swift.Sendable {
+  public let length: CoreLocation.CLLocationDistance
+  public let expansionLevel: Swift.UInt
+  public let branchLength: CoreLocation.CLLocationDistance
+  public let minimumTimeIntervalBetweenUpdates: Foundation.TimeInterval?
+  public init(length: CoreLocation.CLLocationDistance, expansionLevel: Swift.UInt, branchLength: CoreLocation.CLLocationDistance, minTimeDeltaBetweenUpdates: Foundation.TimeInterval?)
+  public static func == (a: MapboxNavigationCore.ElectronicHorizonConfig, b: MapboxNavigationCore.ElectronicHorizonConfig) -> Swift.Bool
+}
+public struct Interchange : Swift.Equatable {
+  public var identifier: Swift.String
+  public let names: [MapboxNavigationCore.LocalizedRoadObjectName]
+  public init(names: [MapboxNavigationCore.LocalizedRoadObjectName])
+  public init(identifier: Swift.String, names: [MapboxNavigationCore.LocalizedRoadObjectName])
+  public static func == (a: MapboxNavigationCore.Interchange, b: MapboxNavigationCore.Interchange) -> Swift.Bool
+}
+public struct Junction : Swift.Equatable {
+  public var identifier: Swift.String
+  public let names: [MapboxNavigationCore.LocalizedRoadObjectName]
+  public init(names: [MapboxNavigationCore.LocalizedRoadObjectName])
+  public init(identifier: Swift.String, names: [MapboxNavigationCore.LocalizedRoadObjectName])
+  public static func == (a: MapboxNavigationCore.Junction, b: MapboxNavigationCore.Junction) -> Swift.Bool
+}
+public struct LocalizedRoadObjectName : Swift.Equatable {
+  public let language: Swift.String
+  public let text: Swift.String
+  public init(language: Swift.String, text: Swift.String)
+  public static func == (a: MapboxNavigationCore.LocalizedRoadObjectName, b: MapboxNavigationCore.LocalizedRoadObjectName) -> Swift.Bool
+}
+public enum OpenLRIdentifier {
+  case tomTom(reference: MapboxNavigationCore.RoadObject.Identifier)
+  case tpeg(reference: MapboxNavigationCore.RoadObject.Identifier)
+}
+public enum OpenLROrientation : Swift.Equatable, Swift.Sendable {
+  case unknown
+  case alongLine
+  case againstLine
+  case both
+  public func hash(into hasher: inout Swift.Hasher)
+  public static func == (a: MapboxNavigationCore.OpenLROrientation, b: MapboxNavigationCore.OpenLROrientation) -> Swift.Bool
+  public var hashValue: Swift.Int {
+    get
+  }
+}
+public enum OpenLRSideOfRoad : Swift.Equatable, Swift.Sendable {
+  case unknown
+  case right
+  case left
+  case both
+  public func hash(into hasher: inout Swift.Hasher)
+  public static func == (a: MapboxNavigationCore.OpenLRSideOfRoad, b: MapboxNavigationCore.OpenLRSideOfRoad) -> Swift.Bool
+  public var hashValue: Swift.Int {
+    get
+  }
+}
+@_hasMissingDesignatedInitializers final public class RoadGraph : Swift.Sendable {
+  final public func edgeMetadata(edgeIdentifier: MapboxNavigationCore.RoadGraph.Edge.Identifier) -> MapboxNavigationCore.RoadGraph.Edge.Metadata?
+  final public func edgeShape(edgeIdentifier: MapboxNavigationCore.RoadGraph.Edge.Identifier) -> Turf.LineString?
+  final public func shape(of path: MapboxNavigationCore.RoadGraph.Path) -> Turf.LineString?
+  final public func shape(of position: MapboxNavigationCore.RoadGraph.Position) -> Turf.Point?
+  @objc deinit
+}
+extension MapboxNavigationNative.GraphAccessor : @unchecked Swift.Sendable {
+}
+extension MapboxNavigationCore.RoadGraph {
+  public struct Edge : Swift.Equatable, Swift.Sendable {
+    public typealias Identifier = Swift.UInt
+    public let identifier: MapboxNavigationCore.RoadGraph.Edge.Identifier
+    public let level: Swift.UInt
+    public let probability: Swift.Double
+    public let outletEdges: [MapboxNavigationCore.RoadGraph.Edge]
+    public init(identifier: MapboxNavigationCore.RoadGraph.Edge.Identifier, level: Swift.UInt, probability: Swift.Double, outletEdges: [MapboxNavigationCore.RoadGraph.Edge])
+    public static func == (a: MapboxNavigationCore.RoadGraph.Edge, b: MapboxNavigationCore.RoadGraph.Edge) -> Swift.Bool
+  }
+}
+extension MapboxNavigationCore.RoadGraph.Edge {
+  public enum Directionality : Swift.Sendable {
+    case oneWay
+    case bothWays
+    public static func == (a: MapboxNavigationCore.RoadGraph.Edge.Directionality, b: MapboxNavigationCore.RoadGraph.Edge.Directionality) -> Swift.Bool
+    public func hash(into hasher: inout Swift.Hasher)
+    public var hashValue: Swift.Int {
+      get
+    }
+  }
+  public struct Metadata : Swift.Sendable {
+    public let heading: CoreLocation.CLLocationDegrees
+    public let length: CoreLocation.CLLocationDistance
+    public let altitude: CoreLocation.CLLocationDistance?
+    public let curvature: Swift.UInt
+    public let isBridge: Swift.Bool
+    public let roadClasses: MapboxNavigationCore.RoadClasses
+    public let mapboxStreetsRoadClass: MapboxDirections.MapboxStreetsRoadClass
+    public let names: [MapboxNavigationCore.RoadName]
+    public let countryCode: Swift.String?
+    public let regionCode: Swift.String?
+    public let directionality: MapboxNavigationCore.RoadGraph.Edge.Directionality
+    public let speedLimit: Foundation.Measurement<Foundation.UnitSpeed>?
+    public let speed: CoreLocation.CLLocationSpeed
+    public let drivingSide: MapboxDirections.DrivingSide
+    public let laneCount: Swift.UInt?
+    public let isUrban: Swift.Bool
+    public init(heading: CoreLocation.CLLocationDegrees, length: CoreLocation.CLLocationDistance, roadClasses: MapboxNavigationCore.RoadClasses, mapboxStreetsRoadClass: MapboxDirections.MapboxStreetsRoadClass, speedLimit: Foundation.Measurement<Foundation.UnitSpeed>?, speed: CoreLocation.CLLocationSpeed, isBridge: Swift.Bool, names: [MapboxNavigationCore.RoadName], laneCount: Swift.UInt?, altitude: CoreLocation.CLLocationDistance?, curvature: Swift.UInt, countryCode: Swift.String?, regionCode: Swift.String?, drivingSide: MapboxDirections.DrivingSide, directionality: MapboxNavigationCore.RoadGraph.Edge.Directionality, isUrban: Swift.Bool)
+  }
+}
+extension MapboxNavigationCore.RoadGraph {
+  public struct Path : Swift.Equatable, Swift.Sendable {
+    public let edgeIdentifiers: [MapboxNavigationCore.RoadGraph.Edge.Identifier]
+    public let fractionFromStart: Swift.Double
+    public let fractionToEnd: Swift.Double
+    public let length: CoreLocation.CLLocationDistance
+    public init(edgeIdentifiers: [MapboxNavigationCore.RoadGraph.Edge.Identifier], fractionFromStart: Swift.Double, fractionToEnd: Swift.Double, length: CoreLocation.CLLocationDistance)
+    public static func == (a: MapboxNavigationCore.RoadGraph.Path, b: MapboxNavigationCore.RoadGraph.Path) -> Swift.Bool
+  }
+}
+extension MapboxNavigationCore.RoadGraph {
+  public struct Position : Swift.Equatable, Swift.Sendable {
+    public let edgeIdentifier: MapboxNavigationCore.RoadGraph.Edge.Identifier
+    public let fractionFromStart: Swift.Double
+    public init(edgeIdentifier: MapboxNavigationCore.RoadGraph.Edge.Identifier, fractionFromStart: Swift.Double)
+    public static func == (a: MapboxNavigationCore.RoadGraph.Position, b: MapboxNavigationCore.RoadGraph.Position) -> Swift.Bool
+  }
+}
+public struct RoadName : Swift.Equatable, Swift.Sendable {
+  public let text: Swift.String
+  public let language: Swift.String
+  public let shield: MapboxNavigationCore.RoadShield?
+  public init(text: Swift.String, language: Swift.String, shield: MapboxNavigationCore.RoadShield? = nil)
+  public static func == (a: MapboxNavigationCore.RoadName, b: MapboxNavigationCore.RoadName) -> Swift.Bool
+}
+public struct RoadObjectAhead : Swift.Equatable, Swift.Sendable {
+  public var roadObject: MapboxNavigationCore.RoadObject
+  public var distance: CoreLocation.CLLocationDistance?
+  public init(roadObject: MapboxNavigationCore.RoadObject, distance: CoreLocation.CLLocationDistance? = nil)
+  public static func == (a: MapboxNavigationCore.RoadObjectAhead, b: MapboxNavigationCore.RoadObjectAhead) -> Swift.Bool
+}
+public struct RoadObject : Swift.Equatable, Swift.Sendable {
+  public let identifier: MapboxNavigationCore.RoadObject.Identifier
+  public let length: CoreLocation.CLLocationDistance?
+  public let location: MapboxNavigationCore.RoadObject.Location
+  public let kind: MapboxNavigationCore.RoadObject.Kind
+  public let isUserDefined: Swift.Bool
+  public let isUrban: Swift.Bool?
+  public init(identifier: MapboxNavigationCore.RoadObject.Identifier, length: CoreLocation.CLLocationDistance?, location: MapboxNavigationCore.RoadObject.Location, kind: MapboxNavigationCore.RoadObject.Kind, isUrban: Swift.Bool?)
+  public init(_ native: MapboxNavigationNative.RoadObject)
+  public static func == (a: MapboxNavigationCore.RoadObject, b: MapboxNavigationCore.RoadObject) -> Swift.Bool
+}
+extension MapboxNavigationCore.RoadObject {
+  public struct EdgeLocation {
+    public let fractionFromStart: Swift.Double
+    public let fractionToEnd: Swift.Double
+    public init(fractionFromStart: Swift.Double, fractionToEnd: Swift.Double)
+  }
+}
+extension MapboxNavigationCore.RoadObject {
+  public enum Kind : Swift.Equatable, @unchecked Swift.Sendable {
+    case incident(MapboxDirections.Incident?)
+    case tollCollection(MapboxDirections.TollCollection?)
+    case borderCrossing(MapboxNavigationCore.BorderCrossing?)
+    case tunnel(MapboxNavigationCore.Tunnel?)
+    case serviceArea(MapboxDirections.RestStop?)
+    case restrictedArea
+    case bridge
+    case railroadCrossing
+    case userDefined
+    case ic(MapboxNavigationCore.Interchange?)
+    case jct(MapboxNavigationCore.Junction?)
+    case undefined
+    public static func == (a: MapboxNavigationCore.RoadObject.Kind, b: MapboxNavigationCore.RoadObject.Kind) -> Swift.Bool
+  }
+}
+extension MapboxNavigationCore.RoadObject {
+  public enum Location : Swift.Equatable, Swift.Sendable {
+    case gantry(positions: [MapboxNavigationCore.RoadObject.Position], shape: Turf.Geometry)
+    case point(position: MapboxNavigationCore.RoadObject.Position)
+    case polygon(entries: [MapboxNavigationCore.RoadObject.Position], exits: [MapboxNavigationCore.RoadObject.Position], shape: Turf.Geometry)
+    case polyline(path: MapboxNavigationCore.RoadGraph.Path, shape: Turf.Geometry)
+    case subgraph(enters: [MapboxNavigationCore.RoadObject.Position], exits: [MapboxNavigationCore.RoadObject.Position], shape: Turf.Geometry, edges: [MapboxNavigationCore.RoadGraph.SubgraphEdge.Identifier : MapboxNavigationCore.RoadGraph.SubgraphEdge])
+    case openLRLine(path: MapboxNavigationCore.RoadGraph.Path, shape: Turf.Geometry)
+    case openLRPoint(position: MapboxNavigationCore.RoadGraph.Position, sideOfRoad: MapboxNavigationCore.OpenLRSideOfRoad, orientation: MapboxNavigationCore.OpenLROrientation, coordinate: CoreLocation.CLLocationCoordinate2D)
+    case routeAlert(shape: Turf.Geometry)
+    public static func == (a: MapboxNavigationCore.RoadObject.Location, b: MapboxNavigationCore.RoadObject.Location) -> Swift.Bool
+  }
+}
+@_hasMissingDesignatedInitializers final public class RoadObjectMatcher : @unchecked Swift.Sendable {
+  final public func matchOpenLR(location: Swift.String, identifier: MapboxNavigationCore.OpenLRIdentifier)
+  final public func match(polyline: Turf.LineString, identifier: MapboxNavigationCore.RoadObject.Identifier)
+  final public func match(polygon: Turf.Polygon, identifier: MapboxNavigationCore.RoadObject.Identifier)
+  final public func match(gantry: Turf.MultiPoint, identifier: MapboxNavigationCore.RoadObject.Identifier)
+  final public func match(point: CoreLocation.CLLocationCoordinate2D, identifier: MapboxNavigationCore.RoadObject.Identifier, heading: CoreLocation.CLHeading? = nil)
+  final public func cancel(identifier: MapboxNavigationCore.RoadObject.Identifier)
+  weak final public var delegate: (any MapboxNavigationCore.RoadObjectMatcherDelegate)? {
+    get
+    set
+  }
+  @objc deinit
+}
+extension MapboxNavigationNative.RoadObjectMatcherError : Swift.Error, @unchecked Swift.Sendable {
+}
+public protocol RoadObjectMatcherDelegate : AnyObject {
+  func roadObjectMatcher(_ matcher: MapboxNavigationCore.RoadObjectMatcher, didMatch roadObject: MapboxNavigationCore.RoadObject)
+  func roadObjectMatcher(_ matcher: MapboxNavigationCore.RoadObjectMatcher, didFailToMatchWith error: MapboxNavigationCore.RoadObjectMatcherError)
+  func roadObjectMatcher(_ matcher: MapboxNavigationCore.RoadObjectMatcher, didCancelMatchingFor id: Swift.String)
+}
+public struct RoadObjectMatcherError : Foundation.LocalizedError {
+  public let description: Swift.String
+  public let roadObjectIdentifier: MapboxNavigationCore.RoadObject.Identifier
+  public var errorDescription: Swift.String? {
+    get
+  }
+  public init(description: Swift.String, roadObjectIdentifier: MapboxNavigationCore.RoadObject.Identifier)
+}
+extension MapboxNavigationCore.RoadObject {
+  public struct Position : Swift.Equatable, Swift.Sendable {
+    public let position: MapboxNavigationCore.RoadGraph.Position
+    public let coordinate: CoreLocation.CLLocationCoordinate2D
+    public init(position: MapboxNavigationCore.RoadGraph.Position, coordinate: CoreLocation.CLLocationCoordinate2D)
+    public static func == (a: MapboxNavigationCore.RoadObject.Position, b: MapboxNavigationCore.RoadObject.Position) -> Swift.Bool
+  }
+}
+extension MapboxNavigationCore.RoadObject {
+  public typealias Identifier = Swift.String
+}
+@_hasMissingDesignatedInitializers final public class RoadObjectStore : @unchecked Swift.Sendable {
+  weak final public var delegate: (any MapboxNavigationCore.RoadObjectStoreDelegate)? {
+    get
+    set
+  }
+  final public func roadObjectEdgeLocations(edgeIdentifier: MapboxNavigationCore.RoadGraph.Edge.Identifier) -> [MapboxNavigationCore.RoadObject.Identifier : MapboxNavigationCore.RoadObject.EdgeLocation]
+  final public func roadObject(identifier roadObjectIdentifier: MapboxNavigationCore.RoadObject.Identifier) -> MapboxNavigationCore.RoadObject?
+  final public func roadObjectIdentifiers(edgeIdentifiers: [MapboxNavigationCore.RoadGraph.Edge.Identifier]) -> [MapboxNavigationCore.RoadObject.Identifier]
+  final public func addUserDefinedRoadObject(_ roadObject: MapboxNavigationCore.RoadObject)
+  final public func removeUserDefinedRoadObject(identifier: MapboxNavigationCore.RoadObject.Identifier)
+  final public func removeAllUserDefinedRoadObjects()
+  @objc deinit
+}
+extension MapboxNavigationCore.RoadObjectStore : MapboxNavigationNative.RoadObjectsStoreObserver {
+  @objc final public func onRoadObjectAdded(forId id: Swift.String)
+  @objc final public func onRoadObjectUpdated(forId id: Swift.String)
+  @objc final public func onRoadObjectRemoved(forId id: Swift.String)
+}
+public protocol RoadObjectStoreDelegate : AnyObject {
+  func didAddRoadObject(identifier: MapboxNavigationCore.RoadObject.Identifier)
+  func didUpdateRoadObject(identifier: MapboxNavigationCore.RoadObject.Identifier)
+  func didRemoveRoadObject(identifier: MapboxNavigationCore.RoadObject.Identifier)
+}
+public struct RoadShield : Swift.Equatable, Swift.Sendable {
+  public let baseUrl: Swift.String
+  public let displayRef: Swift.String
+  public let name: Swift.String
+  public let textColor: Swift.String
+  public init(baseUrl: Swift.String, displayRef: Swift.String, name: Swift.String, textColor: Swift.String)
+  public static func == (a: MapboxNavigationCore.RoadShield, b: MapboxNavigationCore.RoadShield) -> Swift.Bool
+}
+extension MapboxNavigationCore.RoadGraph {
+  public struct SubgraphEdge : Swift.Equatable, Swift.Sendable {
+    public typealias Identifier = MapboxNavigationCore.RoadGraph.Edge.Identifier
+    public let identifier: MapboxNavigationCore.RoadGraph.SubgraphEdge.Identifier
+    public let innerEdgeIds: [MapboxNavigationCore.RoadGraph.SubgraphEdge.Identifier]
+    public let outerEdgeIds: [MapboxNavigationCore.RoadGraph.SubgraphEdge.Identifier]
+    public let length: CoreLocation.CLLocationDistance
+    public let shape: Turf.Geometry
+    public init(identifier: MapboxNavigationCore.RoadGraph.SubgraphEdge.Identifier, innerEdgeIds: [MapboxNavigationCore.RoadGraph.SubgraphEdge.Identifier], outerEdgeIds: [MapboxNavigationCore.RoadGraph.SubgraphEdge.Identifier], length: CoreLocation.CLLocationDistance, shape: Turf.Geometry)
+    public static func == (a: MapboxNavigationCore.RoadGraph.SubgraphEdge, b: MapboxNavigationCore.RoadGraph.SubgraphEdge) -> Swift.Bool
+  }
+}
+public struct RouteAlert : Swift.Equatable {
+  public let roadObject: MapboxNavigationCore.RoadObject
+  public let distanceToStart: CoreLocation.CLLocationDistance
+  public static func == (a: MapboxNavigationCore.RouteAlert, b: MapboxNavigationCore.RouteAlert) -> Swift.Bool
+}
+public struct EtaDistanceInfo : Swift.Equatable, Swift.Sendable {
+  public var distance: CoreLocation.CLLocationDistance
+  public var travelTime: Foundation.TimeInterval?
+  public init(distance: CoreLocation.CLLocationDistance, travelTime: Foundation.TimeInterval?)
+  public static func == (a: MapboxNavigationCore.EtaDistanceInfo, b: MapboxNavigationCore.EtaDistanceInfo) -> Swift.Bool
+}
+public protocol FasterRouteProvider : AnyObject {
+  var isRerouting: Swift.Bool { get set }
+  var navigationRoute: MapboxNavigationCore.NavigationRoute? { get set }
+  var currentLocation: CoreLocation.CLLocation? { get set }
+  var fasterRoutes: Combine.AnyPublisher<MapboxNavigationCore.NavigationRoutes, Swift.Never> { get }
+  func checkForFasterRoute(from routeProgress: MapboxNavigationCore.RouteProgress)
+}
+extension MapboxNavigationNative.ElectronicHorizonOptions : @unchecked Swift.Sendable {
+}
+public enum ReroutingError : Swift.Error {
+  case routeError
+  case wrongRequest
+  case unknown
+  case cancelled
+  case noRoutesOrController
+  case anotherRerouteInProgress
+  public static func == (a: MapboxNavigationCore.ReroutingError, b: MapboxNavigationCore.ReroutingError) -> Swift.Bool
+  public func hash(into hasher: inout Swift.Hasher)
+  public var hashValue: Swift.Int {
+    get
+  }
+}
+public let customConfigKey: Swift.String
+public let customConfigFeaturesKey: Swift.String
+public struct LocationClient : @unchecked Swift.Sendable, Swift.Equatable {
+  public init(locations: Combine.AnyPublisher<CoreLocation.CLLocation, Swift.Never>, headings: Combine.AnyPublisher<CoreLocation.CLHeading, Swift.Never>, startUpdatingLocation: @escaping () -> Swift.Void, stopUpdatingLocation: @escaping () -> Swift.Void, startUpdatingHeading: @escaping () -> Swift.Void, stopUpdatingHeading: @escaping () -> Swift.Void)
+  public static func == (lhs: MapboxNavigationCore.LocationClient, rhs: MapboxNavigationCore.LocationClient) -> Swift.Bool
+}
+public enum LocationSource : Swift.Equatable, @unchecked Swift.Sendable {
+  case simulation(initialLocation: CoreLocation.CLLocation? = nil)
+  case live
+  case custom(MapboxNavigationCore.LocationClient)
+  public static func == (a: MapboxNavigationCore.LocationSource, b: MapboxNavigationCore.LocationSource) -> Swift.Bool
+}
+@_hasMissingDesignatedInitializers @_Concurrency.MainActor final public class MultiplexLocationClient : @unchecked Swift.Sendable {
+  @objc deinit
+}
+public struct MapMatchingResult : Swift.Equatable, @unchecked Swift.Sendable {
+  public var enhancedLocation: CoreLocation.CLLocation
+  public var keyPoints: [CoreLocation.CLLocation]
+  public var isOffRoad: Swift.Bool
+  public var offRoadProbability: Swift.Double
+  public var isTeleport: Swift.Bool
+  public var roadEdgeMatchProbability: Swift.Double
+  public init(enhancedLocation: CoreLocation.CLLocation, keyPoints: [CoreLocation.CLLocation], isOffRoad: Swift.Bool, offRoadProbability: Swift.Double, isTeleport: Swift.Bool, roadEdgeMatchProbability: Swift.Double)
+  public static func == (a: MapboxNavigationCore.MapMatchingResult, b: MapboxNavigationCore.MapMatchingResult) -> Swift.Bool
+}
+@objc @_inheritsConvenienceInitializers open class NavigationLocationManager : CoreLocation.CLLocationManager {
+  @_Concurrency.MainActor @objc override dynamic public init()
+  public var simulatesLocation: Swift.Bool
+  @objc deinit
+}
+extension MapboxNavigationCore.NavigationLocationManager : CoreLocation.CLLocationManagerDelegate {
+  @objc dynamic public func locationManager(_ manager: CoreLocation.CLLocationManager, didUpdateLocations locations: [CoreLocation.CLLocation])
+}
+public struct NavigationRoutes : Swift.Equatable, @unchecked Swift.Sendable {
+  public var mainRoute: MapboxNavigationCore.NavigationRoute {
+    get
+  }
+  public var alternativeRoutes: [MapboxNavigationCore.AlternativeRoute] {
+    get
+  }
+  public var waypoints: [MapboxNavigationCore.Waypoint] {
+    get
+  }
+  public var foreignMembers: Turf.JSONObject {
+    get
+  }
+  #if compiler(>=5.3) && $AsyncAwait
+  public func selectingAlternativeRoute(at index: Swift.Int) async -> MapboxNavigationCore.NavigationRoutes?
+  #endif
+  #if compiler(>=5.3) && $AsyncAwait
+  public func selecting(alternativeRoute: MapboxNavigationCore.AlternativeRoute) async -> MapboxNavigationCore.NavigationRoutes?
+  #endif
+  public func allRoutes(_ isIncluded: (MapboxDirections.Route) -> Swift.Bool = { _ in true }) -> [MapboxDirections.Route]
+  public func containsSameRoutes(as otherRoutes: MapboxNavigationCore.NavigationRoutes) -> Swift.Bool
+  public static func == (a: MapboxNavigationCore.NavigationRoutes, b: MapboxNavigationCore.NavigationRoutes) -> Swift.Bool
+}
+public struct NavigationRoute : Swift.Sendable {
+  public let route: MapboxDirections.Route
+  public let routeId: MapboxNavigationCore.RouteId
+  public let nativeRoute: any MapboxNavigationNative.RouteInterface
+  #if compiler(>=5.3) && $AsyncAwait
+  public init?(nativeRoute: any MapboxNavigationNative.RouteInterface) async
+  #endif
+  public var routeOptions: MapboxDirections.RouteOptions? {
+    get
+  }
+}
+extension MapboxNavigationCore.NavigationRoute : Swift.Equatable {
+  public static func == (lhs: MapboxNavigationCore.NavigationRoute, rhs: MapboxNavigationCore.NavigationRoute) -> Swift.Bool
+}
+public struct RouteId : Swift.Hashable, Swift.Sendable, Swift.Codable, Swift.CustomStringConvertible {
+  public init(rawValue: Swift.String)
+  public init(from decoder: any Swift.Decoder) throws
+  public func encode(to encoder: any Swift.Encoder) throws
+  public var description: Swift.String {
+    get
+  }
+  public static func == (a: MapboxNavigationCore.RouteId, b: MapboxNavigationCore.RouteId) -> Swift.Bool
+  public func hash(into hasher: inout Swift.Hasher)
+  public var hashValue: Swift.Int {
+    get
+  }
+}
+public protocol NavigationEvent : Swift.Equatable, Swift.Sendable {
+}
+public struct Session : Swift.Equatable, Swift.Sendable {
+  public let state: MapboxNavigationCore.Session.State
+  public enum State : Swift.Equatable, Swift.Sendable {
+    case idle
+    case freeDrive(MapboxNavigationCore.Session.State.FreeDriveState)
+    case activeGuidance(MapboxNavigationCore.Session.State.ActiveGuidanceState)
+    public var isTripSessionActive: Swift.Bool {
+      get
+    }
+    public enum FreeDriveState : Swift.Sendable {
+      case paused
+      case active
+      public static func == (a: MapboxNavigationCore.Session.State.FreeDriveState, b: MapboxNavigationCore.Session.State.FreeDriveState) -> Swift.Bool
+      public func hash(into hasher: inout Swift.Hasher)
+      public var hashValue: Swift.Int {
+        get
+      }
+    }
+    public enum ActiveGuidanceState : Swift.Sendable {
+      case initialized
+      case tracking
+      case offRoute
+      case uncertain
+      case complete
+      public static func == (a: MapboxNavigationCore.Session.State.ActiveGuidanceState, b: MapboxNavigationCore.Session.State.ActiveGuidanceState) -> Swift.Bool
+      public func hash(into hasher: inout Swift.Hasher)
+      public var hashValue: Swift.Int {
+        get
+      }
+    }
+    public static func == (a: MapboxNavigationCore.Session.State, b: MapboxNavigationCore.Session.State) -> Swift.Bool
+  }
+  public static func == (a: MapboxNavigationCore.Session, b: MapboxNavigationCore.Session) -> Swift.Bool
+}
+public struct RouteProgressState : Swift.Sendable {
+  public let routeProgress: MapboxNavigationCore.RouteProgress
+}
+public struct MapMatchingState : Swift.Equatable, @unchecked Swift.Sendable {
+  public let location: CoreLocation.CLLocation
+  public let mapMatchingResult: MapboxNavigationCore.MapMatchingResult
+  public let speedLimit: MapboxNavigationCore.SpeedLimit
+  public let currentSpeed: Foundation.Measurement<Foundation.UnitSpeed>
+  public let roadName: MapboxNavigationCore.RoadName?
+  public static func == (a: MapboxNavigationCore.MapMatchingState, b: MapboxNavigationCore.MapMatchingState) -> Swift.Bool
+}
+public struct FallbackToTilesState : Swift.Equatable, Swift.Sendable {
+  public let usingLatestTiles: Swift.Bool
+  public static func == (a: MapboxNavigationCore.FallbackToTilesState, b: MapboxNavigationCore.FallbackToTilesState) -> Swift.Bool
+}
+public struct SpokenInstructionState : Swift.Equatable, Swift.Sendable {
+  public let spokenInstruction: MapboxNavigationCore.SpokenInstruction
+  public static func == (a: MapboxNavigationCore.SpokenInstructionState, b: MapboxNavigationCore.SpokenInstructionState) -> Swift.Bool
+}
+public struct VisualInstructionState : Swift.Equatable, Swift.Sendable {
+  public let visualInstruction: MapboxNavigationCore.VisualInstructionBanner
+  public static func == (a: MapboxNavigationCore.VisualInstructionState, b: MapboxNavigationCore.VisualInstructionState) -> Swift.Bool
+}
+public protocol WaypointArrivalEvent : MapboxNavigationCore.NavigationEvent {
+}
+public struct WaypointArrivalStatus : Swift.Equatable, Swift.Sendable {
+  public static func == (lhs: MapboxNavigationCore.WaypointArrivalStatus, rhs: MapboxNavigationCore.WaypointArrivalStatus) -> Swift.Bool
+  public let event: any MapboxNavigationCore.WaypointArrivalEvent
+  public enum Events {
+    public struct ToFinalDestination : MapboxNavigationCore.WaypointArrivalEvent, @unchecked Swift.Sendable {
+      public let destination: MapboxNavigationCore.Waypoint
+      public static func == (a: MapboxNavigationCore.WaypointArrivalStatus.Events.ToFinalDestination, b: MapboxNavigationCore.WaypointArrivalStatus.Events.ToFinalDestination) -> Swift.Bool
+    }
+    public struct ToWaypoint : MapboxNavigationCore.WaypointArrivalEvent, @unchecked Swift.Sendable {
+      public let waypoint: MapboxNavigationCore.Waypoint
+      public let legIndex: Swift.Int
+      public static func == (a: MapboxNavigationCore.WaypointArrivalStatus.Events.ToWaypoint, b: MapboxNavigationCore.WaypointArrivalStatus.Events.ToWaypoint) -> Swift.Bool
+    }
+    public struct NextLegStarted : MapboxNavigationCore.WaypointArrivalEvent, @unchecked Swift.Sendable {
+      public let newLegIndex: Swift.Int
+      public static func == (a: MapboxNavigationCore.WaypointArrivalStatus.Events.NextLegStarted, b: MapboxNavigationCore.WaypointArrivalStatus.Events.NextLegStarted) -> Swift.Bool
+    }
+  }
+}
+public protocol ReroutingEvent : MapboxNavigationCore.NavigationEvent {
+}
+public struct ReroutingStatus : Swift.Equatable, Swift.Sendable {
+  public static func == (lhs: MapboxNavigationCore.ReroutingStatus, rhs: MapboxNavigationCore.ReroutingStatus) -> Swift.Bool
+  public let event: any MapboxNavigationCore.ReroutingEvent
+  public enum Events {
+    public struct FetchingRoute : MapboxNavigationCore.ReroutingEvent, Swift.Sendable {
+      public static func == (a: MapboxNavigationCore.ReroutingStatus.Events.FetchingRoute, b: MapboxNavigationCore.ReroutingStatus.Events.FetchingRoute) -> Swift.Bool
+    }
+    public struct Interrupted : MapboxNavigationCore.ReroutingEvent, Swift.Sendable {
+      public static func == (a: MapboxNavigationCore.ReroutingStatus.Events.Interrupted, b: MapboxNavigationCore.ReroutingStatus.Events.Interrupted) -> Swift.Bool
+    }
+    public struct Failed : MapboxNavigationCore.ReroutingEvent, Swift.Sendable {
+      public let error: MapboxNavigationCore.DirectionsError
+      public static func == (a: MapboxNavigationCore.ReroutingStatus.Events.Failed, b: MapboxNavigationCore.ReroutingStatus.Events.Failed) -> Swift.Bool
+    }
+    public struct Fetched : MapboxNavigationCore.ReroutingEvent, Swift.Sendable {
+      public static func == (a: MapboxNavigationCore.ReroutingStatus.Events.Fetched, b: MapboxNavigationCore.ReroutingStatus.Events.Fetched) -> Swift.Bool
+    }
+  }
+}
+public protocol AlternativesEvent : MapboxNavigationCore.NavigationEvent {
+}
+public struct AlternativesStatus : Swift.Equatable, Swift.Sendable {
+  public static func == (lhs: MapboxNavigationCore.AlternativesStatus, rhs: MapboxNavigationCore.AlternativesStatus) -> Swift.Bool
+  public let event: any MapboxNavigationCore.AlternativesEvent
+  public enum Events {
+    public struct Updated : MapboxNavigationCore.AlternativesEvent, Swift.Sendable {
+      public let actualAlternativeRoutes: [MapboxNavigationCore.AlternativeRoute]
+      public static func == (a: MapboxNavigationCore.AlternativesStatus.Events.Updated, b: MapboxNavigationCore.AlternativesStatus.Events.Updated) -> Swift.Bool
+    }
+  }
+}
+public protocol FasterRoutesEvent : MapboxNavigationCore.NavigationEvent {
+}
+public struct FasterRoutesStatus : Swift.Equatable, Swift.Sendable {
+  public static func == (lhs: MapboxNavigationCore.FasterRoutesStatus, rhs: MapboxNavigationCore.FasterRoutesStatus) -> Swift.Bool
+  public let event: any MapboxNavigationCore.FasterRoutesEvent
+  public enum Events {
+    public struct Detected : MapboxNavigationCore.FasterRoutesEvent, Swift.Sendable {
+      public static func == (a: MapboxNavigationCore.FasterRoutesStatus.Events.Detected, b: MapboxNavigationCore.FasterRoutesStatus.Events.Detected) -> Swift.Bool
+    }
+    public struct Applied : MapboxNavigationCore.FasterRoutesEvent, Swift.Sendable {
+      public static func == (a: MapboxNavigationCore.FasterRoutesStatus.Events.Applied, b: MapboxNavigationCore.FasterRoutesStatus.Events.Applied) -> Swift.Bool
+    }
+  }
+}
+public protocol RefreshingEvent : MapboxNavigationCore.NavigationEvent {
+}
+public struct RefreshingStatus : Swift.Equatable, Swift.Sendable {
+  public static func == (lhs: MapboxNavigationCore.RefreshingStatus, rhs: MapboxNavigationCore.RefreshingStatus) -> Swift.Bool
+  public let event: any MapboxNavigationCore.RefreshingEvent
+  public enum Events {
+    public struct Refreshing : MapboxNavigationCore.RefreshingEvent, Swift.Sendable {
+      public static func == (a: MapboxNavigationCore.RefreshingStatus.Events.Refreshing, b: MapboxNavigationCore.RefreshingStatus.Events.Refreshing) -> Swift.Bool
+    }
+    public struct Refreshed : MapboxNavigationCore.RefreshingEvent, Swift.Sendable {
+      public static func == (a: MapboxNavigationCore.RefreshingStatus.Events.Refreshed, b: MapboxNavigationCore.RefreshingStatus.Events.Refreshed) -> Swift.Bool
+    }
+  }
+}
+public protocol EHorizonEvent : MapboxNavigationCore.NavigationEvent {
+}
+public struct EHorizonStatus : Swift.Equatable, Swift.Sendable {
+  public static func == (lhs: MapboxNavigationCore.EHorizonStatus, rhs: MapboxNavigationCore.EHorizonStatus) -> Swift.Bool
+  public let event: any MapboxNavigationCore.EHorizonEvent
+  public enum Events {
+    public struct PositionUpdated : Swift.Sendable, MapboxNavigationCore.EHorizonEvent {
+      public let position: MapboxNavigationCore.RoadGraph.Position
+      public let startingEdge: MapboxNavigationCore.RoadGraph.Edge
+      public let updatesMostProbablePath: Swift.Bool
+      public let distances: [MapboxNavigationCore.DistancedRoadObject]
+      public static func == (a: MapboxNavigationCore.EHorizonStatus.Events.PositionUpdated, b: MapboxNavigationCore.EHorizonStatus.Events.PositionUpdated) -> Swift.Bool
+    }
+    public struct RoadObjectEntered : Swift.Sendable, MapboxNavigationCore.EHorizonEvent {
+      public let roadObjectId: MapboxNavigationCore.RoadObject.Identifier
+      public let enteredFromStart: Swift.Bool
+      public static func == (a: MapboxNavigationCore.EHorizonStatus.Events.RoadObjectEntered, b: MapboxNavigationCore.EHorizonStatus.Events.RoadObjectEntered) -> Swift.Bool
+    }
+    public struct RoadObjectExited : Swift.Sendable, MapboxNavigationCore.EHorizonEvent {
+      public let roadObjectId: MapboxNavigationCore.RoadObject.Identifier
+      public let exitedFromEnd: Swift.Bool
+      public static func == (a: MapboxNavigationCore.EHorizonStatus.Events.RoadObjectExited, b: MapboxNavigationCore.EHorizonStatus.Events.RoadObjectExited) -> Swift.Bool
+    }
+    public struct RoadObjectPassed : Swift.Sendable, MapboxNavigationCore.EHorizonEvent {
+      public let roadObjectId: MapboxNavigationCore.RoadObject.Identifier
+      public static func == (a: MapboxNavigationCore.EHorizonStatus.Events.RoadObjectPassed, b: MapboxNavigationCore.EHorizonStatus.Events.RoadObjectPassed) -> Swift.Bool
+    }
+  }
+}
+public protocol NavigatorError : Swift.Error {
+}
+public enum NavigatorErrors {
+  public struct FailedToSetRoute : MapboxNavigationCore.NavigatorError {
+    public let underlyingError: (any Swift.Error)?
+  }
+  public struct FailedToSelectAlternativeRoute : MapboxNavigationCore.NavigatorError {
+  }
+  public struct FailedToUpdateAlternativeRoutes : MapboxNavigationCore.NavigatorError {
+    public let localizedDescription: Swift.String
+  }
+  public struct FailedToSelectRouteLeg : MapboxNavigationCore.NavigatorError {
+  }
+  public struct FailedToSetToIdle : MapboxNavigationCore.NavigatorError {
+  }
+  public struct FailedToPause : MapboxNavigationCore.NavigatorError {
+  }
+  public struct InterruptedReroute : MapboxNavigationCore.NavigatorError {
+    public let underlyingError: (any Swift.Error)?
+  }
+}
+public struct RoadMatching : Swift.Sendable {
+  public let roadGraph: MapboxNavigationCore.RoadGraph
+  public let roadObjectStore: MapboxNavigationCore.RoadObjectStore
+  public let roadObjectMatcher: MapboxNavigationCore.RoadObjectMatcher
+}
+public struct RoadInfo : Swift.Equatable, Swift.Sendable {
+  public let countryCodeIso2: Swift.String?
+  public let drivingSide: MapboxDirections.DrivingSide
+  public let isOneWay: Swift.Bool
+  public let laneCount: Swift.Int?
+  public let roadClasses: MapboxNavigationCore.RoadClasses
+  public init(countryCodeIso2: Swift.String?, drivingSide: MapboxDirections.DrivingSide, isOneWay: Swift.Bool, laneCount: Swift.Int?, roadClasses: MapboxNavigationCore.RoadClasses)
+  public static func == (a: MapboxNavigationCore.RoadInfo, b: MapboxNavigationCore.RoadInfo) -> Swift.Bool
+}
+public struct RouteLegProgress : Swift.Equatable {
+  public var leg: MapboxDirections.RouteLeg {
+    get
+  }
+  public var distanceTraveled: Swift.Double {
+    get
+  }
+  public var durationRemaining: Swift.Double {
+    get
+  }
+  public var distanceRemaining: Swift.Double {
+    get
+  }
+  public var fractionTraveled: Swift.Double {
+    get
+  }
+  public var userHasArrivedAtWaypoint: Swift.Bool
+  public var stepIndex: Swift.Int {
+    get
+  }
+  public var remainingSteps: [MapboxDirections.RouteStep] {
+    get
+  }
+  public func stepBefore(_ step: MapboxDirections.RouteStep) -> MapboxDirections.RouteStep?
+  public func stepAfter(_ step: MapboxDirections.RouteStep) -> MapboxDirections.RouteStep?
+  public var priorStep: MapboxDirections.RouteStep? {
+    get
+  }
+  public var currentStep: MapboxDirections.RouteStep {
+    get
+  }
+  public var upcomingStep: MapboxDirections.RouteStep? {
+    get
+  }
+  public var followOnStep: MapboxDirections.RouteStep? {
+    get
+  }
+  public func isCurrentStep(_ step: MapboxDirections.RouteStep) -> Swift.Bool
+  public var currentStepProgress: MapboxNavigationCore.RouteStepProgress {
+    get
+  }
+  public var currentSpeedLimit: Foundation.Measurement<Foundation.UnitSpeed>? {
+    get
+  }
+  public var shapeIndex: Swift.Int {
+    get
+  }
+  public init(leg: MapboxDirections.RouteLeg)
+  public static func == (a: MapboxNavigationCore.RouteLegProgress, b: MapboxNavigationCore.RouteLegProgress) -> Swift.Bool
+}
+public struct RouteProgress : Swift.Equatable, @unchecked Swift.Sendable {
+  public init(navigationRoute: MapboxNavigationCore.NavigationRoute, waypoints: [MapboxNavigationCore.Waypoint], congestionConfiguration: MapboxNavigationCore.CongestionRangesConfiguration)
+  public let waypoints: [MapboxNavigationCore.Waypoint]
+  public var distanceTraveled: Swift.Double {
+    get
+  }
+  public var durationRemaining: Swift.Double {
+    get
+  }
+  public var fractionTraveled: Swift.Double {
+    get
+  }
+  public var distanceRemaining: Swift.Double {
+    get
+  }
+  public var remainingWaypoints: [MapboxNavigationCore.Waypoint] {
+    get
+  }
+  public var upcomingRouteAlerts: [MapboxNavigationCore.RouteAlert] {
+    get
+  }
+  public var nearbyShape: Turf.LineString {
+    get
+  }
+  public var route: MapboxDirections.Route {
+    get
+  }
+  public let routeId: MapboxNavigationCore.RouteId
+  public var shapeIndex: Swift.Int {
+    get
+  }
+  public var legIndex: Swift.Int {
+    get
+  }
+  public var currentLeg: MapboxDirections.RouteLeg {
+    get
+  }
+  public var remainingLegs: [MapboxDirections.RouteLeg] {
+    get
+  }
+  public var isFinalLeg: Swift.Bool {
+    get
+  }
+  public var currentLegProgress: MapboxNavigationCore.RouteLegProgress
+  public var priorLeg: MapboxDirections.RouteLeg? {
+    get
+  }
+  public var upcomingLeg: MapboxDirections.RouteLeg? {
+    get
+  }
+  public var remainingSteps: [MapboxDirections.RouteStep] {
+    get
+  }
+  public var priorStep: MapboxDirections.RouteStep? {
+    get
+  }
+  public var upcomingStep: MapboxDirections.RouteStep? {
+    get
+  }
+  public struct TimedCongestionLevel : Swift.Equatable {
+    public var level: MapboxNavigationCore.CongestionLevel
+    public var timeInterval: Foundation.TimeInterval
+    public static func == (a: MapboxNavigationCore.RouteProgress.TimedCongestionLevel, b: MapboxNavigationCore.RouteProgress.TimedCongestionLevel) -> Swift.Bool
+  }
+  public var congestionTravelTimesSegmentsByStep: [[[MapboxNavigationCore.RouteProgress.TimedCongestionLevel]]] {
+    get
+  }
+  public var congestionTimesPerStep: [[[MapboxNavigationCore.CongestionLevel : Foundation.TimeInterval]]] {
+    get
+  }
+  public var averageCongestionLevelRemainingOnLeg: MapboxNavigationCore.CongestionLevel? {
+    get
+  }
+  public var routeIsComplete: Swift.Bool {
+    get
+  }
+  public static func == (a: MapboxNavigationCore.RouteProgress, b: MapboxNavigationCore.RouteProgress) -> Swift.Bool
+}
+public struct RouteStepProgress : Swift.Equatable {
+  public init(step: MapboxDirections.RouteStep)
+  public var step: MapboxDirections.RouteStep {
+    get
+  }
+  public var distanceTraveled: Swift.Double {
+    get
+  }
+  public var distanceRemaining: Swift.Double {
+    get
+  }
+  public var fractionTraveled: Swift.Double {
+    get
+  }
+  public var durationRemaining: Swift.Double {
+    get
+  }
+  public func remainingStepCoordinates() -> [CoreLocation.CLLocationCoordinate2D]
+  public var intersectionsIncludingUpcomingManeuverIntersection: [MapboxDirections.Intersection]?
+  public var upcomingIntersection: MapboxDirections.Intersection? {
+    get
+  }
+  public var intersectionIndex: Swift.Int {
+    get
+  }
+  public var currentIntersection: MapboxDirections.Intersection? {
+    get
+  }
+  public var userDistanceToUpcomingIntersection: CoreLocation.CLLocationDistance?
+  public var visualInstructionIndex: Swift.Int {
+    get
+  }
+  public var remainingVisualInstructions: [MapboxNavigationCore.VisualInstructionBanner]? {
+    get
+  }
+  public var spokenInstructionIndex: Swift.Int? {
+    get
+  }
+  public var remainingSpokenInstructions: [MapboxNavigationCore.SpokenInstruction]? {
+    get
+  }
+  public var currentSpokenInstruction: MapboxNavigationCore.SpokenInstruction? {
+    get
+  }
+  public var currentVisualInstruction: MapboxNavigationCore.VisualInstructionBanner? {
+    get
+  }
+  public var keyPathsAffectingValueForRemainingVisualInstructions: Swift.Set<Swift.String> {
+    get
+  }
+  public var keyPathsAffectingValueForRemainingSpokenInstructions: Swift.Set<Swift.String> {
+    get
+  }
+  public static func == (a: MapboxNavigationCore.RouteStepProgress, b: MapboxNavigationCore.RouteStepProgress) -> Swift.Bool
+}
+public struct SpeedLimit : Swift.Equatable, @unchecked Swift.Sendable {
+  public let value: Foundation.Measurement<Foundation.UnitSpeed>?
+  public let signStandard: MapboxDirections.SignStandard
+  public static func == (a: MapboxNavigationCore.SpeedLimit, b: MapboxNavigationCore.SpeedLimit) -> Swift.Bool
+}
+public struct Tunnel : Swift.Equatable {
+  public let name: Swift.String?
+  public static func == (a: MapboxNavigationCore.Tunnel, b: MapboxNavigationCore.Tunnel) -> Swift.Bool
+}
+public struct PredictiveCacheConfig : Swift.Equatable, Swift.Sendable {
+  public var predictiveCacheNavigationConfig: MapboxNavigationCore.PredictiveCacheNavigationConfig
+  public var predictiveCacheMapsConfig: MapboxNavigationCore.PredictiveCacheMapsConfig
+  public init(predictiveCacheNavigationConfig: MapboxNavigationCore.PredictiveCacheNavigationConfig = .init(), predictiveCacheMapsConfig: MapboxNavigationCore.PredictiveCacheMapsConfig = .init())
+  public static func == (a: MapboxNavigationCore.PredictiveCacheConfig, b: MapboxNavigationCore.PredictiveCacheConfig) -> Swift.Bool
+}
+public struct PredictiveCacheLocationConfig : Swift.Equatable, Swift.Sendable {
+  public var currentLocationRadius: Swift.Double
+  public var routeBufferRadius: Swift.Double
+  public var destinationLocationRadius: Swift.Double
+  public init(currentLocationRadius: CoreLocation.CLLocationDistance = 2000, routeBufferRadius: CoreLocation.CLLocationDistance = 500, destinationLocationRadius: CoreLocation.CLLocationDistance = 5000)
+  public static func == (a: MapboxNavigationCore.PredictiveCacheLocationConfig, b: MapboxNavigationCore.PredictiveCacheLocationConfig) -> Swift.Bool
+}
+@_hasMissingDesignatedInitializers public class PredictiveCacheManager {
+  @_Concurrency.MainActor public func updateMapControllers(mapView: MapboxMaps.MapView)
+  @objc deinit
+}
+extension MapboxCommon.TilesetDescriptor : @unchecked Swift.Sendable {
+}
+extension MapboxNavigationCore.PredictiveCacheManager : @unchecked Swift.Sendable {
+}
+public struct PredictiveCacheMapsConfig : Swift.Equatable, Swift.Sendable {
+  public var locationConfig: MapboxNavigationCore.PredictiveCacheLocationConfig
+  public var maximumConcurrentRequests: Swift.UInt32
+  public var zoomRange: Swift.ClosedRange<Swift.UInt8>
+  public init(locationConfig: MapboxNavigationCore.PredictiveCacheLocationConfig = .init(), maximumConcurrentRequests: Swift.UInt32 = 2, zoomRange: Swift.ClosedRange<Swift.UInt8> = 0...16)
+  public static func == (a: MapboxNavigationCore.PredictiveCacheMapsConfig, b: MapboxNavigationCore.PredictiveCacheMapsConfig) -> Swift.Bool
+}
+public struct PredictiveCacheNavigationConfig : Swift.Equatable, Swift.Sendable {
+  public var locationConfig: MapboxNavigationCore.PredictiveCacheLocationConfig
+  public init(locationConfig: MapboxNavigationCore.PredictiveCacheLocationConfig = .init())
+  public static func == (a: MapboxNavigationCore.PredictiveCacheNavigationConfig, b: MapboxNavigationCore.PredictiveCacheNavigationConfig) -> Swift.Bool
+}
+@_hasMissingDesignatedInitializers final public class MapboxRoutingProvider : MapboxNavigationCore.RoutingProvider, @unchecked Swift.Sendable {
+  final public func calculateRoutes(options: MapboxDirections.RouteOptions) -> MapboxNavigationCore.MapboxRoutingProvider.FetchTask
+  final public func calculateRoutes(options: MapboxDirections.MatchOptions) -> MapboxNavigationCore.MapboxRoutingProvider.FetchTask
+  @objc deinit
+}
+@_inheritsConvenienceInitializers open class NavigationRouteOptions : MapboxDirections.RouteOptions {
+  public var distanceUnit: Foundation.LengthFormatter.Unit
+  convenience public init(waypoints: [MapboxNavigationCore.Waypoint], profileIdentifier: MapboxNavigationCore.ProfileIdentifier? = .automobileAvoidingTraffic, queryItems: [Foundation.URLQueryItem]? = nil, locale: Foundation.Locale, distanceUnit: Foundation.LengthFormatter.Unit)
+  required public init(waypoints: [MapboxNavigationCore.Waypoint], profileIdentifier: MapboxNavigationCore.ProfileIdentifier? = .automobileAvoidingTraffic, queryItems: [Foundation.URLQueryItem]? = nil)
+  convenience public init(navigationMatchOptions options: MapboxNavigationCore.NavigationMatchOptions)
+  convenience public init(locations: [CoreLocation.CLLocation], profileIdentifier: MapboxNavigationCore.ProfileIdentifier? = .automobileAvoidingTraffic, queryItems: [Foundation.URLQueryItem]? = nil)
+  convenience public init(coordinates: [CoreLocation.CLLocationCoordinate2D], profileIdentifier: MapboxNavigationCore.ProfileIdentifier? = .automobileAvoidingTraffic, queryItems: [Foundation.URLQueryItem]? = nil)
+  required public init(from decoder: any Swift.Decoder) throws
+  @objc deinit
+}
+@_inheritsConvenienceInitializers open class NavigationMatchOptions : MapboxDirections.MatchOptions {
+  public var distanceUnit: Foundation.LengthFormatter.Unit
+  convenience public init(waypoints: [MapboxNavigationCore.Waypoint], profileIdentifier: MapboxNavigationCore.ProfileIdentifier? = .automobileAvoidingTraffic, queryItems: [Foundation.URLQueryItem]? = nil, distanceUnit: Foundation.LengthFormatter.Unit)
+  required public init(waypoints: [MapboxNavigationCore.Waypoint], profileIdentifier: MapboxNavigationCore.ProfileIdentifier? = .automobileAvoidingTraffic, queryItems: [Foundation.URLQueryItem]? = nil)
+  convenience public init(locations: [CoreLocation.CLLocation], profileIdentifier: MapboxNavigationCore.ProfileIdentifier? = .automobileAvoidingTraffic, queryItems: [Foundation.URLQueryItem]? = nil)
+  convenience public init(coordinates: [CoreLocation.CLLocationCoordinate2D], profileIdentifier: MapboxNavigationCore.ProfileIdentifier? = .automobileAvoidingTraffic, queryItems: [Foundation.URLQueryItem]? = nil)
+  required public init(from decoder: any Swift.Decoder) throws
+  @objc deinit
+}
+public protocol RoutingProvider : Swift.Sendable {
+  typealias FetchTask = _Concurrency.Task<MapboxNavigationCore.NavigationRoutes, any Swift.Error>
+  func calculateRoutes(options: MapboxDirections.RouteOptions) -> Self.FetchTask
+  func calculateRoutes(options: MapboxDirections.MatchOptions) -> Self.FetchTask
+}
+public enum RoutingProviderSource : Swift.Equatable, Swift.Sendable {
+  case online
+  case offline
+  case hybrid
+  public func hash(into hasher: inout Swift.Hasher)
+  public static func == (a: MapboxNavigationCore.RoutingProviderSource, b: MapboxNavigationCore.RoutingProviderSource) -> Swift.Bool
+  public var hashValue: Swift.Int {
+    get
+  }
+}
+public struct SdkInfo : Swift.Sendable {
+  public static let navigationUX: MapboxNavigationCore.SdkInfo
+  public static let navigationCore: MapboxNavigationCore.SdkInfo
+  public let name: Swift.String
+  public let version: Swift.String
+  public let packageName: Swift.String
+}
+public struct AlternativeRoutesDetectionConfig : Swift.Equatable, Swift.Sendable {
+  public struct AcceptionPolicy : Swift.OptionSet, Swift.Sendable {
+    public typealias RawValue = Swift.UInt
+    public var rawValue: Swift.UInt
+    public init(rawValue: Swift.UInt)
+    public static let unfiltered: MapboxNavigationCore.AlternativeRoutesDetectionConfig.AcceptionPolicy
+    public static let fasterRoutes: MapboxNavigationCore.AlternativeRoutesDetectionConfig.AcceptionPolicy
+    public static let shorterRoutes: MapboxNavigationCore.AlternativeRoutesDetectionConfig.AcceptionPolicy
+    public typealias ArrayLiteralElement = MapboxNavigationCore.AlternativeRoutesDetectionConfig.AcceptionPolicy
+    public typealias Element = MapboxNavigationCore.AlternativeRoutesDetectionConfig.AcceptionPolicy
+  }
+  public var refreshesAfterPassingDeviation: Swift.Bool
+  public var refreshesWhenNoAvailableAlternatives: MapboxNavigationCore.AlternativeRoutesDetectionConfig.RefreshOnEmpty
+  public enum RefreshOnEmpty : Swift.Equatable, Swift.Sendable {
+    case noPeriodicRefresh
+    case refreshesPeriodically(_: Foundation.TimeInterval = 180)
+    public static func == (a: MapboxNavigationCore.AlternativeRoutesDetectionConfig.RefreshOnEmpty, b: MapboxNavigationCore.AlternativeRoutesDetectionConfig.RefreshOnEmpty) -> Swift.Bool
+  }
+  public var acceptionPolicy: MapboxNavigationCore.AlternativeRoutesDetectionConfig.AcceptionPolicy
+  public init(refreshesAfterPassingDeviation: Swift.Bool = true, refreshesWhenNoAvailableAlternatives: MapboxNavigationCore.AlternativeRoutesDetectionConfig.RefreshOnEmpty = .noPeriodicRefresh, acceptionPolicy: MapboxNavigationCore.AlternativeRoutesDetectionConfig.AcceptionPolicy = .unfiltered)
+  public static func == (a: MapboxNavigationCore.AlternativeRoutesDetectionConfig, b: MapboxNavigationCore.AlternativeRoutesDetectionConfig) -> Swift.Bool
+}
+public struct CoreConfig : Swift.Equatable {
+  public struct MultiLegAdvanceContext : Swift.Sendable, Swift.Equatable {
+    public let arrivedLegIndex: Swift.Int
+    public static func == (a: MapboxNavigationCore.CoreConfig.MultiLegAdvanceContext, b: MapboxNavigationCore.CoreConfig.MultiLegAdvanceContext) -> Swift.Bool
+  }
+  public typealias MultilegAdvanceMode = MapboxNavigationCore.ApprovalModeAsync<MapboxNavigationCore.CoreConfig.MultiLegAdvanceContext>
+  public let credentials: MapboxNavigationCore.NavigationCoreApiConfiguration
+  public var routeRequestConfig: MapboxNavigationCore.CoreConfig.RouteRequestConfig
+  public var routingConfig: MapboxNavigationCore.RoutingConfig
+  public let telemetryAppMetadata: MapboxNavigationCore.TelemetryAppMetadata?
+  public var locationSource: MapboxNavigationCore.LocationSource
+  public var logLevel: MapboxCommon.LoggingLevel
+  public let copilotEnabled: Swift.Bool
+  public var unitOfMeasurement: MapboxNavigationCore.UnitOfMeasurement
+  public var locale: Foundation.Locale
+  public let disableBackgroundTrackingLocation: Swift.Bool
+  public let utilizeSensorData: Swift.Bool
+  public let navigatorPredictionInterval: Foundation.TimeInterval?
+  public var congestionConfig: MapboxNavigationCore.CongestionRangesConfiguration
+  public let historyRecordingConfig: MapboxNavigationCore.HistoryRecordingConfig?
+  public var predictiveCacheConfig: MapboxNavigationCore.PredictiveCacheConfig?
+  public var electronicHorizonConfig: MapboxNavigationCore.ElectronicHorizonConfig?
+  public let liveIncidentsConfig: MapboxNavigationCore.IncidentsConfig?
+  public var multilegAdvancing: MapboxNavigationCore.CoreConfig.MultilegAdvanceMode
+  public let tilesVersion: Swift.String
+  public let tilestoreConfig: MapboxNavigationCore.TileStoreConfiguration
+  public var ttsConfig: MapboxNavigationCore.TTSConfig
+  public struct RouteRequestConfig : Swift.Equatable, Swift.Sendable {
+    public let profileIdentifier: MapboxNavigationCore.ProfileIdentifier
+    public var roadClassesToAvoid: MapboxNavigationCore.RoadClasses
+    public var roadClassesToAllow: MapboxNavigationCore.RoadClasses
+    public var allowsUTurnAtWaypoint: Swift.Bool
+    public var customQueryParameters: [Foundation.URLQueryItem]?
+    public init(profileIdentifier: MapboxNavigationCore.ProfileIdentifier = .automobileAvoidingTraffic, roadClassesToAvoid: MapboxNavigationCore.RoadClasses = [], roadClassesToAllow: MapboxNavigationCore.RoadClasses = [], allowsUTurnAtWaypoint: Swift.Bool = false, customQueryParameters: [Foundation.URLQueryItem]? = nil)
+    public static func == (a: MapboxNavigationCore.CoreConfig.RouteRequestConfig, b: MapboxNavigationCore.CoreConfig.RouteRequestConfig) -> Swift.Bool
+  }
+  public init(credentials: MapboxNavigationCore.NavigationCoreApiConfiguration = .init(), routeRequestConfig: MapboxNavigationCore.CoreConfig.RouteRequestConfig = .init(), routingConfig: MapboxNavigationCore.RoutingConfig = .init(), telemetryAppMetadata: MapboxNavigationCore.TelemetryAppMetadata? = nil, logLevel: MapboxCommon.LoggingLevel = .warning, locationSource: MapboxNavigationCore.LocationSource = .live, copilotEnabled: Swift.Bool = false, unitOfMeasurement: MapboxNavigationCore.UnitOfMeasurement = .auto, locale: Foundation.Locale = .nationalizedCurrent, disableBackgroundTrackingLocation: Swift.Bool = true, utilizeSensorData: Swift.Bool = false, navigatorPredictionInterval: Foundation.TimeInterval? = nil, congestionConfig: MapboxNavigationCore.CongestionRangesConfiguration = .default, historyRecordingConfig: MapboxNavigationCore.HistoryRecordingConfig? = nil, predictiveCacheConfig: MapboxNavigationCore.PredictiveCacheConfig? = PredictiveCacheConfig(), electronicHorizonConfig: MapboxNavigationCore.ElectronicHorizonConfig? = nil, liveIncidentsConfig: MapboxNavigationCore.IncidentsConfig? = nil, multilegAdvancing: MapboxNavigationCore.CoreConfig.MultilegAdvanceMode = .automatically, tilesVersion: Swift.String = "", tilestoreConfig: MapboxNavigationCore.TileStoreConfiguration = .default, ttsConfig: MapboxNavigationCore.TTSConfig = .default)
+  public static func == (a: MapboxNavigationCore.CoreConfig, b: MapboxNavigationCore.CoreConfig) -> Swift.Bool
+}
+public enum UnitOfMeasurement : Swift.Equatable, Swift.Sendable {
+  case auto
+  case imperial
+  case metric
+  public func hash(into hasher: inout Swift.Hasher)
+  public static func == (a: MapboxNavigationCore.UnitOfMeasurement, b: MapboxNavigationCore.UnitOfMeasurement) -> Swift.Bool
+  public var hashValue: Swift.Int {
+    get
+  }
+}
+public struct FasterRouteDetectionConfig : Swift.Equatable {
+  public static func == (lhs: MapboxNavigationCore.FasterRouteDetectionConfig, rhs: MapboxNavigationCore.FasterRouteDetectionConfig) -> Swift.Bool
+  public typealias FasterRouteApproval = MapboxNavigationCore.ApprovalModeAsync<(CoreLocation.CLLocation, MapboxNavigationCore.NavigationRoute)>
+  public var fasterRouteApproval: MapboxNavigationCore.FasterRouteDetectionConfig.FasterRouteApproval
+  public var proactiveReroutingInterval: Foundation.TimeInterval
+  public var minimumRouteDurationRemaining: Foundation.TimeInterval
+  public var minimumManeuverOffset: Foundation.TimeInterval
+  public var customFasterRouteProvider: (any MapboxNavigationCore.FasterRouteProvider)?
+  public init(fasterRouteApproval: MapboxNavigationCore.FasterRouteDetectionConfig.FasterRouteApproval = .automatically, proactiveReroutingInterval: Foundation.TimeInterval = 120, minimumRouteDurationRemaining: Foundation.TimeInterval = 600, minimumManeuverOffset: Foundation.TimeInterval = 70, customFasterRouteProvider: (any MapboxNavigationCore.FasterRouteProvider)? = nil)
+}
+public struct HistoryRecordingConfig : Swift.Equatable, Swift.Sendable {
+  public static let defaultFolderName: Swift.String
+  public var historyDirectoryURL: Foundation.URL
+  public init(historyDirectoryURL: Foundation.URL = FileManager.default.urls(
+            for: .documentDirectory,
+            in: .userDomainMask
+        )[0].appendingPathComponent(defaultFolderName))
+  public static func == (a: MapboxNavigationCore.HistoryRecordingConfig, b: MapboxNavigationCore.HistoryRecordingConfig) -> Swift.Bool
+}
+public struct IncidentsConfig : Swift.Equatable, Swift.Sendable {
+  public var graph: Swift.String
+  public var apiURL: Foundation.URL?
+  public init(graph: Swift.String, apiURL: Foundation.URL?)
+  public static func == (a: MapboxNavigationCore.IncidentsConfig, b: MapboxNavigationCore.IncidentsConfig) -> Swift.Bool
+}
+public struct NavigationCoreApiConfiguration : Swift.Equatable, Swift.Sendable {
+  public let navigation: MapboxNavigationCore.ApiConfiguration
+  public let map: MapboxNavigationCore.ApiConfiguration
+  public let speech: MapboxNavigationCore.ApiConfiguration
+  public init(navigation: MapboxNavigationCore.ApiConfiguration = .default, map: MapboxNavigationCore.ApiConfiguration = .default, speech: MapboxNavigationCore.ApiConfiguration = .default)
+  public static func == (a: MapboxNavigationCore.NavigationCoreApiConfiguration, b: MapboxNavigationCore.NavigationCoreApiConfiguration) -> Swift.Bool
+}
+extension MapboxNavigationCore.NavigationCoreApiConfiguration {
+  public init(accessToken: Swift.String)
+}
+public struct RerouteConfig : Swift.Equatable {
+  public typealias OptionsCustomization = MapboxNavigationCore.EquatableClosure<MapboxDirections.RouteOptions, MapboxDirections.RouteOptions>
+  public var optionsCustomization: MapboxNavigationCore.RerouteConfig.OptionsCustomization?
+  public var detectsReroute: Swift.Bool
+  public init(detectsReroute: Swift.Bool = true, optionsCustomization: MapboxNavigationCore.RerouteConfig.OptionsCustomization? = nil)
+  public static func == (a: MapboxNavigationCore.RerouteConfig, b: MapboxNavigationCore.RerouteConfig) -> Swift.Bool
+}
+public struct RoutingConfig : Swift.Equatable {
+  public var alternativeRoutesDetectionConfig: MapboxNavigationCore.AlternativeRoutesDetectionConfig?
+  public var fasterRouteDetectionConfig: MapboxNavigationCore.FasterRouteDetectionConfig?
+  public var rerouteConfig: MapboxNavigationCore.RerouteConfig
+  public var initialManeuverAvoidanceRadius: Foundation.TimeInterval
+  public var routeRefreshPeriod: Foundation.TimeInterval?
+  public var routingProviderSource: MapboxNavigationCore.RoutingProviderSource
+  public var prefersOnlineRoute: Swift.Bool
+  public init(alternativeRoutesDetectionSettings: MapboxNavigationCore.AlternativeRoutesDetectionConfig? = .init(), fasterRouteDetectionSettings: MapboxNavigationCore.FasterRouteDetectionConfig? = .init(), rerouteSettings: MapboxNavigationCore.RerouteConfig = .init(), initialManeuverAvoidanceRadius: Foundation.TimeInterval = 8, routeRefreshPeriod: Foundation.TimeInterval? = 120, routingProviderSource: MapboxNavigationCore.RoutingProviderSource = .hybrid, prefersOnlineRoute: Swift.Bool = true, detectsReroute: Swift.Bool = true)
+  public static func == (a: MapboxNavigationCore.RoutingConfig, b: MapboxNavigationCore.RoutingConfig) -> Swift.Bool
+}
+public enum ApprovalMode<Context> : Swift.Equatable, Swift.Sendable {
+  case automatically
+  case manually
+  public func hash(into hasher: inout Swift.Hasher)
+  public static func == (a: MapboxNavigationCore.ApprovalMode<Context>, b: MapboxNavigationCore.ApprovalMode<Context>) -> Swift.Bool
+  public var hashValue: Swift.Int {
+    get
+  }
+}
+public enum ApprovalModeAsync<Context> : Swift.Equatable, Swift.Sendable where Context : Swift.Sendable {
+  public static func == (lhs: MapboxNavigationCore.ApprovalModeAsync<Context>, rhs: MapboxNavigationCore.ApprovalModeAsync<Context>) -> Swift.Bool
+  #if compiler(>=5.3) && $AsyncAwait && $Sendable
+  public typealias ApprovalCheck = @Sendable (Context) async -> Swift.Bool
+  #endif
+  case automatically
+  case manually(MapboxNavigationCore.ApprovalModeAsync<Context>.ApprovalCheck)
+}
+public struct EquatableClosure<Input, Output> : Swift.Equatable {
+  public static func == (lhs: MapboxNavigationCore.EquatableClosure<Input, Output>, rhs: MapboxNavigationCore.EquatableClosure<Input, Output>) -> Swift.Bool
+  public typealias Closure = (Input) -> Output
+  public init(_ closure: MapboxNavigationCore.EquatableClosure<Input, Output>.Closure? = nil)
+}
+public struct StatusUpdatingSettings {
+  public var updatingPatience: Foundation.TimeInterval?
+  public var updatingInterval: Foundation.TimeInterval?
+  public init(updatingPatience: Foundation.TimeInterval? = nil, updatingInterval: Foundation.TimeInterval? = nil)
+}
+public enum TTSConfig : Swift.Equatable, Swift.Sendable {
+  public static func == (lhs: MapboxNavigationCore.TTSConfig, rhs: MapboxNavigationCore.TTSConfig) -> Swift.Bool
+  case `default`
+  case localOnly
+  case custom(speechSynthesizer: any MapboxNavigationCore.SpeechSynthesizing)
+}
+public struct TelemetryAppMetadata : Swift.Equatable, Swift.Sendable {
+  public let name: Swift.String
+  public let version: Swift.String
+  public var userId: Swift.String?
+  public var sessionId: Swift.String?
+  public init(name: Swift.String, version: Swift.String, userId: Swift.String?, sessionId: Swift.String?)
+  public static func == (a: MapboxNavigationCore.TelemetryAppMetadata, b: MapboxNavigationCore.TelemetryAppMetadata) -> Swift.Bool
+}
+public struct TileStoreConfiguration : Swift.Equatable, Swift.Sendable {
+  public enum Location : Swift.Equatable, Swift.Sendable {
+    case `default`
+    case custom(Foundation.URL)
+    public var tileStoreURL: Foundation.URL? {
+      get
+    }
+    public var tileStore: MapboxCommon.TileStore {
+      get
+    }
+    public static func == (a: MapboxNavigationCore.TileStoreConfiguration.Location, b: MapboxNavigationCore.TileStoreConfiguration.Location) -> Swift.Bool
+  }
+  public let navigatorLocation: MapboxNavigationCore.TileStoreConfiguration.Location
+  public let mapLocation: MapboxNavigationCore.TileStoreConfiguration.Location?
+  public static var `default`: MapboxNavigationCore.TileStoreConfiguration {
+    get
+  }
+  public static func custom(_ url: Foundation.URL) -> MapboxNavigationCore.TileStoreConfiguration
+  public static func isolated(navigationLocation: MapboxNavigationCore.TileStoreConfiguration.Location, mapLocation: MapboxNavigationCore.TileStoreConfiguration.Location?) -> MapboxNavigationCore.TileStoreConfiguration
+  public static func == (a: MapboxNavigationCore.TileStoreConfiguration, b: MapboxNavigationCore.TileStoreConfiguration) -> Swift.Bool
+}
+public typealias ProfileIdentifier = MapboxDirections.ProfileIdentifier
+public typealias Waypoint = MapboxDirections.Waypoint
+public typealias CongestionLevel = MapboxDirections.CongestionLevel
+public typealias RoadClasses = MapboxDirections.RoadClasses
+public typealias SpokenInstruction = MapboxDirections.SpokenInstruction
+public typealias VisualInstructionBanner = MapboxDirections.VisualInstructionBanner
+public typealias DirectionsError = MapboxDirections.DirectionsError
+public typealias Log = MapboxNavigationCore.NavigationLog
+public enum NavigationLog {
+  public typealias Category = MapboxNavigationCore.NavigationLogCategory
+  public static func debug(_ message: Swift.String, category: MapboxNavigationCore.NavigationLog.Category)
+  public static func info(_ message: Swift.String, category: MapboxNavigationCore.NavigationLog.Category)
+  public static func warning(_ message: Swift.String, category: MapboxNavigationCore.NavigationLog.Category)
+  public static func error(_ message: Swift.String, category: MapboxNavigationCore.NavigationLog.Category)
+  public static func fault(_ message: Swift.String, category: MapboxNavigationCore.NavigationLog.Category)
+  public static func trace(_ message: Swift.String)
+}
+public struct NavigationLogCategory : Swift.RawRepresentable, Swift.Sendable {
+  public let rawValue: Swift.String
+  public init(rawValue: Swift.String)
+  public static let billing: MapboxNavigationCore.NavigationLogCategory
+  public static let navigation: MapboxNavigationCore.NavigationLogCategory
+  public static let settings: MapboxNavigationCore.NavigationLogCategory
+  public static let unimplementedMethods: MapboxNavigationCore.NavigationLogCategory
+  public static let navigationUI: MapboxNavigationCore.NavigationLogCategory
+  public static let carPlay: MapboxNavigationCore.NavigationLogCategory
+  public static let copilot: MapboxNavigationCore.NavigationLogCategory
+  public var rawLogCategory: Swift.String {
+    get
+  }
+  public typealias RawValue = Swift.String
+}
+extension UIKit.UIWindow {
+  @_Concurrency.MainActor(unsafe) public func capture() -> UIKit.UIImage?
+}
+public protocol UnimplementedLogging {
+  func logUnimplemented(protocolType: Any, level: os.OSLogType, function: Swift.String)
+}
+extension MapboxNavigationCore.UnimplementedLogging {
+  public func logUnimplemented(protocolType: Any, level: os.OSLogType, function: Swift.String = #function)
+}
+extension Foundation.URLRequest {
+  public mutating func setNavigationUXUserAgent()
+}
+extension Swift.String {
+  public static let navigationUXUserAgent: Swift.String
+  public static let navigationUXUserAgentFragment: Swift.String
+}
+extension Foundation.Bundle {
+  public static let navigationUXName: Swift.String
+  public static let navigationCoreName: Swift.String
+}
+extension Foundation.Bundle {
+  public static let mapboxNavigationVersion: Swift.String
+  public static let mapboxNavigationUXBundleIdentifier: Swift.String
+}
+@_hasMissingDesignatedInitializers @_Concurrency.MainActor final public class MapboxSpeechSynthesizer : MapboxNavigationCore.SpeechSynthesizing {
+  @_Concurrency.MainActor final public var voiceInstructions: Combine.AnyPublisher<any MapboxNavigationCore.VoiceInstructionEvent, Swift.Never> {
+    get
+  }
+  @_Concurrency.MainActor final public var muted: Swift.Bool {
+    get
+    set
+  }
+  @_Concurrency.MainActor final public var volume: MapboxNavigationCore.VolumeMode {
+    get
+    set
+  }
+  @_Concurrency.MainActor final public var locale: Foundation.Locale?
+  @_Concurrency.MainActor final public var stepsAheadToCache: Swift.UInt
+  @_Concurrency.MainActor final public var managesAudioSession: Swift.Bool
+  @_Concurrency.MainActor final public var isSpeaking: Swift.Bool {
+    get
+  }
+  @objc deinit
+  @_Concurrency.MainActor final public func prepareIncomingSpokenInstructions(_ instructions: [MapboxNavigationCore.SpokenInstruction], locale: Foundation.Locale? = nil)
+  @_Concurrency.MainActor final public func speak(_ instruction: MapboxNavigationCore.SpokenInstruction, during legProgress: MapboxNavigationCore.RouteLegProgress, locale: Foundation.Locale? = nil)
+  @_Concurrency.MainActor final public func stopSpeaking()
+  @_Concurrency.MainActor final public func interruptSpeaking()
+  @_Concurrency.MainActor final public func speak(_ instruction: MapboxNavigationCore.SpokenInstruction, data: Foundation.Data)
+}
+@_Concurrency.MainActor final public class MultiplexedSpeechSynthesizer : MapboxNavigationCore.SpeechSynthesizing {
+  @_Concurrency.MainActor final public var voiceInstructions: Combine.AnyPublisher<any MapboxNavigationCore.VoiceInstructionEvent, Swift.Never> {
+    get
+  }
+  @_Concurrency.MainActor final public var muted: Swift.Bool {
+    get
+    set
+  }
+  @_Concurrency.MainActor final public var volume: MapboxNavigationCore.VolumeMode {
+    get
+    set
+  }
+  @_Concurrency.MainActor final public var locale: Foundation.Locale? {
+    get
+    set
+  }
+  @_Concurrency.MainActor final public var managesAudioSession: Swift.Bool {
+    get
+    set
+  }
+  @_Concurrency.MainActor final public var isSpeaking: Swift.Bool {
+    get
+  }
+  @_Concurrency.MainActor final public var speechSynthesizers: [any MapboxNavigationCore.SpeechSynthesizing] {
+    get
+    set
+  }
+  @_Concurrency.MainActor public init(speechSynthesizers: [any MapboxNavigationCore.SpeechSynthesizing])
+  #if compiler(>=5.3) && $Sendable
+  @_Concurrency.MainActor convenience public init(mapboxSpeechApiConfiguration: MapboxNavigationCore.ApiConfiguration, skuTokenProvider: @escaping @Sendable () -> Swift.String?, customSpeechSynthesizers: [any MapboxNavigationCore.SpeechSynthesizing] = [])
+  #endif
+  @_Concurrency.MainActor final public func prepareIncomingSpokenInstructions(_ instructions: [MapboxNavigationCore.SpokenInstruction], locale: Foundation.Locale? = nil)
+  @_Concurrency.MainActor final public func speak(_ instruction: MapboxNavigationCore.SpokenInstruction, during legProgress: MapboxNavigationCore.RouteLegProgress, locale: Foundation.Locale? = nil)
+  @_Concurrency.MainActor final public func stopSpeaking()
+  @_Concurrency.MainActor final public func interruptSpeaking()
+  @objc deinit
+}
+@_Concurrency.MainActor final public class RouteVoiceController {
+  @_Concurrency.MainActor final public var speechSynthesizer: any MapboxNavigationCore.SpeechSynthesizing {
+    get
+  }
+  @_Concurrency.MainActor final public var playsRerouteSound: Swift.Bool
+  @_Concurrency.MainActor public init(routeProgressing: Combine.AnyPublisher<MapboxNavigationCore.RouteProgressState?, Swift.Never>, rerouteStarted: Combine.AnyPublisher<Swift.Void, Swift.Never>, fasterRouteSet: Combine.AnyPublisher<Swift.Void, Swift.Never>, speechSynthesizer: any MapboxNavigationCore.SpeechSynthesizing)
+  @objc deinit
+}
+public enum SpeechFailureAction : Swift.String, Swift.Sendable {
+  case mix
+  case duck
+  case unduck
+  case play
+  public init?(rawValue: Swift.String)
+  public typealias RawValue = Swift.String
+  public var rawValue: Swift.String {
+    get
+  }
+}
+public enum SpeechError : Foundation.LocalizedError {
+  case apiError(instruction: MapboxNavigationCore.SpokenInstruction, options: MapboxNavigationCore.SpeechOptions, underlying: (any Swift.Error)?)
+  case noData(instruction: MapboxNavigationCore.SpokenInstruction, options: MapboxNavigationCore.SpeechOptions)
+  case unableToControlAudio(instruction: MapboxNavigationCore.SpokenInstruction?, action: MapboxNavigationCore.SpeechFailureAction, underlying: (any Swift.Error)?)
+  case unableToInitializePlayer(playerType: AVFAudio.AVAudioPlayer.Type, instruction: MapboxNavigationCore.SpokenInstruction, synthesizer: (any Swift.Sendable)?, underlying: any Swift.Error)
+  case undefinedSpeechLocale(instruction: MapboxNavigationCore.SpokenInstruction)
+  case unsupportedLocale(locale: Foundation.Locale)
+}
+public enum TextType : Swift.String, Swift.Codable, Swift.Sendable, Swift.Hashable {
+  case text
+  case ssml
+  public init?(rawValue: Swift.String)
+  public typealias RawValue = Swift.String
+  public var rawValue: Swift.String {
+    get
+  }
+}
+public enum AudioFormat : Swift.String, Swift.Codable, Swift.Sendable, Swift.Hashable {
+  case mp3
+  public init?(rawValue: Swift.String)
+  public typealias RawValue = Swift.String
+  public var rawValue: Swift.String {
+    get
+  }
+}
+public enum SpeechGender : Swift.String, Swift.Codable, Swift.Sendable, Swift.Hashable {
+  case female
+  case male
+  case neuter
+  public init?(rawValue: Swift.String)
+  public typealias RawValue = Swift.String
+  public var rawValue: Swift.String {
+    get
+  }
+}
+public struct SpeechOptions : Swift.Codable, Swift.Sendable, Swift.Equatable {
+  public init(text: Swift.String, locale: Foundation.Locale)
+  public init(ssml: Swift.String, locale: Foundation.Locale)
+  public var text: Swift.String
+  public let textType: MapboxNavigationCore.TextType
+  public var outputFormat: MapboxNavigationCore.AudioFormat
+  public var locale: Foundation.Locale
+  public var speechGender: MapboxNavigationCore.SpeechGender
+  public static func == (a: MapboxNavigationCore.SpeechOptions, b: MapboxNavigationCore.SpeechOptions) -> Swift.Bool
+  public func encode(to encoder: any Swift.Encoder) throws
+  public init(from decoder: any Swift.Decoder) throws
+}
+@_Concurrency.MainActor public protocol SpeechSynthesizing : AnyObject, Swift.Sendable {
+  @_Concurrency.MainActor var voiceInstructions: Combine.AnyPublisher<any MapboxNavigationCore.VoiceInstructionEvent, Swift.Never> { get }
+  @_Concurrency.MainActor var muted: Swift.Bool { get set }
+  @_Concurrency.MainActor var volume: MapboxNavigationCore.VolumeMode { get set }
+  @_Concurrency.MainActor var isSpeaking: Swift.Bool { get }
+  @_Concurrency.MainActor var locale: Foundation.Locale? { get set }
+  @_Concurrency.MainActor var managesAudioSession: Swift.Bool { get set }
+  @_Concurrency.MainActor func prepareIncomingSpokenInstructions(_ instructions: [MapboxNavigationCore.SpokenInstruction], locale: Foundation.Locale?)
+  @_Concurrency.MainActor func speak(_ instruction: MapboxNavigationCore.SpokenInstruction, during legProgress: MapboxNavigationCore.RouteLegProgress, locale: Foundation.Locale?)
+  @_Concurrency.MainActor func stopSpeaking()
+  @_Concurrency.MainActor func interruptSpeaking()
+}
+public protocol VoiceInstructionEvent {
+}
+public enum VoiceInstructionEvents {
+  public struct WillSpeak : MapboxNavigationCore.VoiceInstructionEvent, Swift.Equatable {
+    public let instruction: MapboxNavigationCore.SpokenInstruction
+    public init(instruction: MapboxNavigationCore.SpokenInstruction)
+    public static func == (a: MapboxNavigationCore.VoiceInstructionEvents.WillSpeak, b: MapboxNavigationCore.VoiceInstructionEvents.WillSpeak) -> Swift.Bool
+  }
+  public struct DidSpeak : MapboxNavigationCore.VoiceInstructionEvent, Swift.Equatable {
+    public let instruction: MapboxNavigationCore.SpokenInstruction
+    public init(instruction: MapboxNavigationCore.SpokenInstruction)
+    public static func == (a: MapboxNavigationCore.VoiceInstructionEvents.DidSpeak, b: MapboxNavigationCore.VoiceInstructionEvents.DidSpeak) -> Swift.Bool
+  }
+  public struct DidInterrupt : MapboxNavigationCore.VoiceInstructionEvent, Swift.Equatable {
+    public let interruptedInstruction: MapboxNavigationCore.SpokenInstruction
+    public let interruptingInstruction: MapboxNavigationCore.SpokenInstruction
+    public init(interruptedInstruction: MapboxNavigationCore.SpokenInstruction, interruptingInstruction: MapboxNavigationCore.SpokenInstruction)
+    public static func == (a: MapboxNavigationCore.VoiceInstructionEvents.DidInterrupt, b: MapboxNavigationCore.VoiceInstructionEvents.DidInterrupt) -> Swift.Bool
+  }
+  public struct EncounteredError : MapboxNavigationCore.VoiceInstructionEvent {
+    public let error: MapboxNavigationCore.SpeechError
+    public init(error: MapboxNavigationCore.SpeechError)
+  }
+}
+public enum VolumeMode : Swift.Equatable {
+  case system
+  case override(Swift.Float)
+  public static func == (a: MapboxNavigationCore.VolumeMode, b: MapboxNavigationCore.VolumeMode) -> Swift.Bool
+}
+extension MapboxNavigationCore.ActiveNavigationFeedbackType : Swift.Equatable {}
+extension MapboxNavigationCore.ActiveNavigationFeedbackType : Swift.Hashable {}
+extension MapboxNavigationCore.FeedbackSource : Swift.Equatable {}
+extension MapboxNavigationCore.FeedbackSource : Swift.Hashable {}
+extension MapboxNavigationCore.FeedbackSource : Swift.RawRepresentable {}
+extension MapboxNavigationCore.PassiveNavigationFeedbackType : Swift.Equatable {}
+extension MapboxNavigationCore.PassiveNavigationFeedbackType : Swift.Hashable {}
+extension MapboxNavigationCore.SearchFeedbackType : Swift.Equatable {}
+extension MapboxNavigationCore.SearchFeedbackType : Swift.Hashable {}
+extension MapboxNavigationCore.NavigationHistoryEvents.SearchResultUsed : MapboxNavigationCore.NavigationHistoryEvent {}
+extension MapboxNavigationCore.NavigationHistoryEvents.SearchResultUsed.Provider : Swift.Equatable {}
+extension MapboxNavigationCore.NavigationHistoryEvents.SearchResultUsed.Provider : Swift.Hashable {}
+extension MapboxNavigationCore.NavigationHistoryEvents.SearchResultUsed.Provider : Swift.RawRepresentable {}
+extension MapboxNavigationCore.NavigationHistoryEvents.SearchResults : MapboxNavigationCore.NavigationHistoryEvent {}
+extension MapboxNavigationCore.NavigationSession.SessionType : Swift.Equatable {}
+extension MapboxNavigationCore.NavigationSession.SessionType : Swift.Hashable {}
+extension MapboxNavigationCore.NavigationSession.SessionType : Swift.RawRepresentable {}
+extension MapboxNavigationCore.NavigationSession.State : Swift.Equatable {}
+extension MapboxNavigationCore.NavigationSession.State : Swift.Hashable {}
+extension MapboxNavigationCore.NavigationSession.State : Swift.RawRepresentable {}
+extension MapboxNavigationCore.NavigationCamera : Swift.Sendable {}
+extension MapboxNavigationCore.NavigationCameraState : Swift.Hashable {}
+extension MapboxNavigationCore.NavigationCameraStateTransition : Swift.Sendable {}
+extension MapboxNavigationCore.NavigationCameraType : Swift.Equatable {}
+extension MapboxNavigationCore.NavigationCameraType : Swift.Hashable {}
+extension MapboxNavigationCore.CarPlayViewportDataSource : Swift.Sendable {}
+extension MapboxNavigationCore.MobileViewportDataSource : Swift.Sendable {}
+extension MapboxNavigationCore.RouteAnnotationKind : Swift.Equatable {}
+extension MapboxNavigationCore.RouteAnnotationKind : Swift.Hashable {}
+extension MapboxNavigationCore.OpenLROrientation : Swift.Hashable {}
+extension MapboxNavigationCore.OpenLRSideOfRoad : Swift.Hashable {}
+extension MapboxNavigationCore.RoadGraph.Edge.Directionality : Swift.Equatable {}
+extension MapboxNavigationCore.RoadGraph.Edge.Directionality : Swift.Hashable {}
+extension MapboxNavigationCore.ReroutingError : Swift.Equatable {}
+extension MapboxNavigationCore.ReroutingError : Swift.Hashable {}
+extension MapboxNavigationCore.Session.State.FreeDriveState : Swift.Equatable {}
+extension MapboxNavigationCore.Session.State.FreeDriveState : Swift.Hashable {}
+extension MapboxNavigationCore.Session.State.ActiveGuidanceState : Swift.Equatable {}
+extension MapboxNavigationCore.Session.State.ActiveGuidanceState : Swift.Hashable {}
+extension MapboxNavigationCore.RoutingProviderSource : Swift.Hashable {}
+extension MapboxNavigationCore.UnitOfMeasurement : Swift.Hashable {}
+extension MapboxNavigationCore.ApprovalMode : Swift.Hashable {}
+extension MapboxNavigationCore.RouteVoiceController : Swift.Sendable {}
+extension MapboxNavigationCore.SpeechFailureAction : Swift.Equatable {}
+extension MapboxNavigationCore.SpeechFailureAction : Swift.Hashable {}
+extension MapboxNavigationCore.SpeechFailureAction : Swift.RawRepresentable {}
+extension MapboxNavigationCore.TextType : Swift.RawRepresentable {}
+extension MapboxNavigationCore.AudioFormat : Swift.RawRepresentable {}
+extension MapboxNavigationCore.SpeechGender : Swift.RawRepresentable {}

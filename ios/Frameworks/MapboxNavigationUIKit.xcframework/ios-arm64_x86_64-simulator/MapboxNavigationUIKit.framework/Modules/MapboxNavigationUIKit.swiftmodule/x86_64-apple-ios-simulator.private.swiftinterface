@@ -1,0 +1,2015 @@
+// swift-interface-format-version: 1.0
+// swift-compiler-version: Apple Swift version 5.9.2 (swiftlang-5.9.2.2.56 clang-1500.1.0.2.5)
+// swift-module-flags: -target x86_64-apple-ios14.0-simulator -enable-objc-interop -enable-library-evolution -swift-version 5 -enforce-exclusivity=checked -O -module-name MapboxNavigationUIKit
+// swift-module-flags-ignorable: -enable-bare-slash-regex
+import AVFoundation
+import CarPlay
+import Combine
+import CommonCrypto
+import CoreGraphics
+import CoreLocation
+import Foundation
+import Foundation/*.Bundle*/
+import Foundation/*.ProcessInfo*/
+import Foundation/*.URL*/
+import MapboxCoreMaps
+import MapboxDirections
+@_spi(Restricted) import MapboxMaps
+import MapboxNavigationCore
+import MapboxNavigationNative
+import MobileCoreServices
+import Swift
+import Turf
+import UIKit
+import UserNotifications
+import _Concurrency
+import _StringProcessing
+import _SwiftConcurrencyShims
+public protocol Banner : UIKit.UIViewController {
+  var bannerConfiguration: MapboxNavigationUIKit.BannerConfiguration { get }
+}
+public struct BannerConfiguration {
+  public var position: MapboxNavigationUIKit.BannerPosition {
+    get
+  }
+  public var height: CoreFoundation.CGFloat? {
+    get
+  }
+  public var isExpandable: Swift.Bool {
+    get
+  }
+  public var expansionOffset: CoreFoundation.CGFloat {
+    get
+  }
+  public init(position: MapboxNavigationUIKit.BannerPosition, height: CoreFoundation.CGFloat? = nil, isExpandable: Swift.Bool = false, expansionOffset: CoreFoundation.CGFloat = 0.0)
+}
+public enum BannerPosition {
+  case topLeading
+  case bottomLeading
+  public static func == (a: MapboxNavigationUIKit.BannerPosition, b: MapboxNavigationUIKit.BannerPosition) -> Swift.Bool
+  public func hash(into hasher: inout Swift.Hasher)
+  public var hashValue: Swift.Int {
+    get
+  }
+}
+@objc(MBBannerContainerView) @_Concurrency.MainActor(unsafe) open class BannerContainerView : UIKit.UIView {
+  public enum State {
+    case expanded
+    case collapsed
+    public static func == (a: MapboxNavigationUIKit.BannerContainerView.State, b: MapboxNavigationUIKit.BannerContainerView.State) -> Swift.Bool
+    public func hash(into hasher: inout Swift.Hasher)
+    public var hashValue: Swift.Int {
+      get
+    }
+  }
+  @_Concurrency.MainActor(unsafe) public var isExpandable: Swift.Bool {
+    get
+    set
+  }
+  @_Concurrency.MainActor(unsafe) public var expansionOffset: CoreFoundation.CGFloat
+  @_Concurrency.MainActor(unsafe) public var state: MapboxNavigationUIKit.BannerContainerView.State {
+    get
+  }
+  @_Concurrency.MainActor(unsafe) weak public var delegate: (any MapboxNavigationUIKit.BannerContainerViewDelegate)? {
+    get
+    set
+  }
+  @_Concurrency.MainActor(unsafe) public init(_ position: MapboxNavigationUIKit.BannerPosition, frame: CoreFoundation.CGRect = .zero)
+  @_Concurrency.MainActor(unsafe) @objc required dynamic public init?(coder: Foundation.NSCoder)
+  @_Concurrency.MainActor(unsafe) @objc override dynamic open func didMoveToSuperview()
+  public typealias CompletionHandler = (_ completed: Swift.Bool) -> Swift.Void
+  @_Concurrency.MainActor(unsafe) public func show(animated: Swift.Bool = true, duration: Foundation.TimeInterval = 0.2, animations: (() -> Swift.Void)? = nil, completion: MapboxNavigationUIKit.BannerContainerView.CompletionHandler? = nil)
+  @_Concurrency.MainActor(unsafe) public func hide(animated: Swift.Bool = true, duration: Foundation.TimeInterval = 0.2, animations: (() -> Swift.Void)? = nil, completion: MapboxNavigationUIKit.BannerContainerView.CompletionHandler? = nil)
+  @objc deinit
+}
+public protocol BannerContainerViewDelegate : AnyObject, MapboxNavigationCore.UnimplementedLogging {
+  func bannerContainerView(_ bannerContainerView: MapboxNavigationUIKit.BannerContainerView, stateWillChangeTo state: MapboxNavigationUIKit.BannerContainerView.State)
+  func bannerContainerView(_ bannerContainerView: MapboxNavigationUIKit.BannerContainerView, stateDidChangeTo state: MapboxNavigationUIKit.BannerContainerView.State)
+  func bannerContainerView(_ bannerContainerView: MapboxNavigationUIKit.BannerContainerView, didExpandTo fraction: CoreFoundation.CGFloat)
+}
+extension MapboxNavigationUIKit.BannerContainerViewDelegate {
+  public func bannerContainerView(_ bannerContainerView: MapboxNavigationUIKit.BannerContainerView, stateWillChangeTo state: MapboxNavigationUIKit.BannerContainerView.State)
+  public func bannerContainerView(_ bannerContainerView: MapboxNavigationUIKit.BannerContainerView, stateDidChangeTo state: MapboxNavigationUIKit.BannerContainerView.State)
+  public func bannerContainerView(_ bannerContainerView: MapboxNavigationUIKit.BannerContainerView, didExpandTo fraction: CoreFoundation.CGFloat)
+}
+@objc @_hasMissingDesignatedInitializers @_Concurrency.MainActor(unsafe) public class BannerDismissalViewController : UIKit.UIViewController, MapboxNavigationUIKit.Banner {
+  @_Concurrency.MainActor(unsafe) public var backTitle: Swift.String? {
+    get
+    set
+  }
+  @_Concurrency.MainActor(unsafe) weak public var delegate: (any MapboxNavigationUIKit.BannerDismissalViewControllerDelegate)?
+  @_Concurrency.MainActor(unsafe) final public let bannerConfiguration: MapboxNavigationUIKit.BannerConfiguration
+  @_Concurrency.MainActor(unsafe) public init(_ bannerConfiguration: MapboxNavigationUIKit.BannerConfiguration = BannerConfiguration(position: .topLeading, height: 70.0))
+  @objc deinit
+}
+public protocol BannerDismissalViewControllerDelegate : AnyObject {
+  func didTapDismissBannerButton(_ bannerDismissalViewController: MapboxNavigationUIKit.BannerDismissalViewController)
+}
+@_inheritsConvenienceInitializers @objc(MBTopBannerView) @_Concurrency.MainActor(unsafe) open class TopBannerView : UIKit.UIView {
+  @_Concurrency.MainActor(unsafe) @objc override dynamic public init(frame: CoreFoundation.CGRect)
+  @_Concurrency.MainActor(unsafe) @objc required dynamic public init?(coder: Foundation.NSCoder)
+  @objc deinit
+}
+@objc @_inheritsConvenienceInitializers @_Concurrency.MainActor(unsafe) open class TopPaddingView : MapboxNavigationUIKit.TopBannerView {
+  @_Concurrency.MainActor(unsafe) @objc override dynamic public init(frame: CoreFoundation.CGRect)
+  @_Concurrency.MainActor(unsafe) @objc required dynamic public init?(coder: Foundation.NSCoder)
+  @objc deinit
+}
+@_inheritsConvenienceInitializers @objc(MBBottomBannerView) @_Concurrency.MainActor(unsafe) open class BottomBannerView : UIKit.UIView {
+  @_Concurrency.MainActor(unsafe) @objc override dynamic public init(frame: CoreFoundation.CGRect)
+  @_Concurrency.MainActor(unsafe) @objc required dynamic public init?(coder: Foundation.NSCoder)
+  @objc deinit
+}
+@objc @_inheritsConvenienceInitializers @_Concurrency.MainActor(unsafe) open class BottomPaddingView : MapboxNavigationUIKit.BottomBannerView {
+  @_Concurrency.MainActor(unsafe) @objc override dynamic public init(frame: CoreFoundation.CGRect)
+  @_Concurrency.MainActor(unsafe) @objc required dynamic public init?(coder: Foundation.NSCoder)
+  @objc deinit
+}
+@objc @_inheritsConvenienceInitializers @IBDesignable @_Concurrency.MainActor(unsafe) open class BottomBannerViewController : UIKit.UIViewController, MapboxNavigationUIKit.NavigationComponent {
+  @_Concurrency.MainActor(unsafe) final public let dateFormatter: Foundation.DateFormatter
+  @_Concurrency.MainActor(unsafe) final public let dateComponentsFormatter: Foundation.DateComponentsFormatter
+  @_Concurrency.MainActor(unsafe) final public let distanceFormatter: MapboxNavigationUIKit.DistanceFormatter
+  @_Concurrency.MainActor(unsafe) open var bottomPaddingView: MapboxNavigationUIKit.BottomPaddingView {
+    get
+    set
+  }
+  @_Concurrency.MainActor(unsafe) open var bottomBannerView: MapboxNavigationUIKit.BottomBannerView {
+    get
+    set
+  }
+  @_Concurrency.MainActor(unsafe) open var timeRemainingLabel: MapboxNavigationUIKit.TimeRemainingLabel!
+  @_Concurrency.MainActor(unsafe) open var distanceRemainingLabel: MapboxNavigationUIKit.DistanceRemainingLabel!
+  @_Concurrency.MainActor(unsafe) open var arrivalTimeLabel: MapboxNavigationUIKit.ArrivalTimeLabel!
+  @_Concurrency.MainActor(unsafe) open var cancelButton: MapboxNavigationUIKit.CancelButton!
+  @_Concurrency.MainActor(unsafe) open var verticalDividerView: MapboxNavigationUIKit.SeparatorView!
+  @_Concurrency.MainActor(unsafe) open var horizontalDividerView: MapboxNavigationUIKit.SeparatorView!
+  @_Concurrency.MainActor(unsafe) weak open var delegate: (any MapboxNavigationUIKit.BottomBannerViewControllerDelegate)?
+  @_Concurrency.MainActor(unsafe) @objc override dynamic public init(nibName nibNameOrNil: Swift.String?, bundle nibBundleOrNil: Foundation.Bundle?)
+  @_Concurrency.MainActor(unsafe) @objc required dynamic public init?(coder aDecoder: Foundation.NSCoder)
+  @objc deinit
+  @_Concurrency.MainActor(unsafe) @objc override dynamic open func viewWillDisappear(_ animated: Swift.Bool)
+  @_Concurrency.MainActor(unsafe) @objc override dynamic open func viewDidLoad()
+  @_Concurrency.MainActor(unsafe) @objc override dynamic open func prepareForInterfaceBuilder()
+  @_Concurrency.MainActor(unsafe) public func onDidReroute()
+  @_Concurrency.MainActor(unsafe) public func onRouteProgressUpdated(_ progress: MapboxNavigationCore.RouteProgress)
+  @_Concurrency.MainActor(unsafe) public func onSwitchingToOnline()
+}
+public protocol BottomBannerViewControllerDelegate : AnyObject {
+  func didTapCancel(_ sender: Any)
+}
+extension MapboxNavigationUIKit.BottomBannerViewController {
+  @_Concurrency.MainActor(unsafe) public func reinstallConstraints()
+  @_Concurrency.MainActor(unsafe) @objc override dynamic open func traitCollectionDidChange(_ previousTraitCollection: UIKit.UITraitCollection?)
+}
+public typealias CompletionHandler = () -> Swift.Void
+@objc(MBBimodalCache) public protocol BimodalCache {
+  @objc func clearMemory()
+  @objc func clearDisk(completion: MapboxNavigationUIKit.CompletionHandler?)
+}
+public protocol BimodalImageCache : MapboxNavigationUIKit.BimodalCache {
+  func store(_ image: UIKit.UIImage, forKey key: Swift.String, toDisk: Swift.Bool, completion completionBlock: MapboxNavigationUIKit.CompletionHandler?)
+  func image(forKey: Swift.String?) -> UIKit.UIImage?
+}
+public protocol BimodalDataCache : MapboxNavigationUIKit.BimodalCache {
+  func store(_ data: Foundation.Data, forKey key: Swift.String, toDisk: Swift.Bool, completion completionBlock: MapboxNavigationUIKit.CompletionHandler?)
+  func data(forKey: Swift.String?) -> Foundation.Data?
+}
+extension CarPlay.CPInterfaceController {
+  public func safePopTemplate(animated: Swift.Bool)
+}
+extension CarPlay.CPRouteChoice {
+  public var navigationRoutes: MapboxNavigationCore.NavigationRoutes? {
+    get
+  }
+}
+public enum CarPlayActivity : Swift.Int {
+  case browsing
+  case panningInBrowsingMode
+  case panningInNavigationMode
+  case previewing
+  case navigating
+  public init?(rawValue: Swift.Int)
+  public typealias RawValue = Swift.Int
+  public var rawValue: Swift.Int {
+    get
+  }
+}
+@objc @_inheritsConvenienceInitializers @_Concurrency.MainActor(unsafe) open class CarPlayCompassView : MapboxNavigationUIKit.StylableView {
+  @_Concurrency.MainActor(unsafe) open var course: Swift.Double {
+    get
+    set
+  }
+  @_Concurrency.MainActor(unsafe) @objc override dynamic public init(frame: CoreFoundation.CGRect)
+  @_Concurrency.MainActor(unsafe) @objc required dynamic public init?(coder decoder: Foundation.NSCoder)
+  @objc deinit
+}
+@objc public class CarPlayManager : ObjectiveC.NSObject {
+  public var interfaceController: CarPlay.CPInterfaceController? {
+    get
+  }
+  public var carWindow: UIKit.UIWindow? {
+    get
+  }
+  public var mainMapTemplate: CarPlay.CPMapTemplate? {
+    get
+  }
+  public static var isConnected: Swift.Bool
+  public var startFreeDriveAutomatically: Swift.Bool
+  weak public var delegate: (any MapboxNavigationUIKit.CarPlayManagerDelegate)?
+  weak public var carPlayNavigationViewController: MapboxNavigationUIKit.CarPlayNavigationViewController? {
+    get
+  }
+  final public let carPlayNavigationViewControllerType: MapboxNavigationUIKit.CarPlayNavigationViewController.Type
+  final public let eventsManager: MapboxNavigationCore.NavigationEventsManager
+  public var currentActivity: MapboxNavigationUIKit.CarPlayActivity? {
+    get
+  }
+  public func beginNavigationWithCarPlay(using currentLocation: CoreLocation.CLLocationCoordinate2D)
+  @_Concurrency.MainActor public init(navigationProvider: MapboxNavigationCore.MapboxNavigationProvider, styles: [MapboxNavigationUIKit.Style]? = nil)
+  public var styles: [MapboxNavigationUIKit.Style] {
+    get
+    set
+  }
+  public var carPlayMapViewController: MapboxNavigationUIKit.CarPlayMapViewController? {
+    get
+  }
+  public var navigationMapView: MapboxNavigationCore.NavigationMapView? {
+    get
+  }
+  public var exitButton: CarPlay.CPBarButton {
+    get
+    set
+  }
+  @_Concurrency.MainActor public var muteButton: CarPlay.CPBarButton {
+    get
+    set
+  }
+  public var alternativeRoutesButton: CarPlay.CPBarButton {
+    get
+    set
+  }
+  public var showFeedbackButton: CarPlay.CPMapButton {
+    get
+    set
+  }
+  public var userTrackingButton: CarPlay.CPMapButton {
+    get
+    set
+  }
+  @objc deinit
+}
+extension MapboxNavigationUIKit.CarPlayManager : CarPlay.CPApplicationDelegate {
+  @objc dynamic public func application(_ application: UIKit.UIApplication, didConnectCarInterfaceController interfaceController: CarPlay.CPInterfaceController, to window: CarPlay.CPWindow)
+  @objc dynamic public func application(_ application: UIKit.UIApplication, didDisconnectCarInterfaceController interfaceController: CarPlay.CPInterfaceController, from window: CarPlay.CPWindow)
+  public func resetPanButtons(_ mapTemplate: CarPlay.CPMapTemplate)
+}
+extension MapboxNavigationUIKit.CarPlayManager : CarPlay.CPInterfaceControllerDelegate {
+  @objc dynamic public func templateWillAppear(_ template: CarPlay.CPTemplate, animated: Swift.Bool)
+  @objc dynamic public func templateDidAppear(_ template: CarPlay.CPTemplate, animated: Swift.Bool)
+  @objc dynamic public func templateWillDisappear(_ template: CarPlay.CPTemplate, animated: Swift.Bool)
+  @objc dynamic public func templateDidDisappear(_ template: CarPlay.CPTemplate, animated: Swift.Bool)
+}
+extension MapboxNavigationUIKit.CarPlayManager {
+  public func previewRoutes(to destination: MapboxNavigationCore.Waypoint, completionHandler: @escaping MapboxNavigationUIKit.CompletionHandler)
+  public func previewRoutes(between waypoints: [MapboxNavigationCore.Waypoint], completionHandler: @escaping MapboxNavigationUIKit.CompletionHandler)
+  public func previewRoutes(for options: MapboxDirections.RouteOptions, completionHandler: @escaping MapboxNavigationUIKit.CompletionHandler)
+  public func previewRoutes(for routes: MapboxNavigationCore.NavigationRoutes)
+  public func cancelRoutesPreview()
+}
+extension MapboxNavigationUIKit.CarPlayManager : CarPlay.CPMapTemplateDelegate {
+  @objc dynamic public func mapTemplate(_ mapTemplate: CarPlay.CPMapTemplate, startedTrip trip: CarPlay.CPTrip, using routeChoice: CarPlay.CPRouteChoice)
+  @objc dynamic public func mapTemplate(_ mapTemplate: CarPlay.CPMapTemplate, selectedPreviewFor trip: CarPlay.CPTrip, using routeChoice: CarPlay.CPRouteChoice)
+  @objc dynamic public func mapTemplateDidCancelNavigation(_ mapTemplate: CarPlay.CPMapTemplate)
+  @objc dynamic public func mapTemplateDidBeginPanGesture(_ mapTemplate: CarPlay.CPMapTemplate)
+  @objc dynamic public func mapTemplate(_ mapTemplate: CarPlay.CPMapTemplate, didEndPanGestureWithVelocity velocity: CoreFoundation.CGPoint)
+  @objc dynamic public func mapTemplateDidShowPanningInterface(_ mapTemplate: CarPlay.CPMapTemplate)
+  @objc dynamic public func mapTemplateWillDismissPanningInterface(_ mapTemplate: CarPlay.CPMapTemplate)
+  @objc dynamic public func mapTemplateDidDismissPanningInterface(_ mapTemplate: CarPlay.CPMapTemplate)
+  @objc dynamic public func mapTemplate(_ mapTemplate: CarPlay.CPMapTemplate, didUpdatePanGestureWithTranslation translation: CoreFoundation.CGPoint, velocity: CoreFoundation.CGPoint)
+  @objc dynamic public func mapTemplate(_ mapTemplate: CarPlay.CPMapTemplate, panWith direction: CarPlay.CPMapTemplate.PanDirection)
+  @objc dynamic public func mapTemplate(_ mapTemplate: CarPlay.CPMapTemplate, displayStyleFor maneuver: CarPlay.CPManeuver) -> CarPlay.CPManeuverDisplayStyle
+  @objc dynamic public func mapTemplate(_ mapTemplate: CarPlay.CPMapTemplate, shouldShowNotificationFor maneuver: CarPlay.CPManeuver) -> Swift.Bool
+  @objc dynamic public func mapTemplate(_ mapTemplate: CarPlay.CPMapTemplate, shouldShowNotificationFor navigationAlert: CarPlay.CPNavigationAlert) -> Swift.Bool
+  @objc dynamic public func mapTemplate(_ mapTemplate: CarPlay.CPMapTemplate, shouldUpdateNotificationFor maneuver: CarPlay.CPManeuver, with travelEstimates: CarPlay.CPTravelEstimates) -> Swift.Bool
+}
+extension MapboxNavigationUIKit.CarPlayManager : MapboxNavigationUIKit.CarPlayNavigationViewControllerDelegate {
+  public func carPlayNavigationViewController(_ carPlayNavigationViewController: MapboxNavigationUIKit.CarPlayNavigationViewController, waypointCircleLayerWithIdentifier identifier: Swift.String, sourceIdentifier: Swift.String) -> MapboxMaps.CircleLayer?
+  public func carPlayNavigationViewController(_ carPlayNavigationViewController: MapboxNavigationUIKit.CarPlayNavigationViewController, waypointSymbolLayerWithIdentifier identifier: Swift.String, sourceIdentifier: Swift.String) -> MapboxMaps.SymbolLayer?
+  public func carPlayNavigationViewControllerWillDismiss(_ carPlayNavigationViewController: MapboxNavigationUIKit.CarPlayNavigationViewController, byCanceling canceled: Swift.Bool)
+  public func carPlayNavigationViewControllerDidDismiss(_ carPlayNavigationViewController: MapboxNavigationUIKit.CarPlayNavigationViewController, byCanceling canceled: Swift.Bool)
+  public func carPlayNavigationViewController(_ carPlayNavigationViewController: MapboxNavigationUIKit.CarPlayNavigationViewController, shouldPresentArrivalUIFor waypoint: MapboxNavigationCore.Waypoint) -> Swift.Bool
+  public func carPlayNavigationViewController(_ carPlayNavigationViewController: MapboxNavigationUIKit.CarPlayNavigationViewController, didAdd finalDestinationAnnotation: MapboxMaps.PointAnnotation, pointAnnotationManager: MapboxMaps.PointAnnotationManager)
+}
+extension MapboxNavigationUIKit.CarPlayManager : MapboxNavigationUIKit.CarPlayMapViewControllerDelegate {
+  public func carPlayNavigationViewController(_ carPlayNavigationViewController: MapboxNavigationUIKit.CarPlayNavigationViewController, guidanceBackgroundColorFor style: UIKit.UIUserInterfaceStyle) -> UIKit.UIColor?
+  public func carPlayMapViewController(_ carPlayMapViewController: MapboxNavigationUIKit.CarPlayMapViewController, didAdd finalDestinationAnnotation: MapboxMaps.PointAnnotation, pointAnnotationManager: MapboxMaps.PointAnnotationManager)
+  public func carPlayMapViewController(_ carPlayMapViewController: MapboxNavigationUIKit.CarPlayMapViewController, routeLineLayerWithIdentifier identifier: Swift.String, sourceIdentifier: Swift.String) -> MapboxMaps.LineLayer?
+  public func carPlayMapViewController(_ carPlayMapViewController: MapboxNavigationUIKit.CarPlayMapViewController, routeCasingLineLayerWithIdentifier identifier: Swift.String, sourceIdentifier: Swift.String) -> MapboxMaps.LineLayer?
+  public func carPlayMapViewController(_ carPlayMapViewController: MapboxNavigationUIKit.CarPlayMapViewController, routeRestrictedAreasLineLayerWithIdentifier identifier: Swift.String, sourceIdentifier: Swift.String) -> MapboxMaps.LineLayer?
+  public func carPlayMapViewController(_ carPlayMapViewController: MapboxNavigationUIKit.CarPlayMapViewController, willAdd layer: any MapboxMaps.Layer) -> (any MapboxMaps.Layer)?
+}
+@available(iOS 13.0, *)
+extension MapboxNavigationUIKit.CarPlayManager {
+  public func templateApplicationScene(_ templateApplicationScene: CarPlay.CPTemplateApplicationScene, didConnectCarInterfaceController interfaceController: CarPlay.CPInterfaceController, to window: CarPlay.CPWindow)
+  public func templateApplicationScene(_ templateApplicationScene: CarPlay.CPTemplateApplicationScene, didDisconnectCarInterfaceController interfaceController: CarPlay.CPInterfaceController, from window: CarPlay.CPWindow)
+}
+public protocol CarPlayManagerDelegate : AnyObject, MapboxNavigationCore.UnimplementedLogging {
+  func carPlayManager(_ carPlayManager: MapboxNavigationUIKit.CarPlayManager, leadingNavigationBarButtonsCompatibleWith traitCollection: UIKit.UITraitCollection, in carPlayTemplate: CarPlay.CPTemplate, for activity: MapboxNavigationUIKit.CarPlayActivity) -> [CarPlay.CPBarButton]?
+  func carPlayManager(_ carPlayManager: MapboxNavigationUIKit.CarPlayManager, trailingNavigationBarButtonsCompatibleWith traitCollection: UIKit.UITraitCollection, in carPlayTemplate: CarPlay.CPTemplate, for activity: MapboxNavigationUIKit.CarPlayActivity) -> [CarPlay.CPBarButton]?
+  func carPlayManager(_ carPlayManager: MapboxNavigationUIKit.CarPlayManager, mapButtonsCompatibleWith traitCollection: UIKit.UITraitCollection, in carPlayTemplate: CarPlay.CPTemplate, for activity: MapboxNavigationUIKit.CarPlayActivity) -> [CarPlay.CPMapButton]?
+  func carPlayManager(_ carPlayManager: MapboxNavigationUIKit.CarPlayManager, willPreview trip: CarPlay.CPTrip) -> CarPlay.CPTrip
+  func carPlayManager(_ carPlayManager: MapboxNavigationUIKit.CarPlayManager, willPreview trip: CarPlay.CPTrip, with previewTextConfiguration: CarPlay.CPTripPreviewTextConfiguration) -> CarPlay.CPTripPreviewTextConfiguration
+  func carPlayManager(_ carPlayManager: MapboxNavigationUIKit.CarPlayManager, selectedPreviewFor trip: CarPlay.CPTrip, using routeChoice: CarPlay.CPRouteChoice)
+  func carPlayManagerWillCancelPreview(_ carPlayManager: MapboxNavigationUIKit.CarPlayManager, configuration: inout MapboxNavigationUIKit.CarPlayManagerCancelPreviewConfiguration)
+  func carPlayManagerDidCancelPreview(_ carPlayManager: MapboxNavigationUIKit.CarPlayManager)
+  func carPlayManager(_ carPlayManager: MapboxNavigationUIKit.CarPlayManager, didFailToFetchRouteBetween waypoints: [MapboxDirections.Waypoint]?, options: MapboxDirections.RouteOptions, error: any Swift.Error) -> CarPlay.CPNavigationAlert?
+  func carPlayManagerDidBeginNavigation(_ carPlayManager: MapboxNavigationUIKit.CarPlayManager)
+  func carPlayManagerWillEndNavigation(_ carPlayManager: MapboxNavigationUIKit.CarPlayManager, byCanceling canceled: Swift.Bool)
+  func carPlayManagerDidEndNavigation(_ carPlayManager: MapboxNavigationUIKit.CarPlayManager)
+  func carPlayManagerDidEndNavigation(_ carPlayManager: MapboxNavigationUIKit.CarPlayManager, byCanceling canceled: Swift.Bool)
+  func carPlayManager(_ carPlayManager: MapboxNavigationUIKit.CarPlayManager, shouldPresentArrivalUIFor waypoint: MapboxDirections.Waypoint) -> Swift.Bool
+  func carPlayManagerShouldDisableIdleTimer(_ carPlayManager: MapboxNavigationUIKit.CarPlayManager) -> Swift.Bool
+  func carPlayManager(_ carPlayManager: MapboxNavigationUIKit.CarPlayManager, willPresent navigationViewController: MapboxNavigationUIKit.CarPlayNavigationViewController)
+  func carPlayManager(_ carPlayManager: MapboxNavigationUIKit.CarPlayManager, didPresent navigationViewController: MapboxNavigationUIKit.CarPlayNavigationViewController)
+  func carPlayManager(_ carPlayManager: MapboxNavigationUIKit.CarPlayManager, didAdd finalDestinationAnnotation: MapboxMaps.PointAnnotation, to parentViewController: UIKit.UIViewController, pointAnnotationManager: MapboxMaps.PointAnnotationManager)
+  func carPlayManager(_ carPlayManager: MapboxNavigationUIKit.CarPlayManager, templateWillAppear template: CarPlay.CPTemplate, animated: Swift.Bool)
+  func carPlayManager(_ carPlayManager: MapboxNavigationUIKit.CarPlayManager, templateDidAppear template: CarPlay.CPTemplate, animated: Swift.Bool)
+  func carPlayManager(_ carPlayManager: MapboxNavigationUIKit.CarPlayManager, templateWillDisappear template: CarPlay.CPTemplate, animated: Swift.Bool)
+  func carPlayManager(_ carPlayManager: MapboxNavigationUIKit.CarPlayManager, templateDidDisappear template: CarPlay.CPTemplate, animated: Swift.Bool)
+  func carPlayManager(_ carPlayManager: MapboxNavigationUIKit.CarPlayManager, willAdd layer: any MapboxMaps.Layer, for parentViewController: UIKit.UIViewController) -> (any MapboxMaps.Layer)?
+  func carPlayManager(_ carPlayManager: MapboxNavigationUIKit.CarPlayManager, didBeginPanGesture template: CarPlay.CPMapTemplate)
+  func carPlayManager(_ carPlayManager: MapboxNavigationUIKit.CarPlayManager, didEndPanGesture template: CarPlay.CPMapTemplate)
+  func carPlayManager(_ carPlayManager: MapboxNavigationUIKit.CarPlayManager, didShowPanningInterface template: CarPlay.CPMapTemplate)
+  func carPlayManager(_ carPlayManager: MapboxNavigationUIKit.CarPlayManager, willDismissPanningInterface template: CarPlay.CPMapTemplate)
+  func carPlayManager(_ carPlayManager: MapboxNavigationUIKit.CarPlayManager, didDismissPanningInterface template: CarPlay.CPMapTemplate)
+  func carPlayManager(_ carPlayManager: MapboxNavigationUIKit.CarPlayManager, shouldShowNotificationFor maneuver: CarPlay.CPManeuver, in mapTemplate: CarPlay.CPMapTemplate) -> Swift.Bool
+  func carPlayManager(_ carPlayManager: MapboxNavigationUIKit.CarPlayManager, shouldShowNotificationFor navigationAlert: CarPlay.CPNavigationAlert, in mapTemplate: CarPlay.CPMapTemplate) -> Swift.Bool
+  func carPlayManager(_ carPlayManager: MapboxNavigationUIKit.CarPlayManager, shouldUpdateNotificationFor maneuver: CarPlay.CPManeuver, with travelEstimates: CarPlay.CPTravelEstimates, in mapTemplate: CarPlay.CPMapTemplate) -> Swift.Bool
+  func carPlayNavigationViewController(_ carPlayManager: MapboxNavigationUIKit.CarPlayManager, guidanceBackgroundColorFor style: UIKit.UIUserInterfaceStyle) -> UIKit.UIColor?
+}
+extension MapboxNavigationUIKit.CarPlayManagerDelegate {
+  public func carPlayManager(_ carPlayManager: MapboxNavigationUIKit.CarPlayManager, leadingNavigationBarButtonsCompatibleWith traitCollection: UIKit.UITraitCollection, in carPlayTemplate: CarPlay.CPTemplate, for activity: MapboxNavigationUIKit.CarPlayActivity) -> [CarPlay.CPBarButton]?
+  public func carPlayManager(_ carPlayManager: MapboxNavigationUIKit.CarPlayManager, trailingNavigationBarButtonsCompatibleWith traitCollection: UIKit.UITraitCollection, in carPlayTemplate: CarPlay.CPTemplate, for activity: MapboxNavigationUIKit.CarPlayActivity) -> [CarPlay.CPBarButton]?
+  public func carPlayManager(_ carPlayManager: MapboxNavigationUIKit.CarPlayManager, mapButtonsCompatibleWith traitCollection: UIKit.UITraitCollection, in carPlayTemplate: CarPlay.CPTemplate, for activity: MapboxNavigationUIKit.CarPlayActivity) -> [CarPlay.CPMapButton]?
+  public func carPlayManager(_ carPlayManager: MapboxNavigationUIKit.CarPlayManager, didFailToFetchRouteBetween waypoints: [MapboxDirections.Waypoint]?, options: MapboxDirections.RouteOptions, error: any Swift.Error) -> CarPlay.CPNavigationAlert?
+  public func carPlayManager(_ carPlayManager: MapboxNavigationUIKit.CarPlayManager, willPreview trip: CarPlay.CPTrip) -> CarPlay.CPTrip
+  public func carPlayManager(_ carPlayManager: MapboxNavigationUIKit.CarPlayManager, willPreview trip: CarPlay.CPTrip, with previewTextConfiguration: CarPlay.CPTripPreviewTextConfiguration) -> CarPlay.CPTripPreviewTextConfiguration
+  public func carPlayManager(_ carPlayManager: MapboxNavigationUIKit.CarPlayManager, selectedPreviewFor trip: CarPlay.CPTrip, using routeChoice: CarPlay.CPRouteChoice)
+  public func carPlayManagerWillCancelPreview(_ carPlayManager: MapboxNavigationUIKit.CarPlayManager, configuration: inout MapboxNavigationUIKit.CarPlayManagerCancelPreviewConfiguration)
+  public func carPlayManagerDidCancelPreview(_ carPlayManager: MapboxNavigationUIKit.CarPlayManager)
+  public func carPlayManagerDidBeginNavigation(_ carPlayManager: MapboxNavigationUIKit.CarPlayManager)
+  public func carPlayManagerWillEndNavigation(_ carPlayManager: MapboxNavigationUIKit.CarPlayManager, byCanceling canceled: Swift.Bool)
+  public func carPlayManagerDidEndNavigation(_ carPlayManager: MapboxNavigationUIKit.CarPlayManager)
+  public func carPlayManagerDidEndNavigation(_ carPlayManager: MapboxNavigationUIKit.CarPlayManager, byCanceling canceled: Swift.Bool)
+  public func carPlayManager(_ carPlayManager: MapboxNavigationUIKit.CarPlayManager, shouldPresentArrivalUIFor waypoint: MapboxDirections.Waypoint) -> Swift.Bool
+  public func carPlayManagerShouldDisableIdleTimer(_ carPlayManager: MapboxNavigationUIKit.CarPlayManager) -> Swift.Bool
+  public func carPlayManager(_ carPlayManager: MapboxNavigationUIKit.CarPlayManager, willPresent navigationViewController: MapboxNavigationUIKit.CarPlayNavigationViewController)
+  public func carPlayManager(_ carPlayManager: MapboxNavigationUIKit.CarPlayManager, didPresent navigationViewController: MapboxNavigationUIKit.CarPlayNavigationViewController)
+  public func carPlayManager(_ carPlayManager: MapboxNavigationUIKit.CarPlayManager, didAdd finalDestinationAnnotation: MapboxMaps.PointAnnotation, to parentViewController: UIKit.UIViewController, pointAnnotationManager: MapboxMaps.PointAnnotationManager)
+  public func carPlayManager(_ carPlayManager: MapboxNavigationUIKit.CarPlayManager, waypointSymbolLayerWithIdentifier identifier: Swift.String, sourceIdentifier: Swift.String) -> MapboxMaps.SymbolLayer?
+  public func carPlayManager(_ carPlayManager: MapboxNavigationUIKit.CarPlayManager, waypointCircleLayerWithIdentifier identifier: Swift.String, sourceIdentifier: Swift.String) -> MapboxMaps.CircleLayer?
+  public func carPlayManager(_ carPlayManager: MapboxNavigationUIKit.CarPlayManager, templateWillAppear template: CarPlay.CPTemplate, animated: Swift.Bool)
+  public func carPlayManager(_ carPlayManager: MapboxNavigationUIKit.CarPlayManager, templateDidAppear template: CarPlay.CPTemplate, animated: Swift.Bool)
+  public func carPlayManager(_ carPlayManager: MapboxNavigationUIKit.CarPlayManager, templateWillDisappear template: CarPlay.CPTemplate, animated: Swift.Bool)
+  public func carPlayManager(_ carPlayManager: MapboxNavigationUIKit.CarPlayManager, templateDidDisappear template: CarPlay.CPTemplate, animated: Swift.Bool)
+  public func carPlayManager(_ carPlayManager: MapboxNavigationUIKit.CarPlayManager, routeLineLayerWithIdentifier identifier: Swift.String, sourceIdentifier: Swift.String, for parentViewController: UIKit.UIViewController) -> MapboxMaps.LineLayer?
+  public func carPlayManager(_ carPlayManager: MapboxNavigationUIKit.CarPlayManager, routeCasingLineLayerWithIdentifier identifier: Swift.String, sourceIdentifier: Swift.String, for parentViewController: UIKit.UIViewController) -> MapboxMaps.LineLayer?
+  public func carPlayManager(_ carPlayManager: MapboxNavigationUIKit.CarPlayManager, routeRestrictedAreasLineLayerWithIdentifier identifier: Swift.String, sourceIdentifier: Swift.String, for parentViewController: UIKit.UIViewController) -> MapboxMaps.LineLayer?
+  public func carPlayManager(_ carPlayManager: MapboxNavigationUIKit.CarPlayManager, willAdd layer: any MapboxMaps.Layer, for parentViewController: UIKit.UIViewController) -> (any MapboxMaps.Layer)?
+  public func carPlayManager(_ carPlayManager: MapboxNavigationUIKit.CarPlayManager, didBeginPanGesture template: CarPlay.CPMapTemplate)
+  public func carPlayManager(_ carPlayManager: MapboxNavigationUIKit.CarPlayManager, didEndPanGesture template: CarPlay.CPMapTemplate)
+  public func carPlayManager(_ carPlayManager: MapboxNavigationUIKit.CarPlayManager, didShowPanningInterface template: CarPlay.CPMapTemplate)
+  public func carPlayManager(_ carPlayManager: MapboxNavigationUIKit.CarPlayManager, willDismissPanningInterface template: CarPlay.CPMapTemplate)
+  public func carPlayManager(_ carPlayManager: MapboxNavigationUIKit.CarPlayManager, didDismissPanningInterface template: CarPlay.CPMapTemplate)
+  public func carPlayManager(_ carPlayManager: MapboxNavigationUIKit.CarPlayManager, shouldShowNotificationFor maneuver: CarPlay.CPManeuver, in mapTemplate: CarPlay.CPMapTemplate) -> Swift.Bool
+  public func carPlayManager(_ carPlayManager: MapboxNavigationUIKit.CarPlayManager, shouldShowNotificationFor navigationAlert: CarPlay.CPNavigationAlert, in mapTemplate: CarPlay.CPMapTemplate) -> Swift.Bool
+  public func carPlayManager(_ carPlayManager: MapboxNavigationUIKit.CarPlayManager, shouldUpdateNotificationFor maneuver: CarPlay.CPManeuver, with travelEstimates: CarPlay.CPTravelEstimates, in mapTemplate: CarPlay.CPMapTemplate) -> Swift.Bool
+  public func carPlayNavigationViewController(_ carPlayManager: MapboxNavigationUIKit.CarPlayManager, guidanceBackgroundColorFor style: UIKit.UIUserInterfaceStyle) -> UIKit.UIColor?
+}
+public struct CarPlayManagerCancelPreviewConfiguration {
+  public var popToRoot: Swift.Bool
+}
+@objc @_Concurrency.MainActor(unsafe) open class CarPlayMapViewController : UIKit.UIViewController {
+  @_Concurrency.MainActor(unsafe) weak public var delegate: (any MapboxNavigationUIKit.CarPlayMapViewControllerDelegate)?
+  @_Concurrency.MainActor(unsafe) public var styleManager: MapboxNavigationUIKit.StyleManager? {
+    get
+  }
+  @_Concurrency.MainActor(unsafe) public var speedLimitView: MapboxNavigationUIKit.SpeedLimitView!
+  @_Concurrency.MainActor(unsafe) public var wayNameView: MapboxNavigationUIKit.WayNameView!
+  @_Concurrency.MainActor(unsafe) public var userInfo: [Swift.String : Swift.String?]?
+  @_Concurrency.MainActor(unsafe) public var startFreeDriveAutomatically: Swift.Bool
+  @_Concurrency.MainActor(unsafe) public var recenterButton: CarPlay.CPMapButton {
+    get
+    set
+  }
+  @_Concurrency.MainActor(unsafe) public var zoomInButton: CarPlay.CPMapButton {
+    get
+    set
+  }
+  @_Concurrency.MainActor(unsafe) public var zoomOutButton: CarPlay.CPMapButton {
+    get
+    set
+  }
+  @_Concurrency.MainActor(unsafe) public var panMapButton: CarPlay.CPMapButton? {
+    get
+  }
+  @_Concurrency.MainActor(unsafe) public var dismissPanningButton: CarPlay.CPMapButton? {
+    get
+  }
+  @discardableResult
+  @_Concurrency.MainActor(unsafe) public func panningInterfaceDisplayButton(for mapTemplate: CarPlay.CPMapTemplate) -> CarPlay.CPMapButton
+  @discardableResult
+  @_Concurrency.MainActor(unsafe) public func panningInterfaceDismissalButton(for mapTemplate: CarPlay.CPMapTemplate) -> CarPlay.CPMapButton
+  @_Concurrency.MainActor(unsafe) public init(core: any MapboxNavigationCore.MapboxNavigation, styles: [MapboxNavigationUIKit.Style])
+  @_Concurrency.MainActor(unsafe) @objc required dynamic public init?(coder decoder: Foundation.NSCoder)
+  @objc deinit
+  @_Concurrency.MainActor(unsafe) public func startFreeDriveNavigation()
+  @_Concurrency.MainActor(unsafe) @objc override dynamic public func loadView()
+  @_Concurrency.MainActor(unsafe) @objc override dynamic public func viewDidLoad()
+  @_Concurrency.MainActor(unsafe) @objc override dynamic open func viewWillAppear(_ animated: Swift.Bool)
+  @_Concurrency.MainActor(unsafe) @objc override dynamic open func viewDidAppear(_ animated: Swift.Bool)
+  @_Concurrency.MainActor(unsafe) @objc override dynamic public func viewSafeAreaInsetsDidChange()
+  @_Concurrency.MainActor(unsafe) @objc override dynamic public func updateViewConstraints()
+}
+extension MapboxNavigationUIKit.CarPlayMapViewController : MapboxNavigationUIKit.StyleManagerDelegate {
+  @_Concurrency.MainActor(unsafe) public func location(for styleManager: MapboxNavigationUIKit.StyleManager) -> CoreLocation.CLLocation?
+  @_Concurrency.MainActor(unsafe) public func styleManager(_ styleManager: MapboxNavigationUIKit.StyleManager, didApply style: MapboxNavigationUIKit.Style)
+  @_Concurrency.MainActor(unsafe) public func styleManagerDidRefreshAppearance(_ styleManager: MapboxNavigationUIKit.StyleManager)
+}
+extension MapboxNavigationUIKit.CarPlayMapViewController : MapboxNavigationCore.NavigationMapViewDelegate {
+  @_Concurrency.MainActor public func navigationMapView(_ navigationMapView: MapboxNavigationCore.NavigationMapView, didAdd finalDestinationAnnotation: MapboxMaps.PointAnnotation, pointAnnotationManager: MapboxMaps.PointAnnotationManager)
+}
+extension MapboxNavigationUIKit.CarPlayMapViewController : CarPlay.CPSessionConfigurationDelegate {
+  @available(iOS 13.0, *)
+  @_Concurrency.MainActor(unsafe) @objc dynamic public func sessionConfiguration(_ sessionConfiguration: CarPlay.CPSessionConfiguration, contentStyleChanged contentStyle: CarPlay.CPContentStyle)
+}
+public protocol CarPlayMapViewControllerDelegate : AnyObject, MapboxNavigationCore.UnimplementedLogging {
+  func carPlayMapViewController(_ carPlayMapViewController: MapboxNavigationUIKit.CarPlayMapViewController, didAdd finalDestinationAnnotation: MapboxMaps.PointAnnotation, pointAnnotationManager: MapboxMaps.PointAnnotationManager)
+}
+extension MapboxNavigationUIKit.CarPlayMapViewControllerDelegate {
+  public func carPlayMapViewController(_ carPlayMapViewController: MapboxNavigationUIKit.CarPlayMapViewController, didAdd finalDestinationAnnotation: MapboxMaps.PointAnnotation, pointAnnotationManager: MapboxMaps.PointAnnotationManager)
+}
+@objc @_Concurrency.MainActor(unsafe) open class CarPlayNavigationViewController : UIKit.UIViewController {
+  @_Concurrency.MainActor(unsafe) public var compassView: MapboxNavigationUIKit.CarPlayCompassView!
+  @_Concurrency.MainActor(unsafe) public var speedLimitView: MapboxNavigationUIKit.SpeedLimitView!
+  @_Concurrency.MainActor(unsafe) public var wayNameView: MapboxNavigationUIKit.WayNameView!
+  @_Concurrency.MainActor(unsafe) public var styles: [MapboxNavigationUIKit.Style] {
+    get
+    set
+  }
+  @_Concurrency.MainActor(unsafe) public var routeLineTracksTraversal: Swift.Bool {
+    get
+    set
+  }
+  @_Concurrency.MainActor(unsafe) public var showsContinuousAlternatives: Swift.Bool {
+    get
+    set
+  }
+  @_Concurrency.MainActor(unsafe) public var annotatesIntersectionsAlongRoute: Swift.Bool {
+    get
+    set
+  }
+  @_Concurrency.MainActor(unsafe) public var continuousAlternatives: [MapboxNavigationCore.AlternativeRoute] {
+    get
+  }
+  @_Concurrency.MainActor(unsafe) public var usesNightStyleWhileInTunnel: Swift.Bool
+  @_Concurrency.MainActor(unsafe) public var styleManager: MapboxNavigationUIKit.StyleManager? {
+    get
+  }
+  @_Concurrency.MainActor(unsafe) public var waypointStyle: MapboxNavigationUIKit.WaypointStyle
+  @_Concurrency.MainActor(unsafe) public var eventsManager: MapboxNavigationCore.NavigationEventsManager {
+    get
+  }
+  @_Concurrency.MainActor(unsafe) public func showFeedback()
+  @_Concurrency.MainActor(unsafe) weak public var delegate: (any MapboxNavigationUIKit.CarPlayNavigationViewControllerDelegate)?
+  @_Concurrency.MainActor(unsafe) public var carPlayManager: MapboxNavigationUIKit.CarPlayManager
+  @_Concurrency.MainActor(unsafe) public var navigationMapView: MapboxNavigationCore.NavigationMapView? {
+    get
+  }
+  @_Concurrency.MainActor(unsafe) public func startNavigationSession(for trip: CarPlay.CPTrip)
+  @_Concurrency.MainActor(unsafe) public func exitNavigation(byCanceling canceled: Swift.Bool = false)
+  @_Concurrency.MainActor(unsafe) required public init(accessToken: Swift.String, core: any MapboxNavigationCore.MapboxNavigation, mapTemplate: CarPlay.CPMapTemplate, interfaceController: CarPlay.CPInterfaceController, manager: MapboxNavigationUIKit.CarPlayManager, styles: [MapboxNavigationUIKit.Style]? = nil, navigationRoutes: MapboxNavigationCore.NavigationRoutes)
+  @_Concurrency.MainActor(unsafe) @objc required dynamic public init?(coder decoder: Foundation.NSCoder)
+  @objc deinit
+  @_Concurrency.MainActor(unsafe) @objc override dynamic public func viewDidLoad()
+  @_Concurrency.MainActor(unsafe) @objc override dynamic open func viewWillAppear(_ animated: Swift.Bool)
+  @_Concurrency.MainActor(unsafe) @objc override dynamic public func viewWillDisappear(_ animated: Swift.Bool)
+  @_Concurrency.MainActor(unsafe) @objc override dynamic public func traitCollectionDidChange(_ previousTraitCollection: UIKit.UITraitCollection?)
+  @_Concurrency.MainActor(unsafe) @objc override dynamic public func viewSafeAreaInsetsDidChange()
+  @_Concurrency.MainActor(unsafe) @objc override dynamic public func updateViewConstraints()
+}
+extension MapboxNavigationUIKit.CarPlayNavigationViewController : MapboxNavigationUIKit.StyleManagerDelegate {
+  @_Concurrency.MainActor(unsafe) public func location(for styleManager: MapboxNavigationUIKit.StyleManager) -> CoreLocation.CLLocation?
+  @_Concurrency.MainActor(unsafe) public func styleManager(_ styleManager: MapboxNavigationUIKit.StyleManager, didApply style: MapboxNavigationUIKit.Style)
+  @_Concurrency.MainActor(unsafe) public func styleManagerDidRefreshAppearance(_ styleManager: MapboxNavigationUIKit.StyleManager)
+}
+extension MapboxNavigationUIKit.CarPlayNavigationViewController : MapboxNavigationCore.NavigationMapViewDelegate {
+  @_Concurrency.MainActor public func navigationMapView(_ navigationMapView: MapboxNavigationCore.NavigationMapView, didAdd finalDestinationAnnotation: MapboxMaps.PointAnnotation, pointAnnotationManager: MapboxMaps.PointAnnotationManager)
+}
+extension MapboxNavigationUIKit.CarPlayNavigationViewController : CarPlay.CPSessionConfigurationDelegate {
+  @available(iOS 13.0, *)
+  @_Concurrency.MainActor(unsafe) @objc dynamic public func sessionConfiguration(_ sessionConfiguration: CarPlay.CPSessionConfiguration, contentStyleChanged contentStyle: CarPlay.CPContentStyle)
+}
+extension MapboxNavigationUIKit.CarPlayNavigationViewController : CarPlay.CPListTemplateDelegate {
+  @_Concurrency.MainActor(unsafe) @objc dynamic public func listTemplate(_ listTemplate: CarPlay.CPListTemplate, didSelect item: CarPlay.CPListItem, completionHandler: @escaping () -> Swift.Void)
+}
+public protocol CarPlayNavigationViewControllerDelegate : AnyObject, MapboxNavigationCore.UnimplementedLogging {
+  func carPlayNavigationViewControllerWillDismiss(_ carPlayNavigationViewController: MapboxNavigationUIKit.CarPlayNavigationViewController, byCanceling canceled: Swift.Bool)
+  func carPlayNavigationViewControllerDidDismiss(_ carPlayNavigationViewController: MapboxNavigationUIKit.CarPlayNavigationViewController, byCanceling canceled: Swift.Bool)
+  func carPlayNavigationViewController(_ carPlayNavigationViewController: MapboxNavigationUIKit.CarPlayNavigationViewController, shouldPresentArrivalUIFor waypoint: MapboxDirections.Waypoint) -> Swift.Bool
+  func carPlayNavigationViewController(_ carPlayNavigationViewController: MapboxNavigationUIKit.CarPlayNavigationViewController, didAdd finalDestinationAnnotation: MapboxMaps.PointAnnotation, pointAnnotationManager: MapboxMaps.PointAnnotationManager)
+  func carPlayNavigationViewController(_ carPlayNavigationViewController: MapboxNavigationUIKit.CarPlayNavigationViewController, guidanceBackgroundColorFor style: UIKit.UIUserInterfaceStyle) -> UIKit.UIColor?
+}
+extension MapboxNavigationUIKit.CarPlayNavigationViewControllerDelegate {
+  public func carPlayNavigationViewControllerWillDismiss(_ carPlayNavigationViewController: MapboxNavigationUIKit.CarPlayNavigationViewController, byCanceling canceled: Swift.Bool)
+  public func carPlayNavigationViewControllerDidDismiss(_ carPlayNavigationViewController: MapboxNavigationUIKit.CarPlayNavigationViewController, byCanceling canceled: Swift.Bool)
+  public func carPlayNavigationViewController(_ carPlayNavigationViewController: MapboxNavigationUIKit.CarPlayNavigationViewController, shouldPresentArrivalUIFor waypoint: MapboxDirections.Waypoint)
+  public func carPlayNavigationViewController(_ carPlayNavigationViewController: MapboxNavigationUIKit.CarPlayNavigationViewController, didAdd finalDestinationAnnotation: MapboxMaps.PointAnnotation, pointAnnotationManager: MapboxMaps.PointAnnotationManager)
+  public func carPlayNavigationViewController(_ carPlayNavigationViewController: MapboxNavigationUIKit.CarPlayNavigationViewController, guidanceBackgroundColorFor style: UIKit.UIUserInterfaceStyle) -> UIKit.UIColor?
+}
+extension MapboxNavigationUIKit.CarPlaySearchController : CarPlay.CPSearchTemplateDelegate {
+  public static let CarPlayGeocodedPlacemarkKey: Swift.String
+  @objc dynamic public func searchTemplateSearchButtonPressed(_ searchTemplate: CarPlay.CPSearchTemplate)
+  public func searchTemplateButton(searchTemplate: CarPlay.CPSearchTemplate, interfaceController: CarPlay.CPInterfaceController, traitCollection: UIKit.UITraitCollection) -> CarPlay.CPBarButton
+  @objc dynamic public func searchTemplate(_ searchTemplate: CarPlay.CPSearchTemplate, updatedSearchText searchText: Swift.String, completionHandler: @escaping ([CarPlay.CPListItem]) -> Swift.Void)
+  @objc dynamic public func searchTemplate(_ searchTemplate: CarPlay.CPSearchTemplate, selectedResult item: CarPlay.CPListItem, completionHandler: @escaping () -> Swift.Void)
+}
+extension MapboxNavigationUIKit.CarPlaySearchController : CarPlay.CPListTemplateDelegate {
+  @objc dynamic public func listTemplate(_ listTemplate: CarPlay.CPListTemplate, didSelect item: CarPlay.CPListItem, completionHandler: @escaping () -> Swift.Void)
+}
+@objc @_inheritsConvenienceInitializers public class CarPlaySearchController : ObjectiveC.NSObject {
+  weak public var delegate: (any MapboxNavigationUIKit.CarPlaySearchControllerDelegate)?
+  @objc override dynamic public init()
+  @objc deinit
+}
+public protocol CarPlaySearchControllerDelegate : CarPlay.CPSearchTemplateDelegate {
+  func previewRoutes(to waypoint: MapboxDirections.Waypoint, completionHandler: @escaping () -> Swift.Void)
+  func resetPanButtons(_ mapTemplate: CarPlay.CPMapTemplate)
+  func pushTemplate(_ template: CarPlay.CPTemplate, animated: Swift.Bool)
+  func popTemplate(animated: Swift.Bool)
+  var recentSearchItems: [CarPlay.CPListItem]? { get set }
+  var recentSearchText: Swift.String? { get set }
+  func searchTemplate(_ searchTemplate: CarPlay.CPSearchTemplate, updatedSearchText searchText: Swift.String, completionHandler: @escaping ([CarPlay.CPListItem]) -> Swift.Void)
+  func searchTemplate(_ searchTemplate: CarPlay.CPSearchTemplate, selectedResult item: CarPlay.CPListItem, completionHandler: @escaping () -> Swift.Void)
+  func searchResults(with items: [CarPlay.CPListItem], limit: Swift.UInt?) -> [CarPlay.CPListItem]
+}
+extension Foundation.NSNotification.Name {
+  public static let styleManagerDidApplyStyle: Foundation.Notification.Name
+}
+public struct StyleManagerNotificationUserInfoKey : Swift.Hashable, Swift.Equatable, Swift.RawRepresentable {
+  public typealias RawValue = Swift.String
+  public var rawValue: Swift.String
+  public init(rawValue: Swift.String)
+}
+public typealias CarPlayUserInfo = [Swift.String : Any?]
+public class DataCache : MapboxNavigationUIKit.BimodalDataCache {
+  public init()
+  public func store(_ data: Foundation.Data, forKey key: Swift.String, toDisk: Swift.Bool, completion: MapboxNavigationUIKit.CompletionHandler?)
+  public func data(forKey key: Swift.String?) -> Foundation.Data?
+  @objc public func clearMemory()
+  @objc public func clearDisk(completion: MapboxNavigationUIKit.CompletionHandler?)
+  @objc deinit
+}
+public protocol DestinationDataSource : AnyObject {
+  var destinationOptions: MapboxNavigationUIKit.DestinationOptions { get }
+}
+public struct DestinationOptions {
+  public var primaryText: Foundation.NSAttributedString?
+  public let waypoints: [MapboxDirections.Waypoint]
+  public let coordinates: [CoreLocation.CLLocationCoordinate2D]
+  public init(coordinates: [CoreLocation.CLLocationCoordinate2D])
+  public init(waypoints: [MapboxDirections.Waypoint])
+}
+@objc @_hasMissingDesignatedInitializers @_Concurrency.MainActor(unsafe) public class DestinationPreviewViewController : UIKit.UIViewController, MapboxNavigationUIKit.Banner, MapboxNavigationUIKit.DestinationDataSource {
+  @_Concurrency.MainActor(unsafe) weak public var delegate: (any MapboxNavigationUIKit.DestinationPreviewViewControllerDelegate)?
+  @_Concurrency.MainActor(unsafe) final public let bannerConfiguration: MapboxNavigationUIKit.BannerConfiguration
+  @_Concurrency.MainActor(unsafe) public var destinationOptions: MapboxNavigationUIKit.DestinationOptions {
+    get
+    set
+  }
+  @_Concurrency.MainActor(unsafe) required public init(_ destinationOptions: MapboxNavigationUIKit.DestinationOptions, bannerConfiguration: MapboxNavigationUIKit.BannerConfiguration = BannerConfiguration(position: .bottomLeading))
+  @objc deinit
+}
+public protocol DestinationPreviewViewControllerDelegate : AnyObject {
+  func didTapPreviewRoutesButton(_ destinationPreviewViewController: MapboxNavigationUIKit.DestinationPreviewViewController)
+  func didTapBeginActiveNavigationButton(_ destinationPreviewViewController: MapboxNavigationUIKit.DestinationPreviewViewController)
+}
+@_inheritsConvenienceInitializers @objc(MBDistanceLabel) @_Concurrency.MainActor(unsafe) open class DistanceLabel : MapboxNavigationUIKit.StylableLabel {
+  @objc @_Concurrency.MainActor(unsafe) dynamic public var valueTextColor: UIKit.UIColor {
+    @objc get
+    @objc set
+  }
+  @objc @_Concurrency.MainActor(unsafe) dynamic public var unitTextColor: UIKit.UIColor {
+    @objc get
+    @objc set
+  }
+  @objc @_Concurrency.MainActor(unsafe) dynamic public var valueTextColorHighlighted: UIKit.UIColor {
+    @objc get
+    @objc set
+  }
+  @objc @_Concurrency.MainActor(unsafe) dynamic public var unitTextColorHighlighted: UIKit.UIColor {
+    @objc get
+    @objc set
+  }
+  @objc @_Concurrency.MainActor(unsafe) dynamic public var valueFont: UIKit.UIFont {
+    @objc get
+    @objc set
+  }
+  @objc @_Concurrency.MainActor(unsafe) dynamic public var unitFont: UIKit.UIFont {
+    @objc get
+    @objc set
+  }
+  @_Concurrency.MainActor(unsafe) override open func update()
+  @_Concurrency.MainActor(unsafe) @objc override dynamic public init(frame: CoreFoundation.CGRect)
+  @_Concurrency.MainActor(unsafe) @objc required dynamic public init?(coder: Foundation.NSCoder)
+  @objc deinit
+}
+@objc @_inheritsConvenienceInitializers @_Concurrency.MainActor(unsafe) open class EndOfRouteContentView : UIKit.UIView {
+  @_Concurrency.MainActor(unsafe) @objc override dynamic public init(frame: CoreFoundation.CGRect)
+  @_Concurrency.MainActor(unsafe) @objc required dynamic public init?(coder: Foundation.NSCoder)
+  @objc deinit
+}
+@objc @_inheritsConvenienceInitializers @_Concurrency.MainActor(unsafe) open class EndOfRouteTitleLabel : MapboxNavigationUIKit.StylableLabel {
+  @_Concurrency.MainActor(unsafe) @objc override dynamic public init(frame: CoreFoundation.CGRect)
+  @_Concurrency.MainActor(unsafe) @objc required dynamic public init?(coder: Foundation.NSCoder)
+  @objc deinit
+}
+@objc @_inheritsConvenienceInitializers @_Concurrency.MainActor(unsafe) open class EndOfRouteStaticLabel : MapboxNavigationUIKit.StylableLabel {
+  @_Concurrency.MainActor(unsafe) @objc override dynamic public init(frame: CoreFoundation.CGRect)
+  @_Concurrency.MainActor(unsafe) @objc required dynamic public init?(coder: Foundation.NSCoder)
+  @objc deinit
+}
+@objc @_inheritsConvenienceInitializers @_Concurrency.MainActor(unsafe) open class EndOfRouteCommentView : MapboxNavigationUIKit.StylableTextView {
+  @available(iOS 7.0, *)
+  @_Concurrency.MainActor(unsafe) @objc override dynamic public init(frame: CoreFoundation.CGRect, textContainer: UIKit.NSTextContainer?)
+  @_Concurrency.MainActor(unsafe) @objc required dynamic public init?(coder: Foundation.NSCoder)
+  @objc deinit
+}
+@objc @_inheritsConvenienceInitializers @_Concurrency.MainActor(unsafe) open class EndOfRouteButton : MapboxNavigationUIKit.StylableButton {
+  @_Concurrency.MainActor(unsafe) @objc override dynamic public init(frame: CoreFoundation.CGRect)
+  @_Concurrency.MainActor(unsafe) @objc required dynamic public init?(coder: Foundation.NSCoder)
+  @objc deinit
+}
+@objc @_inheritsConvenienceInitializers @_Concurrency.MainActor(unsafe) public class ExitView : MapboxNavigationUIKit.StylableView {
+  @objc @_Concurrency.MainActor(unsafe) dynamic public var foregroundColor: UIKit.UIColor? {
+    @objc get
+    @objc set
+  }
+  @objc @_Concurrency.MainActor(unsafe) dynamic public var highlightColor: UIKit.UIColor?
+  @_Concurrency.MainActor(unsafe) @objc override dynamic public init(frame: CoreFoundation.CGRect)
+  @_Concurrency.MainActor(unsafe) @objc required dynamic public init?(coder aDecoder: Foundation.NSCoder)
+  @objc deinit
+}
+extension Foundation.Bundle {
+  public class var mapboxNavigation: Foundation.Bundle {
+    get
+  }
+}
+extension CoreFoundation.CGPoint {
+  public func distance(to: CoreFoundation.CGPoint) -> CoreFoundation.CGFloat
+}
+extension CoreFoundation.CGSize : Swift.ExpressibleByFloatLiteral {
+  public typealias FloatLiteralType = Swift.Double
+  public init(size: Swift.Double)
+  public init(floatLiteral value: CoreFoundation.CGSize.FloatLiteralType)
+}
+extension Foundation.DateComponentsFormatter {
+  public static let fullDateComponentsFormatter: Foundation.DateComponentsFormatter
+  public static let shortDateComponentsFormatter: Foundation.DateComponentsFormatter
+  public static let briefDateComponentsFormatter: Foundation.DateComponentsFormatter
+  public static func travelDurationUnitStyle(interval: Foundation.TimeInterval) -> Foundation.DateComponentsFormatter.UnitsStyle
+  public static func travelTimeString(_ interval: Foundation.TimeInterval, signed: Swift.Bool, unitStyle: Foundation.DateComponentsFormatter.UnitsStyle?) -> Swift.String
+}
+extension Swift.String {
+  public var nonEmptyString: Swift.String? {
+    get
+  }
+}
+extension UIKit.UIEdgeInsets {
+  public static func + (left: UIKit.UIEdgeInsets, right: UIKit.UIEdgeInsets) -> UIKit.UIEdgeInsets
+}
+extension UIKit.UIEdgeInsets : Swift.ExpressibleByFloatLiteral {
+  public typealias FloatLiteralType = Swift.Double
+  public init(floatLiteral value: UIKit.UIEdgeInsets.FloatLiteralType)
+}
+extension UIKit.UIFont {
+  public var adjustedFont: UIKit.UIFont {
+    get
+  }
+}
+public struct FeedbackItem {
+  public var title: Swift.String
+  public var image: UIKit.UIImage
+  public var type: MapboxNavigationUIKit.FeedbackItemType
+  public init(title: Swift.String, image: UIKit.UIImage, feedbackType: MapboxNavigationUIKit.FeedbackItemType)
+}
+public enum FeedbackItemType : Swift.Equatable {
+  case activeNavigation(MapboxNavigationCore.ActiveNavigationFeedbackType)
+  case passiveNavigation(MapboxNavigationCore.PassiveNavigationFeedbackType)
+  public static func == (lhs: MapboxNavigationUIKit.FeedbackItemType, rhs: MapboxNavigationUIKit.FeedbackItemType) -> Swift.Bool
+}
+public protocol FeedbackViewControllerDelegate : AnyObject {
+  func feedbackViewControllerDidOpen(_ feedbackViewController: MapboxNavigationUIKit.FeedbackViewController)
+  func feedbackViewController(_ feedbackViewController: MapboxNavigationUIKit.FeedbackViewController, didSend feedbackItem: MapboxNavigationUIKit.FeedbackItem, feedback: MapboxNavigationCore.FeedbackEvent)
+  func feedbackViewControllerDidCancel(_ feedbackViewController: MapboxNavigationUIKit.FeedbackViewController)
+}
+extension MapboxNavigationUIKit.FeedbackViewControllerDelegate {
+  public func feedbackViewControllerDidOpen(_ feedbackViewController: MapboxNavigationUIKit.FeedbackViewController)
+  public func feedbackViewController(_ feedbackViewController: MapboxNavigationUIKit.FeedbackViewController, didSend feedbackItem: MapboxNavigationUIKit.FeedbackItem, uuid: Foundation.UUID)
+  public func feedbackViewControllerDidCancel(_ feedbackViewController: MapboxNavigationUIKit.FeedbackViewController)
+}
+@objc @_Concurrency.MainActor(unsafe) public class FeedbackViewController : UIKit.UIViewController, UIKit.UIGestureRecognizerDelegate {
+  @_Concurrency.MainActor(unsafe) weak public var eventsManager: MapboxNavigationCore.NavigationEventsManager?
+  @_Concurrency.MainActor(unsafe) weak public var delegate: (any MapboxNavigationUIKit.FeedbackViewControllerDelegate)?
+  @objc @_Concurrency.MainActor(unsafe) public func dismissFeedback()
+  @_Concurrency.MainActor(unsafe) public init(eventsManager: MapboxNavigationCore.NavigationEventsManager, type: MapboxNavigationUIKit.FeedbackViewControllerType = .activeNavigation)
+  @_Concurrency.MainActor(unsafe) @objc override dynamic public func encode(with aCoder: Foundation.NSCoder)
+  @_Concurrency.MainActor(unsafe) @objc required dynamic public init?(coder aDecoder: Foundation.NSCoder)
+  @_Concurrency.MainActor(unsafe) @objc override dynamic public func viewDidLoad()
+  @_Concurrency.MainActor(unsafe) @objc override dynamic public func viewDidAppear(_ animated: Swift.Bool)
+  @_Concurrency.MainActor(unsafe) @objc override dynamic public func viewWillTransition(to size: CoreFoundation.CGSize, with coordinator: any UIKit.UIViewControllerTransitionCoordinator)
+  @_Concurrency.MainActor(unsafe) @objc public func gestureRecognizer(_ gestureRecognizer: UIKit.UIGestureRecognizer, shouldReceive touch: UIKit.UITouch) -> Swift.Bool
+  @objc deinit
+}
+extension MapboxNavigationUIKit.FeedbackViewController : UIKit.UICollectionViewDataSource {
+  @_Concurrency.MainActor(unsafe) @objc dynamic public func collectionView(_ collectionView: UIKit.UICollectionView, cellForItemAt indexPath: Foundation.IndexPath) -> UIKit.UICollectionViewCell
+  @_Concurrency.MainActor(unsafe) @objc dynamic public func numberOfSections(in collectionView: UIKit.UICollectionView) -> Swift.Int
+  @_Concurrency.MainActor(unsafe) @objc dynamic public func collectionView(_ collectionView: UIKit.UICollectionView, numberOfItemsInSection section: Swift.Int) -> Swift.Int
+}
+extension MapboxNavigationUIKit.FeedbackViewController : UIKit.UICollectionViewDelegate {
+  @_Concurrency.MainActor(unsafe) @objc dynamic public func collectionView(_ collectionView: UIKit.UICollectionView, didSelectItemAt indexPath: Foundation.IndexPath)
+}
+extension MapboxNavigationUIKit.FeedbackViewController : UIKit.UICollectionViewDelegateFlowLayout {
+  @_Concurrency.MainActor(unsafe) @objc dynamic public func collectionView(_ collectionView: UIKit.UICollectionView, layout collectionViewLayout: UIKit.UICollectionViewLayout, sizeForItemAt indexPath: Foundation.IndexPath) -> CoreFoundation.CGSize
+}
+extension MapboxNavigationUIKit.FeedbackViewController : UIKit.UIViewControllerTransitioningDelegate {
+  @_Concurrency.MainActor(unsafe) @objc dynamic public func animationController(forDismissed dismissed: UIKit.UIViewController) -> (any UIKit.UIViewControllerAnimatedTransitioning)?
+  @_Concurrency.MainActor(unsafe) @objc dynamic public func animationController(forPresented presented: UIKit.UIViewController, presenting: UIKit.UIViewController, source: UIKit.UIViewController) -> (any UIKit.UIViewControllerAnimatedTransitioning)?
+  @_Concurrency.MainActor(unsafe) @objc dynamic public func interactionControllerForDismissal(using animator: any UIKit.UIViewControllerAnimatedTransitioning) -> (any UIKit.UIViewControllerInteractiveTransitioning)?
+}
+public enum FeedbackViewControllerType {
+  case activeNavigation
+  case passiveNavigation
+  case custom([MapboxNavigationUIKit.FeedbackItem])
+}
+@_inheritsConvenienceInitializers @objc(MBFloatingButton) @_Concurrency.MainActor(unsafe) open class FloatingButton : MapboxNavigationUIKit.Button {
+  @_Concurrency.MainActor(unsafe) public static let buttonSize: CoreFoundation.CGSize
+  @_Concurrency.MainActor(unsafe) public class func rounded<T>(image: UIKit.UIImage? = nil, selectedImage: UIKit.UIImage? = nil, size: CoreFoundation.CGSize = FloatingButton.buttonSize, type: UIKit.UIButton.ButtonType = .custom, imageEdgeInsets: UIKit.UIEdgeInsets = .zero, cornerRadius: CoreFoundation.CGFloat = FloatingButton.buttonSize.width / 2.0) -> T where T : MapboxNavigationUIKit.FloatingButton
+  @_Concurrency.MainActor(unsafe) @objc override dynamic public init(frame: CoreFoundation.CGRect)
+  @_Concurrency.MainActor(unsafe) @objc required dynamic public init?(coder: Foundation.NSCoder)
+  @objc deinit
+}
+@objc @_inheritsConvenienceInitializers @_hasMissingDesignatedInitializers @_Concurrency.MainActor(unsafe) public class GenericRouteShield : MapboxNavigationUIKit.StylableView {
+  @objc @_Concurrency.MainActor(unsafe) dynamic public var foregroundColor: UIKit.UIColor? {
+    @objc get
+    @objc set
+  }
+  @objc @_Concurrency.MainActor(unsafe) dynamic public var highlightColor: UIKit.UIColor?
+  @_Concurrency.MainActor(unsafe) @objc required dynamic public init?(coder aDecoder: Foundation.NSCoder)
+  @objc deinit
+}
+@objc @_inheritsConvenienceInitializers @_Concurrency.MainActor(unsafe) open class InstructionLabel : MapboxNavigationUIKit.StylableLabel {
+  @_Concurrency.MainActor(unsafe) override open func update()
+  @_Concurrency.MainActor(unsafe) @objc override dynamic open func traitCollectionDidChange(_ previousTraitCollection: UIKit.UITraitCollection?)
+  @_Concurrency.MainActor(unsafe) @objc override dynamic public init(frame: CoreFoundation.CGRect)
+  @_Concurrency.MainActor(unsafe) @objc required dynamic public init?(coder: Foundation.NSCoder)
+  @objc deinit
+}
+@_inheritsConvenienceInitializers @objc(MBPrimaryLabel) @_Concurrency.MainActor(unsafe) open class PrimaryLabel : MapboxNavigationUIKit.InstructionLabel {
+  @_Concurrency.MainActor(unsafe) @objc override dynamic public init(frame: CoreFoundation.CGRect)
+  @_Concurrency.MainActor(unsafe) @objc required dynamic public init?(coder: Foundation.NSCoder)
+  @objc deinit
+}
+@_inheritsConvenienceInitializers @objc(MBSecondaryLabel) @_Concurrency.MainActor(unsafe) open class SecondaryLabel : MapboxNavigationUIKit.InstructionLabel {
+  @_Concurrency.MainActor(unsafe) @objc override dynamic public init(frame: CoreFoundation.CGRect)
+  @_Concurrency.MainActor(unsafe) @objc required dynamic public init?(coder: Foundation.NSCoder)
+  @objc deinit
+}
+@objc @_inheritsConvenienceInitializers @IBDesignable @_Concurrency.MainActor(unsafe) open class InstructionsBannerView : MapboxNavigationUIKit.BaseInstructionsBannerView, MapboxNavigationUIKit.NavigationComponent {
+  @_Concurrency.MainActor(unsafe) public func onDidPassVisualInstructionPoint(_ instruction: MapboxNavigationCore.VisualInstructionBanner)
+  @_Concurrency.MainActor(unsafe) @objc override dynamic public init(frame: CoreFoundation.CGRect)
+  @_Concurrency.MainActor(unsafe) @objc required dynamic public init?(coder aDecoder: Foundation.NSCoder)
+  @objc deinit
+}
+@objc @_inheritsConvenienceInitializers @_Concurrency.MainActor(unsafe) open class BaseInstructionsBannerView : UIKit.UIControl {
+  @_Concurrency.MainActor(unsafe) weak public var maneuverView: MapboxNavigationUIKit.ManeuverView!
+  @_Concurrency.MainActor(unsafe) weak public var primaryLabel: MapboxNavigationUIKit.PrimaryLabel!
+  @_Concurrency.MainActor(unsafe) weak public var secondaryLabel: MapboxNavigationUIKit.SecondaryLabel!
+  @_Concurrency.MainActor(unsafe) weak public var distanceLabel: MapboxNavigationUIKit.DistanceLabel!
+  @_Concurrency.MainActor(unsafe) weak public var dividerView: UIKit.UIView!
+  @_Concurrency.MainActor(unsafe) weak public var separatorView: MapboxNavigationUIKit.SeparatorView!
+  @_Concurrency.MainActor(unsafe) weak public var stepListIndicatorView: MapboxNavigationUIKit.StepListIndicatorView!
+  @objc @IBInspectable @_Concurrency.MainActor(unsafe) public var swipeable: Swift.Bool
+  @objc @IBInspectable @_Concurrency.MainActor(unsafe) public var showStepIndicator: Swift.Bool {
+    @objc get
+    @objc set
+  }
+  @_Concurrency.MainActor(unsafe) weak public var delegate: (any MapboxNavigationUIKit.InstructionsBannerViewDelegate)? {
+    get
+    set
+  }
+  @_Concurrency.MainActor(unsafe) final public let distanceFormatter: MapboxNavigationUIKit.DistanceFormatter
+  @_Concurrency.MainActor(unsafe) public var distance: CoreLocation.CLLocationDistance? {
+    get
+    set
+  }
+  @_Concurrency.MainActor(unsafe) @objc override dynamic public init(frame: CoreFoundation.CGRect)
+  @_Concurrency.MainActor(unsafe) @objc required dynamic public init?(coder aDecoder: Foundation.NSCoder)
+  @_Concurrency.MainActor(unsafe) public func update(for instruction: MapboxNavigationCore.VisualInstructionBanner?)
+  @_Concurrency.MainActor(unsafe) @objc override dynamic open func prepareForInterfaceBuilder()
+  @_Concurrency.MainActor(unsafe) public func updateDistance(for currentStepProgress: MapboxNavigationCore.RouteStepProgress)
+  @_Concurrency.MainActor(unsafe) @objc override dynamic open func traitCollectionDidChange(_ previousTraitCollection: UIKit.UITraitCollection?)
+  @objc deinit
+}
+public protocol InstructionsBannerViewDelegate : MapboxNavigationUIKit.VisualInstructionDelegate {
+  func didTapInstructionsBanner(_ sender: MapboxNavigationUIKit.BaseInstructionsBannerView)
+  func didSwipeInstructionsBanner(_ sender: MapboxNavigationUIKit.BaseInstructionsBannerView, swipeDirection direction: UIKit.UISwipeGestureRecognizer.Direction)
+}
+extension MapboxNavigationUIKit.InstructionsBannerViewDelegate {
+  public func didTapInstructionsBanner(_ sender: MapboxNavigationUIKit.BaseInstructionsBannerView)
+  public func didSwipeInstructionsBanner(_ sender: MapboxNavigationUIKit.BaseInstructionsBannerView, swipeDirection direction: UIKit.UISwipeGestureRecognizer.Direction)
+}
+@objc @_inheritsConvenienceInitializers @_Concurrency.MainActor(unsafe) public class InstructionsCardCell : UIKit.UICollectionViewCell {
+  @_Concurrency.MainActor(unsafe) final public let container: MapboxNavigationUIKit.InstructionsCardContainerView
+  @_Concurrency.MainActor(unsafe) @objc override dynamic public init(frame: CoreFoundation.CGRect)
+  @_Concurrency.MainActor(unsafe) @objc required dynamic public init?(coder aDecoder: Foundation.NSCoder)
+  @_Concurrency.MainActor(unsafe) public func configure(for step: MapboxDirections.RouteStep, distance: CoreLocation.CLLocationDistance, instruction: MapboxDirections.VisualInstructionBanner? = nil, isCurrentCardStep: Swift.Bool = false)
+  @objc deinit
+}
+@objc @_hasMissingDesignatedInitializers @_Concurrency.MainActor(unsafe) public class InstructionsCardContainerView : MapboxNavigationUIKit.StylableView, MapboxNavigationUIKit.InstructionsCardContainerViewDelegate {
+  @objc @_Concurrency.MainActor(unsafe) dynamic public var customBackgroundColor: UIKit.UIColor
+  @objc @_Concurrency.MainActor(unsafe) dynamic public var highlightedBackgroundColor: UIKit.UIColor
+  @objc @_Concurrency.MainActor(unsafe) dynamic public var separatorColor: UIKit.UIColor
+  @objc @_Concurrency.MainActor(unsafe) dynamic public var highlightedSeparatorColor: UIKit.UIColor
+  @_Concurrency.MainActor(unsafe) weak public var delegate: (any MapboxNavigationUIKit.InstructionsCardContainerViewDelegate)?
+  @_Concurrency.MainActor(unsafe) @objc required dynamic public init()
+  @_Concurrency.MainActor(unsafe) public func updateInstruction(for step: MapboxDirections.RouteStep, distance: CoreLocation.CLLocationDistance, instruction: MapboxDirections.VisualInstructionBanner? = nil, isCurrentCardStep: Swift.Bool = false)
+  @_Concurrency.MainActor(unsafe) public func updateInstruction(_ instruction: MapboxDirections.VisualInstructionBanner)
+  @_Concurrency.MainActor(unsafe) public func updateInstructionCard(distance: CoreLocation.CLLocationDistance, isCurrentCardStep: Swift.Bool = false)
+  @_Concurrency.MainActor(unsafe) public func label(_ label: MapboxNavigationUIKit.InstructionLabel, willPresent instruction: MapboxDirections.VisualInstruction, as presented: Foundation.NSAttributedString) -> Foundation.NSAttributedString?
+  @objc deinit
+}
+public protocol InstructionsCardContainerViewDelegate : MapboxNavigationUIKit.VisualInstructionDelegate {
+  func primaryLabel(_ primaryLabel: MapboxNavigationUIKit.InstructionLabel, willPresent instruction: MapboxDirections.VisualInstruction, as presented: Foundation.NSAttributedString) -> Foundation.NSAttributedString?
+  func secondaryLabel(_ secondaryLabel: MapboxNavigationUIKit.InstructionLabel, willPresent instruction: MapboxDirections.VisualInstruction, as presented: Foundation.NSAttributedString) -> Foundation.NSAttributedString?
+}
+extension MapboxNavigationUIKit.InstructionsCardContainerViewDelegate {
+  public func primaryLabel(_ primaryLabel: MapboxNavigationUIKit.InstructionLabel, willPresent instruction: MapboxDirections.VisualInstruction, as presented: Foundation.NSAttributedString) -> Foundation.NSAttributedString?
+  public func secondaryLabel(_ secondaryLabel: MapboxNavigationUIKit.InstructionLabel, willPresent instruction: MapboxDirections.VisualInstruction, as presented: Foundation.NSAttributedString) -> Foundation.NSAttributedString?
+}
+@objc @_inheritsConvenienceInitializers @_Concurrency.MainActor(unsafe) public class InstructionsCardView : MapboxNavigationUIKit.BaseInstructionsBannerView {
+  @_Concurrency.MainActor(unsafe) @objc required override dynamic public init(frame: CoreFoundation.CGRect = .zero)
+  @_Concurrency.MainActor(unsafe) @objc required dynamic public init?(coder aDecoder: Foundation.NSCoder)
+  @_Concurrency.MainActor(unsafe) public func prepareLayout()
+  @_Concurrency.MainActor(unsafe) public func updateInstruction(for step: MapboxDirections.RouteStep)
+  @_Concurrency.MainActor(unsafe) public func updateDistanceFromCurrentLocation(_ distance: CoreLocation.CLLocationDistance)
+  @objc deinit
+}
+@objc @_Concurrency.MainActor(unsafe) public class JunctionView : UIKit.UIImageView {
+  @_Concurrency.MainActor(unsafe) public func show(animated: Swift.Bool = false)
+  @_Concurrency.MainActor(unsafe) public func update(for visualInstruction: MapboxDirections.VisualInstructionBanner?, accessToken: Swift.String?)
+  @_Concurrency.MainActor(unsafe) public func hide(delay: Foundation.TimeInterval = 0, animated: Swift.Bool = true)
+  @_Concurrency.MainActor(unsafe) @objc override dynamic public init(frame: CoreFoundation.CGRect)
+  @_Concurrency.MainActor(unsafe) @objc required dynamic public init?(coder aDecoder: Foundation.NSCoder)
+  @objc deinit
+}
+@objc @_inheritsConvenienceInitializers @_hasMissingDesignatedInitializers @_Concurrency.MainActor(unsafe) open class LaneView : UIKit.UIView {
+  @_Concurrency.MainActor(unsafe) @objc override dynamic open var intrinsicContentSize: CoreFoundation.CGSize {
+    @objc get
+  }
+  @objc @_Concurrency.MainActor(unsafe) dynamic public var primaryColor: UIKit.UIColor {
+    @objc get
+    @objc set
+  }
+  @objc @_Concurrency.MainActor(unsafe) dynamic public var secondaryColor: UIKit.UIColor {
+    @objc get
+    @objc set
+  }
+  @objc @_Concurrency.MainActor(unsafe) dynamic public var primaryColorHighlighted: UIKit.UIColor {
+    @objc get
+    @objc set
+  }
+  @objc @_Concurrency.MainActor(unsafe) dynamic public var secondaryColorHighlighted: UIKit.UIColor {
+    @objc get
+    @objc set
+  }
+  @_Concurrency.MainActor(unsafe) public var showHighlightedColors: Swift.Bool {
+    get
+    set
+  }
+  @_Concurrency.MainActor(unsafe) @objc required dynamic public init?(coder decoder: Foundation.NSCoder)
+  @_Concurrency.MainActor(unsafe) @objc override dynamic open func draw(_ rect: CoreFoundation.CGRect)
+  @objc deinit
+}
+@objc @_inheritsConvenienceInitializers @_hasMissingDesignatedInitializers @IBDesignable @_Concurrency.MainActor(unsafe) open class LanesView : UIKit.UIView, MapboxNavigationUIKit.NavigationComponent {
+  @_Concurrency.MainActor(unsafe) public var isCurrentlyVisible: Swift.Bool
+  public typealias CompletionHandler = (_ completed: Swift.Bool) -> Swift.Void
+  @_Concurrency.MainActor(unsafe) public func update(for visualInstruction: MapboxDirections.VisualInstructionBanner?, animated: Swift.Bool = true, duration: Foundation.TimeInterval = 0.5, completion: MapboxNavigationUIKit.LanesView.CompletionHandler? = nil)
+  @_Concurrency.MainActor(unsafe) public func show(animated: Swift.Bool = true, duration: Foundation.TimeInterval = 0.5, completion: MapboxNavigationUIKit.LanesView.CompletionHandler? = nil)
+  @_Concurrency.MainActor(unsafe) public func hide(animated: Swift.Bool = true, duration: Foundation.TimeInterval = 0.5, completion: MapboxNavigationUIKit.LanesView.CompletionHandler? = nil)
+  @_Concurrency.MainActor(unsafe) public func onDidPassVisualInstructionPoint(_ instruction: MapboxDirections.VisualInstructionBanner)
+  @_Concurrency.MainActor(unsafe) @objc required dynamic public init?(coder aDecoder: Foundation.NSCoder)
+  @_Concurrency.MainActor(unsafe) @objc override dynamic open func prepareForInterfaceBuilder()
+  @_Concurrency.MainActor(unsafe) @objc override dynamic open func traitCollectionDidChange(_ previousTraitCollection: UIKit.UITraitCollection?)
+  @objc deinit
+}
+@objc @_inheritsConvenienceInitializers @_hasMissingDesignatedInitializers @IBDesignable @_Concurrency.MainActor(unsafe) open class ManeuverView : UIKit.UIView {
+  @objc @_Concurrency.MainActor(unsafe) dynamic public var primaryColor: UIKit.UIColor {
+    @objc get
+    @objc set
+  }
+  @objc @_Concurrency.MainActor(unsafe) dynamic public var secondaryColor: UIKit.UIColor {
+    @objc get
+    @objc set
+  }
+  @objc @_Concurrency.MainActor(unsafe) dynamic public var primaryColorHighlighted: UIKit.UIColor {
+    @objc get
+    @objc set
+  }
+  @objc @_Concurrency.MainActor(unsafe) dynamic public var secondaryColorHighlighted: UIKit.UIColor {
+    @objc get
+    @objc set
+  }
+  @_Concurrency.MainActor(unsafe) public var shouldShowHighlightedColors: Swift.Bool {
+    get
+    set
+  }
+  @_Concurrency.MainActor(unsafe) public var isStart: Swift.Bool {
+    get
+    set
+  }
+  @_Concurrency.MainActor(unsafe) public var isEnd: Swift.Bool {
+    get
+    set
+  }
+  @_Concurrency.MainActor(unsafe) public var visualInstruction: MapboxDirections.VisualInstruction? {
+    get
+    set
+  }
+  @_Concurrency.MainActor(unsafe) public var drivingSide: MapboxDirections.DrivingSide {
+    get
+    set
+  }
+  @_Concurrency.MainActor(unsafe) @objc override dynamic open func draw(_ rect: CoreFoundation.CGRect)
+  @_Concurrency.MainActor(unsafe) @objc required dynamic public init?(coder aDecoder: Foundation.NSCoder)
+  @objc deinit
+}
+public enum MapOrnamentPosition {
+  case topLeading
+  case topTrailing
+  public static func == (a: MapboxNavigationUIKit.MapOrnamentPosition, b: MapboxNavigationUIKit.MapOrnamentPosition) -> Swift.Bool
+  public func hash(into hasher: inout Swift.Hasher)
+  public var hashValue: Swift.Int {
+    get
+  }
+}
+public protocol NavigationComponent {
+  func onWillReroute()
+  func onDidReroute()
+  func onFasterRoute()
+  func onRouteProgressUpdated(_ progress: MapboxNavigationCore.RouteProgress)
+  func onSwitchingToOnline()
+  func onDidPassVisualInstructionPoint(_ instruction: MapboxNavigationCore.VisualInstructionBanner)
+  func onDidBeginSimulating()
+  func onWillEndSimulating()
+}
+extension MapboxNavigationUIKit.NavigationComponent {
+  public func onWillReroute()
+  public func onDidReroute()
+  public func onFasterRoute()
+  public func onRouteProgressUpdated(_ progress: MapboxNavigationCore.RouteProgress)
+  public func onSwitchingToOnline()
+  public func onDidPassVisualInstructionPoint(_ instruction: MapboxNavigationCore.VisualInstructionBanner)
+  public func onDidBeginSimulating()
+  public func onWillEndSimulating()
+}
+public protocol NavigationMapInteractionObserver : AnyObject {
+  func navigationViewController(didCenterOn location: CoreLocation.CLLocation)
+}
+public protocol CarPlayConnectionObserver : AnyObject {
+  func didConnectToCarPlay()
+  func didDisconnectFromCarPlay()
+}
+public protocol NavigationStatusPresenter : AnyObject {
+  func show(_: MapboxNavigationUIKit.StatusView.Status)
+  func hide(_: MapboxNavigationUIKit.StatusView.Status)
+}
+public struct NavigationGeocodedPlacemark : Swift.Equatable, Swift.Codable {
+  public var title: Swift.String
+  public var subtitle: Swift.String?
+  public var location: CoreLocation.CLLocation?
+  public var routableLocations: [CoreLocation.CLLocation]?
+  public init(title: Swift.String, subtitle: Swift.String?, location: CoreLocation.CLLocation?, routableLocations: [CoreLocation.CLLocation]?)
+  public init(from decoder: any Swift.Decoder) throws
+  public func encode(to encoder: any Swift.Encoder) throws
+  public static func == (lhs: MapboxNavigationUIKit.NavigationGeocodedPlacemark, rhs: MapboxNavigationUIKit.NavigationGeocodedPlacemark) -> Swift.Bool
+  public func listItem() -> CarPlay.CPListItem
+}
+extension CoreLocation.CLLocation : Swift.Encodable {
+  public enum CodingKeys : Swift.String, Swift.CodingKey {
+    case latitude
+    case longitude
+    case altitude
+    case horizontalAccuracy
+    case verticalAccuracy
+    case speed
+    case course
+    case timestamp
+    public init?(rawValue: Swift.String)
+    public init?(stringValue: Swift.String)
+    public init?(intValue: Swift.Int)
+    public typealias RawValue = Swift.String
+    public var intValue: Swift.Int? {
+      get
+    }
+    public var rawValue: Swift.String {
+      get
+    }
+    public var stringValue: Swift.String {
+      get
+    }
+  }
+  public func encode(to encoder: any Swift.Encoder) throws
+}
+open class NavigationOptions {
+  open var styles: [MapboxNavigationUIKit.Style]?
+  open var topBanner: (any UIKit.UIViewController & MapboxNavigationUIKit.NavigationComponent)?
+  open var bottomBanner: (any UIKit.UIViewController & MapboxNavigationUIKit.NavigationComponent)?
+  open var navigationMapView: MapboxNavigationCore.NavigationMapView?
+  open var mapboxNavigation: any MapboxNavigationCore.MapboxNavigation
+  open var eventsManager: MapboxNavigationCore.NavigationEventsManager
+  open var voiceController: MapboxNavigationCore.RouteVoiceController
+  open var predictiveCacheManager: MapboxNavigationCore.PredictiveCacheManager?
+  @_Concurrency.MainActor required public init()
+  public init(mapboxNavigation: any MapboxNavigationCore.MapboxNavigation, voiceController: MapboxNavigationCore.RouteVoiceController, eventsManager: MapboxNavigationCore.NavigationEventsManager, styles: [MapboxNavigationUIKit.Style]? = nil, topBanner: (any UIKit.UIViewController & MapboxNavigationUIKit.NavigationComponent)? = nil, bottomBanner: (any UIKit.UIViewController & MapboxNavigationUIKit.NavigationComponent)? = nil, predictiveCacheManager: MapboxNavigationCore.PredictiveCacheManager? = nil, navigationMapView: MapboxNavigationCore.NavigationMapView? = nil)
+  @objc deinit
+}
+@objc @IBDesignable @_Concurrency.MainActor(unsafe) open class NavigationView : UIKit.UIView {
+  @_Concurrency.MainActor(unsafe) public var navigationMapView: MapboxNavigationCore.NavigationMapView {
+    get
+    set
+  }
+  @_Concurrency.MainActor(unsafe) public var floatingStackView: UIKit.UIStackView {
+    get
+    set
+  }
+  @_Concurrency.MainActor(unsafe) public var floatingButtons: [UIKit.UIButton]? {
+    get
+    set
+  }
+  @_Concurrency.MainActor(unsafe) public var wayNameView: MapboxNavigationUIKit.WayNameView {
+    get
+    set
+  }
+  @_Concurrency.MainActor(unsafe) public var speedLimitView: MapboxNavigationUIKit.SpeedLimitView {
+    get
+    set
+  }
+  @_Concurrency.MainActor(unsafe) public var topBannerContainerView: MapboxNavigationUIKit.BannerContainerView {
+    get
+    set
+  }
+  @_Concurrency.MainActor(unsafe) public var bottomBannerContainerView: MapboxNavigationUIKit.BannerContainerView {
+    get
+    set
+  }
+  public enum MapViewConfiguration {
+    case createNew(location: Combine.AnyPublisher<CoreLocation.CLLocation, Swift.Never>, routeProgress: Combine.AnyPublisher<MapboxNavigationCore.RouteProgress?, Swift.Never>, predictiveCacheManager: MapboxNavigationCore.PredictiveCacheManager? = nil)
+    case existing(MapboxNavigationCore.NavigationMapView)
+  }
+  @_Concurrency.MainActor(unsafe) public init(frame: CoreFoundation.CGRect, mapViewConfiguration: MapboxNavigationUIKit.NavigationView.MapViewConfiguration)
+  @_Concurrency.MainActor(unsafe) @objc required dynamic public init?(coder decoder: Foundation.NSCoder)
+  @_Concurrency.MainActor(unsafe) @objc override dynamic open func prepareForInterfaceBuilder()
+  @objc deinit
+}
+extension MapboxNavigationUIKit.NavigationViewController : MapboxNavigationCore.NavigationMapViewDelegate {
+  @_Concurrency.MainActor public func navigationMapView(_ navigationMapView: MapboxNavigationCore.NavigationMapView, didAdd finalDestinationAnnotation: MapboxMaps.PointAnnotation, pointAnnotationManager: MapboxMaps.PointAnnotationManager)
+  @_Concurrency.MainActor public func navigationMapView(_ navigationMapView: MapboxNavigationCore.NavigationMapView, didSelect waypoint: MapboxDirections.Waypoint)
+  @_Concurrency.MainActor public func navigationMapView(_: MapboxNavigationCore.NavigationMapView, didSelect alternativeRoute: MapboxNavigationCore.AlternativeRoute)
+}
+public typealias ContainerViewController = UIKit.UIViewController & MapboxNavigationUIKit.NavigationComponent
+@objc @_Concurrency.MainActor(unsafe) open class NavigationViewController : UIKit.UIViewController, MapboxNavigationUIKit.NavigationStatusPresenter {
+  @objc @_Concurrency.MainActor(unsafe) public var navigationMapView: MapboxNavigationCore.NavigationMapView? {
+    @objc get
+    @objc set
+  }
+  @_Concurrency.MainActor(unsafe) public var navigationView: MapboxNavigationUIKit.NavigationView {
+    get
+  }
+  @_Concurrency.MainActor(unsafe) public var routeLineTracksTraversal: Swift.Bool {
+    get
+    set
+  }
+  @_Concurrency.MainActor(unsafe) public var annotatesIntersectionsAlongRoute: Swift.Bool {
+    get
+    set
+  }
+  @_Concurrency.MainActor(unsafe) public var showsContinuousAlternatives: Swift.Bool {
+    get
+    set
+  }
+  @_Concurrency.MainActor(unsafe) public var continuousAlternatives: [MapboxNavigationCore.AlternativeRoute] {
+    get
+  }
+  @_Concurrency.MainActor(unsafe) public var voiceController: MapboxNavigationCore.RouteVoiceController?
+  @_Concurrency.MainActor(unsafe) public var annotatesSpokenInstructions: Swift.Bool {
+    get
+    set
+  }
+  @_Concurrency.MainActor(unsafe) public var usesNightStyleWhileInTunnel: Swift.Bool
+  @_Concurrency.MainActor(unsafe) public var navigationOptions: MapboxNavigationUIKit.NavigationOptions?
+  @_Concurrency.MainActor(unsafe) public var routeOptions: MapboxDirections.RouteOptions? {
+    get
+  }
+  @_Concurrency.MainActor(unsafe) public var navigationRoutes: MapboxNavigationCore.NavigationRoutes? {
+    get
+  }
+  @_Concurrency.MainActor(unsafe) public var route: MapboxDirections.Route? {
+    get
+  }
+  @_Concurrency.MainActor(unsafe) public var routingProvider: any MapboxNavigationCore.RoutingProvider {
+    get
+  }
+  @_Concurrency.MainActor(unsafe) public var mapboxNavigation: any MapboxNavigationCore.MapboxNavigation {
+    get
+  }
+  @_Concurrency.MainActor(unsafe) public var sendsNotifications: Swift.Bool
+  @_Concurrency.MainActor(unsafe) weak public var delegate: (any MapboxNavigationUIKit.NavigationViewControllerDelegate)?
+  @_Concurrency.MainActor(unsafe) public var shouldManageApplicationIdleTimer: Swift.Bool {
+    get
+    set
+  }
+  @_Concurrency.MainActor(unsafe) @objc required dynamic public init?(coder aDecoder: Foundation.NSCoder)
+  @_Concurrency.MainActor(unsafe) required public init(navigationRoutes: MapboxNavigationCore.NavigationRoutes, navigationOptions: MapboxNavigationUIKit.NavigationOptions)
+  @objc deinit
+  @_Concurrency.MainActor(unsafe) @objc override dynamic open func loadView()
+  @_Concurrency.MainActor(unsafe) @objc override dynamic open func viewDidLoad()
+  @_Concurrency.MainActor(unsafe) @objc override dynamic open func viewWillAppear(_ animated: Swift.Bool)
+  @_Concurrency.MainActor(unsafe) @objc override dynamic open func willTransition(to newCollection: UIKit.UITraitCollection, with coordinator: any UIKit.UIViewControllerTransitionCoordinator)
+  @_Concurrency.MainActor(unsafe) public func show(_ status: MapboxNavigationUIKit.StatusView.Status)
+  @_Concurrency.MainActor(unsafe) public func hide(_ status: MapboxNavigationUIKit.StatusView.Status)
+  @_Concurrency.MainActor(unsafe) @objc override dynamic open func viewDidAppear(_ animated: Swift.Bool)
+  @_Concurrency.MainActor(unsafe) @objc override dynamic open func viewWillDisappear(_ animated: Swift.Bool)
+  @_Concurrency.MainActor(unsafe) @objc override dynamic open func viewDidDisappear(_ animated: Swift.Bool)
+  @_Concurrency.MainActor(unsafe) @objc override dynamic open func viewDidLayoutSubviews()
+  @_Concurrency.MainActor(unsafe) @objc override dynamic open func preferredContentSizeDidChange(forChildContentContainer container: any UIKit.UIContentContainer)
+  @_Concurrency.MainActor(unsafe) public func prepareViewLoading(navigationRoutes: MapboxNavigationCore.NavigationRoutes?, navigationOptions: MapboxNavigationUIKit.NavigationOptions? = nil) -> Swift.Bool
+  @_Concurrency.MainActor(unsafe) public var showsReportFeedback: Swift.Bool {
+    get
+    set
+  }
+  @_Concurrency.MainActor(unsafe) public var showsEndOfRouteFeedback: Swift.Bool {
+    get
+    set
+  }
+  @_Concurrency.MainActor(unsafe) public var showsSpeedLimits: Swift.Bool {
+    get
+    set
+  }
+  @_Concurrency.MainActor(unsafe) open var floatingButtonsPosition: MapboxNavigationUIKit.MapOrnamentPosition? {
+    get
+    set
+  }
+  @_Concurrency.MainActor(unsafe) open var floatingButtons: [UIKit.UIButton]? {
+    get
+    set
+  }
+  @_Concurrency.MainActor(unsafe) public var automaticallyAdjustsStyleForTimeOfDay: Swift.Bool {
+    get
+    set
+  }
+  @_Concurrency.MainActor(unsafe) public var usesNightStyleInDarkMode: Swift.Bool
+  @_Concurrency.MainActor(unsafe) public var styleManager: MapboxNavigationUIKit.StyleManager! {
+    get
+  }
+  @_Concurrency.MainActor(unsafe) @objc override dynamic open var preferredStatusBarStyle: UIKit.UIStatusBarStyle {
+    @objc get
+  }
+}
+extension MapboxNavigationUIKit.NavigationViewController : MapboxNavigationUIKit.StyleManagerDelegate {
+  @_Concurrency.MainActor(unsafe) public func location(for styleManager: MapboxNavigationUIKit.StyleManager) -> CoreLocation.CLLocation?
+  @_Concurrency.MainActor(unsafe) public func styleManager(_ styleManager: MapboxNavigationUIKit.StyleManager, didApply style: MapboxNavigationUIKit.Style)
+  @_Concurrency.MainActor(unsafe) public func styleManagerDidRefreshAppearance(_ styleManager: MapboxNavigationUIKit.StyleManager)
+}
+extension MapboxNavigationUIKit.NavigationViewController : MapboxNavigationUIKit.TopBannerViewControllerDelegate {
+  @_Concurrency.MainActor(unsafe) public func topBanner(_ banner: MapboxNavigationUIKit.TopBannerViewController, didSwipeInDirection direction: UIKit.UISwipeGestureRecognizer.Direction)
+  @_Concurrency.MainActor(unsafe) public func preview(step: MapboxDirections.RouteStep, in banner: MapboxNavigationUIKit.TopBannerViewController, remaining: [MapboxDirections.RouteStep], route: MapboxDirections.Route, animated: Swift.Bool = true)
+  @_Concurrency.MainActor(unsafe) public func topBanner(_ banner: MapboxNavigationUIKit.TopBannerViewController, didSelect legIndex: Swift.Int, stepIndex: Swift.Int, cell: MapboxNavigationUIKit.StepTableViewCell)
+  @_Concurrency.MainActor(unsafe) public func topBanner(_ banner: MapboxNavigationUIKit.TopBannerViewController, didDisplayStepsController: MapboxNavigationUIKit.StepsViewController)
+  @_Concurrency.MainActor(unsafe) public func label(_ label: MapboxNavigationUIKit.InstructionLabel, willPresent instruction: MapboxDirections.VisualInstruction, as presented: Foundation.NSAttributedString) -> Foundation.NSAttributedString?
+}
+extension MapboxNavigationUIKit.NavigationViewController : MapboxNavigationUIKit.BottomBannerViewControllerDelegate {
+  @_Concurrency.MainActor(unsafe) public func didTapCancel(_ sender: Any)
+}
+extension MapboxNavigationUIKit.NavigationViewController : MapboxNavigationUIKit.CarPlayConnectionObserver {
+  @_Concurrency.MainActor(unsafe) public func didConnectToCarPlay()
+  @_Concurrency.MainActor(unsafe) public func didDisconnectFromCarPlay()
+}
+extension MapboxNavigationCore.AlternativeRoute : Swift.Hashable {
+  public func hash(into hasher: inout Swift.Hasher)
+  public var hashValue: Swift.Int {
+    get
+  }
+}
+public protocol NavigationViewControllerDelegate : MapboxNavigationUIKit.VisualInstructionDelegate {
+  func navigationViewControllerDidDismiss(_ navigationViewController: MapboxNavigationUIKit.NavigationViewController, byCanceling canceled: Swift.Bool)
+  func navigationViewController(_ navigationViewController: MapboxNavigationUIKit.NavigationViewController, didUpdate progress: MapboxNavigationCore.RouteProgress, with location: CoreLocation.CLLocation, rawLocation: CoreLocation.CLLocation)
+  func navigationViewController(_ navigationViewController: MapboxNavigationUIKit.NavigationViewController, didAdd finalDestinationAnnotation: MapboxMaps.PointAnnotation, pointAnnotationManager: MapboxMaps.PointAnnotationManager)
+  func navigationViewController(_ navigationViewController: MapboxNavigationUIKit.NavigationViewController, didSelect waypoint: MapboxDirections.Waypoint)
+  func navigationViewController(_ navigationViewController: MapboxNavigationUIKit.NavigationViewController, willRerouteFrom location: CoreLocation.CLLocation?)
+  func navigationViewController(_ navigationViewController: MapboxNavigationUIKit.NavigationViewController, didRerouteAlong route: MapboxDirections.Route)
+  func navigationViewController(_ navigationViewController: MapboxNavigationUIKit.NavigationViewController, didUpdateAlternatives updatedAlternatives: [MapboxNavigationCore.AlternativeRoute], removedAlternatives: [MapboxNavigationCore.AlternativeRoute])
+  func navigationViewController(_ navigationViewController: MapboxNavigationUIKit.NavigationViewController, didSwitchToCoincidentOnlineRoute coincideRoute: MapboxDirections.Route)
+  func navigationViewController(_ navigationViewController: MapboxNavigationUIKit.NavigationViewController, didSelect alternative: MapboxNavigationCore.AlternativeRoute)
+  func navigationViewController(_ navigationViewController: MapboxNavigationUIKit.NavigationViewController, didFailToRerouteWith error: any Swift.Error)
+  func navigationViewController(_ navigationViewController: MapboxNavigationUIKit.NavigationViewController, didRefresh routeProgress: MapboxNavigationCore.RouteProgress)
+  func navigationViewController(_ navigationViewController: MapboxNavigationUIKit.NavigationViewController, roadNameAt location: CoreLocation.CLLocation) -> Swift.String?
+  func navigationViewController(_ navigationViewController: MapboxNavigationUIKit.NavigationViewController, didSubmitArrivalFeedback isPositive: Swift.Bool)
+}
+extension MapboxNavigationUIKit.NavigationViewControllerDelegate {
+  public func navigationViewControllerDidDismiss(_ navigationViewController: MapboxNavigationUIKit.NavigationViewController, byCanceling canceled: Swift.Bool)
+  public func navigationViewController(_ navigationViewController: MapboxNavigationUIKit.NavigationViewController, didUpdate progress: MapboxNavigationCore.RouteProgress, with location: CoreLocation.CLLocation, rawLocation: CoreLocation.CLLocation)
+  public func navigationViewController(_ navigationViewController: MapboxNavigationUIKit.NavigationViewController, didArriveAt waypoint: MapboxDirections.Waypoint) -> Swift.Bool
+  public func navigationViewController(_ navigationViewController: MapboxNavigationUIKit.NavigationViewController, didSelect waypoint: MapboxDirections.Waypoint)
+  public func navigationViewController(_ navigationViewController: MapboxNavigationUIKit.NavigationViewController, willRerouteFrom location: CoreLocation.CLLocation?)
+  public func navigationViewController(_ navigationViewController: MapboxNavigationUIKit.NavigationViewController, didRerouteAlong route: MapboxDirections.Route)
+  public func navigationViewController(_ navigationViewController: MapboxNavigationUIKit.NavigationViewController, didUpdateAlternatives updatedAlternatives: [MapboxNavigationCore.AlternativeRoute], removedAlternatives: [MapboxNavigationCore.AlternativeRoute])
+  public func navigationViewController(_ navigationViewController: MapboxNavigationUIKit.NavigationViewController, didSwitchToCoincidentOnlineRoute coincideRoute: MapboxDirections.Route)
+  public func navigationViewController(_ navigationViewController: MapboxNavigationUIKit.NavigationViewController, didSelect continuousAlternative: MapboxNavigationCore.AlternativeRoute)
+  public func navigationViewController(_ navigationViewController: MapboxNavigationUIKit.NavigationViewController, didFailToRerouteWith error: any Swift.Error)
+  public func navigationViewController(_ navigationViewController: MapboxNavigationUIKit.NavigationViewController, didRefresh routeProgress: MapboxNavigationCore.RouteProgress)
+  public func navigationViewController(_ navigationViewController: MapboxNavigationUIKit.NavigationViewController, roadNameAt location: CoreLocation.CLLocation) -> Swift.String?
+  public func navigationViewController(_ navigationViewController: MapboxNavigationUIKit.NavigationViewController, didAdd finalDestinationAnnotation: MapboxMaps.PointAnnotation, pointAnnotationManager: MapboxMaps.PointAnnotationManager)
+  public func navigationViewController(_ navigationViewController: MapboxNavigationUIKit.NavigationViewController, didSubmitArrivalFeedback isPositive: Swift.Bool)
+}
+@objc @_inheritsConvenienceInitializers @_Concurrency.MainActor(unsafe) open class NextInstructionLabel : MapboxNavigationUIKit.InstructionLabel {
+  @_Concurrency.MainActor(unsafe) @objc override dynamic public init(frame: CoreFoundation.CGRect)
+  @_Concurrency.MainActor(unsafe) @objc required dynamic public init?(coder: Foundation.NSCoder)
+  @objc deinit
+}
+@objc @_inheritsConvenienceInitializers @_hasMissingDesignatedInitializers @IBDesignable @_Concurrency.MainActor(unsafe) open class NextBannerView : UIKit.UIView, MapboxNavigationUIKit.NavigationComponent {
+  @_Concurrency.MainActor(unsafe) public var isCurrentlyVisible: Swift.Bool
+  public typealias CompletionHandler = (_ completed: Swift.Bool) -> Swift.Void
+  @_Concurrency.MainActor(unsafe) @objc required dynamic public init?(coder aDecoder: Foundation.NSCoder)
+  @_Concurrency.MainActor(unsafe) @objc override dynamic open func prepareForInterfaceBuilder()
+  @_Concurrency.MainActor(unsafe) @objc override dynamic open func traitCollectionDidChange(_ previousTraitCollection: UIKit.UITraitCollection?)
+  @_Concurrency.MainActor(unsafe) public func onRouteProgressUpdated(_ progress: MapboxNavigationCore.RouteProgress)
+  @_Concurrency.MainActor(unsafe) public func update(for visualInstruction: MapboxNavigationCore.VisualInstructionBanner?, animated: Swift.Bool = true, duration: Foundation.TimeInterval = 0.5, completion: MapboxNavigationUIKit.NextBannerView.CompletionHandler? = nil)
+  @_Concurrency.MainActor(unsafe) public func show(animated: Swift.Bool = true, duration: Foundation.TimeInterval = 0.5, completion: MapboxNavigationUIKit.NextBannerView.CompletionHandler? = nil)
+  @_Concurrency.MainActor(unsafe) public func hide(animated: Swift.Bool = true, duration: Foundation.TimeInterval = 0.5, completion: MapboxNavigationUIKit.NextBannerView.CompletionHandler? = nil)
+  @objc deinit
+}
+@objc @_inheritsConvenienceInitializers public class LanesStyleKit : ObjectiveC.NSObject {
+  @objc dynamic public class func drawLaneSharpTurn(frame targetFrame: CoreFoundation.CGRect = CGRect(x: 0, y: 0, width: 30, height: 30), resizing: MapboxNavigationUIKit.LanesStyleKit.ResizingBehavior = .aspectFit, secondaryColor: UIKit.UIColor = UIColor(red: 0.618, green: 0.618, blue: 0.618, alpha: 1.000), size: CoreFoundation.CGSize = CGSize(width: 32, height: 32), flipHorizontally: Swift.Bool = false)
+  @objc dynamic public class func drawLaneStraight(frame targetFrame: CoreFoundation.CGRect = CGRect(x: 0, y: 0, width: 30, height: 30), resizing: MapboxNavigationUIKit.LanesStyleKit.ResizingBehavior = .aspectFit, secondaryColor: UIKit.UIColor = UIColor(red: 0.618, green: 0.618, blue: 0.618, alpha: 1.000), size: CoreFoundation.CGSize = CGSize(width: 32, height: 32))
+  @objc dynamic public class func drawLaneUturn(frame targetFrame: CoreFoundation.CGRect = CGRect(x: 0, y: 0, width: 30, height: 30), resizing: MapboxNavigationUIKit.LanesStyleKit.ResizingBehavior = .aspectFit, secondaryColor: UIKit.UIColor = UIColor(red: 0.618, green: 0.618, blue: 0.618, alpha: 1.000), size: CoreFoundation.CGSize = CGSize(width: 32, height: 32), flipHorizontally: Swift.Bool = false)
+  @objc dynamic public class func drawLaneSlightTurn(frame targetFrame: CoreFoundation.CGRect = CGRect(x: 0, y: 0, width: 30, height: 30), resizing: MapboxNavigationUIKit.LanesStyleKit.ResizingBehavior = .aspectFit, secondaryColor: UIKit.UIColor = UIColor(red: 0.618, green: 0.618, blue: 0.618, alpha: 1.000), size: CoreFoundation.CGSize = CGSize(width: 32, height: 32), flipHorizontally: Swift.Bool = false)
+  @objc dynamic public class func drawLaneTurn(frame targetFrame: CoreFoundation.CGRect = CGRect(x: 0, y: 0, width: 30, height: 30), resizing: MapboxNavigationUIKit.LanesStyleKit.ResizingBehavior = .aspectFit, secondaryColor: UIKit.UIColor = UIColor(red: 0.618, green: 0.618, blue: 0.618, alpha: 1.000), size: CoreFoundation.CGSize = CGSize(width: 32, height: 32), flipHorizontally: Swift.Bool = false)
+  @objc dynamic public class func drawLaneSlightTurnUsingSlightTurn(frame targetFrame: CoreFoundation.CGRect = CGRect(x: 0, y: 0, width: 30, height: 30), resizing: MapboxNavigationUIKit.LanesStyleKit.ResizingBehavior = .aspectFit, primaryColor: UIKit.UIColor = UIColor(red: 0.000, green: 0.000, blue: 0.000, alpha: 1.000), size: CoreFoundation.CGSize = CGSize(width: 32, height: 32), flipHorizontally: Swift.Bool = false)
+  @objc dynamic public class func drawLaneTurnUsingTurn(frame targetFrame: CoreFoundation.CGRect = CGRect(x: 0, y: 0, width: 30, height: 30), resizing: MapboxNavigationUIKit.LanesStyleKit.ResizingBehavior = .aspectFit, primaryColor: UIKit.UIColor = UIColor(red: 0.000, green: 0.000, blue: 0.000, alpha: 1.000), size: CoreFoundation.CGSize = CGSize(width: 32, height: 32), flipHorizontally: Swift.Bool = false)
+  @objc dynamic public class func drawLaneStraightUsingStraight(frame targetFrame: CoreFoundation.CGRect = CGRect(x: 0, y: 0, width: 30, height: 30), resizing: MapboxNavigationUIKit.LanesStyleKit.ResizingBehavior = .aspectFit, primaryColor: UIKit.UIColor = UIColor(red: 0.000, green: 0.000, blue: 0.000, alpha: 1.000), size: CoreFoundation.CGSize = CGSize(width: 32, height: 32))
+  @objc dynamic public class func drawLaneUturnUsingUturn(frame targetFrame: CoreFoundation.CGRect = CGRect(x: 0, y: 0, width: 30, height: 30), resizing: MapboxNavigationUIKit.LanesStyleKit.ResizingBehavior = .aspectFit, primaryColor: UIKit.UIColor = UIColor(red: 0.000, green: 0.000, blue: 0.000, alpha: 1.000), size: CoreFoundation.CGSize = CGSize(width: 32, height: 32), flipHorizontally: Swift.Bool = false)
+  @objc dynamic public class func drawLaneSharpTurnUsingSharpTurn(frame targetFrame: CoreFoundation.CGRect = CGRect(x: 0, y: 0, width: 30, height: 30), resizing: MapboxNavigationUIKit.LanesStyleKit.ResizingBehavior = .aspectFit, primaryColor: UIKit.UIColor = UIColor(red: 0.000, green: 0.000, blue: 0.000, alpha: 1.000), size: CoreFoundation.CGSize = CGSize(width: 32, height: 32), flipHorizontally: Swift.Bool = false)
+  @objc dynamic public class func drawLaneSlightTurnOrSharpTurnUsingSharpTurn(frame targetFrame: CoreFoundation.CGRect = CGRect(x: 0, y: 0, width: 30, height: 30), resizing: MapboxNavigationUIKit.LanesStyleKit.ResizingBehavior = .aspectFit, primaryColor: UIKit.UIColor = UIColor(red: 0.000, green: 0.000, blue: 0.000, alpha: 1.000), secondaryColor: UIKit.UIColor = UIColor(red: 0.618, green: 0.618, blue: 0.618, alpha: 1.000), size: CoreFoundation.CGSize = CGSize(width: 32, height: 32), flipHorizontally: Swift.Bool = false)
+  @objc dynamic public class func drawLaneTurnOrSharpTurnUsingTurn(frame targetFrame: CoreFoundation.CGRect = CGRect(x: 0, y: 0, width: 30, height: 30), resizing: MapboxNavigationUIKit.LanesStyleKit.ResizingBehavior = .aspectFit, primaryColor: UIKit.UIColor = UIColor(red: 0.000, green: 0.000, blue: 0.000, alpha: 1.000), secondaryColor: UIKit.UIColor = UIColor(red: 0.618, green: 0.618, blue: 0.618, alpha: 1.000), size: CoreFoundation.CGSize = CGSize(width: 32, height: 32), flipHorizontally: Swift.Bool = false)
+  @objc dynamic public class func drawLaneSlightTurnOrUturnUsingUturn(frame targetFrame: CoreFoundation.CGRect = CGRect(x: 0, y: 0, width: 30, height: 30), resizing: MapboxNavigationUIKit.LanesStyleKit.ResizingBehavior = .aspectFit, primaryColor: UIKit.UIColor = UIColor(red: 0.000, green: 0.000, blue: 0.000, alpha: 1.000), secondaryColor: UIKit.UIColor = UIColor(red: 0.618, green: 0.618, blue: 0.618, alpha: 1.000), size: CoreFoundation.CGSize = CGSize(width: 32, height: 32), flipHorizontally: Swift.Bool = false)
+  @objc dynamic public class func drawLaneSlightTurnOrTurnUsingSlightTurn(frame targetFrame: CoreFoundation.CGRect = CGRect(x: 0, y: 0, width: 30, height: 30), resizing: MapboxNavigationUIKit.LanesStyleKit.ResizingBehavior = .aspectFit, primaryColor: UIKit.UIColor = UIColor(red: 0.000, green: 0.000, blue: 0.000, alpha: 1.000), secondaryColor: UIKit.UIColor = UIColor(red: 0.618, green: 0.618, blue: 0.618, alpha: 1.000), size: CoreFoundation.CGSize = CGSize(width: 32, height: 32), flipHorizontally: Swift.Bool = false)
+  @objc dynamic public class func drawLaneStraightOrUturnUsingUturn(frame targetFrame: CoreFoundation.CGRect = CGRect(x: 0, y: 0, width: 30, height: 30), resizing: MapboxNavigationUIKit.LanesStyleKit.ResizingBehavior = .aspectFit, primaryColor: UIKit.UIColor = UIColor(red: 0.000, green: 0.000, blue: 0.000, alpha: 1.000), secondaryColor: UIKit.UIColor = UIColor(red: 0.618, green: 0.618, blue: 0.618, alpha: 1.000), size: CoreFoundation.CGSize = CGSize(width: 32, height: 32), flipHorizontally: Swift.Bool = false)
+  @objc dynamic public class func drawLaneTurnOrUturnUsingTurn(frame targetFrame: CoreFoundation.CGRect = CGRect(x: 0, y: 0, width: 30, height: 30), resizing: MapboxNavigationUIKit.LanesStyleKit.ResizingBehavior = .aspectFit, primaryColor: UIKit.UIColor = UIColor(red: 0.000, green: 0.000, blue: 0.000, alpha: 1.000), secondaryColor: UIKit.UIColor = UIColor(red: 0.618, green: 0.618, blue: 0.618, alpha: 1.000), size: CoreFoundation.CGSize = CGSize(width: 32, height: 32), flipHorizontally: Swift.Bool = false)
+  @objc dynamic public class func drawLaneTurnOrUturnUsingUturn(frame targetFrame: CoreFoundation.CGRect = CGRect(x: 0, y: 0, width: 30, height: 30), resizing: MapboxNavigationUIKit.LanesStyleKit.ResizingBehavior = .aspectFit, primaryColor: UIKit.UIColor = UIColor(red: 0.000, green: 0.000, blue: 0.000, alpha: 1.000), secondaryColor: UIKit.UIColor = UIColor(red: 0.618, green: 0.618, blue: 0.618, alpha: 1.000), size: CoreFoundation.CGSize = CGSize(width: 32, height: 32), flipHorizontally: Swift.Bool = false)
+  @objc dynamic public class func drawLaneTurnOrSharpTurnUsingSharpTurn(frame targetFrame: CoreFoundation.CGRect = CGRect(x: 0, y: 0, width: 30, height: 30), resizing: MapboxNavigationUIKit.LanesStyleKit.ResizingBehavior = .aspectFit, primaryColor: UIKit.UIColor = UIColor(red: 0.000, green: 0.000, blue: 0.000, alpha: 1.000), secondaryColor: UIKit.UIColor = UIColor(red: 0.618, green: 0.618, blue: 0.618, alpha: 1.000), size: CoreFoundation.CGSize = CGSize(width: 32, height: 32), flipHorizontally: Swift.Bool = false)
+  @objc dynamic public class func drawLaneStraightOrSharpTurnUsingSharpTurn(frame targetFrame: CoreFoundation.CGRect = CGRect(x: 0, y: 0, width: 30, height: 30), resizing: MapboxNavigationUIKit.LanesStyleKit.ResizingBehavior = .aspectFit, primaryColor: UIKit.UIColor = UIColor(red: 0.000, green: 0.000, blue: 0.000, alpha: 1.000), secondaryColor: UIKit.UIColor = UIColor(red: 0.618, green: 0.618, blue: 0.618, alpha: 1.000), size: CoreFoundation.CGSize = CGSize(width: 32, height: 32), flipHorizontally: Swift.Bool = false)
+  @objc dynamic public class func drawLaneOppositeTurnOrTurnUsingTurn(frame targetFrame: CoreFoundation.CGRect = CGRect(x: 0, y: 0, width: 30, height: 30), resizing: MapboxNavigationUIKit.LanesStyleKit.ResizingBehavior = .aspectFit, primaryColor: UIKit.UIColor = UIColor(red: 0.000, green: 0.000, blue: 0.000, alpha: 1.000), secondaryColor: UIKit.UIColor = UIColor(red: 0.618, green: 0.618, blue: 0.618, alpha: 1.000), size: CoreFoundation.CGSize = CGSize(width: 32, height: 32), flipHorizontally: Swift.Bool = false)
+  @objc dynamic public class func drawLaneSlightTurnOrSharpTurnUsingSlightTurn(frame targetFrame: CoreFoundation.CGRect = CGRect(x: 0, y: 0, width: 30, height: 30), resizing: MapboxNavigationUIKit.LanesStyleKit.ResizingBehavior = .aspectFit, primaryColor: UIKit.UIColor = UIColor(red: 0.000, green: 0.000, blue: 0.000, alpha: 1.000), secondaryColor: UIKit.UIColor = UIColor(red: 0.618, green: 0.618, blue: 0.618, alpha: 1.000), size: CoreFoundation.CGSize = CGSize(width: 32, height: 32), flipHorizontally: Swift.Bool = false)
+  @objc dynamic public class func drawLaneStraightOrUturnUsingStraight(frame targetFrame: CoreFoundation.CGRect = CGRect(x: 0, y: 0, width: 30, height: 30), resizing: MapboxNavigationUIKit.LanesStyleKit.ResizingBehavior = .aspectFit, primaryColor: UIKit.UIColor = UIColor(red: 0.000, green: 0.000, blue: 0.000, alpha: 1.000), secondaryColor: UIKit.UIColor = UIColor(red: 0.618, green: 0.618, blue: 0.618, alpha: 1.000), size: CoreFoundation.CGSize = CGSize(width: 32, height: 32), flipHorizontally: Swift.Bool = false)
+  @objc dynamic public class func drawLaneStraightOrSlightTurnUsingSlightTurn(frame targetFrame: CoreFoundation.CGRect = CGRect(x: 0, y: 0, width: 30, height: 30), resizing: MapboxNavigationUIKit.LanesStyleKit.ResizingBehavior = .aspectFit, primaryColor: UIKit.UIColor = UIColor(red: 0.000, green: 0.000, blue: 0.000, alpha: 1.000), secondaryColor: UIKit.UIColor = UIColor(red: 0.618, green: 0.618, blue: 0.618, alpha: 1.000), size: CoreFoundation.CGSize = CGSize(width: 32, height: 32), flipHorizontally: Swift.Bool = false)
+  @objc dynamic public class func drawLaneOppositeSlightTurnOrSlightTurnUsingSlightTurn(frame targetFrame: CoreFoundation.CGRect = CGRect(x: 0, y: 0, width: 30, height: 30), resizing: MapboxNavigationUIKit.LanesStyleKit.ResizingBehavior = .aspectFit, primaryColor: UIKit.UIColor = UIColor(red: 0.000, green: 0.000, blue: 0.000, alpha: 1.000), secondaryColor: UIKit.UIColor = UIColor(red: 0.618, green: 0.618, blue: 0.618, alpha: 1.000), size: CoreFoundation.CGSize = CGSize(width: 32, height: 32), flipHorizontally: Swift.Bool = false)
+  @objc dynamic public class func drawLaneStraightOrTurnUsingStraight(frame targetFrame: CoreFoundation.CGRect = CGRect(x: 0, y: 0, width: 30, height: 30), resizing: MapboxNavigationUIKit.LanesStyleKit.ResizingBehavior = .aspectFit, primaryColor: UIKit.UIColor = UIColor(red: 0.000, green: 0.000, blue: 0.000, alpha: 1.000), secondaryColor: UIKit.UIColor = UIColor(red: 0.618, green: 0.618, blue: 0.618, alpha: 1.000), size: CoreFoundation.CGSize = CGSize(width: 32, height: 32), flipHorizontally: Swift.Bool = false)
+  @objc dynamic public class func drawLaneSlightTurnOrUturnUsingSlightTurn(frame targetFrame: CoreFoundation.CGRect = CGRect(x: 0, y: 0, width: 30, height: 30), resizing: MapboxNavigationUIKit.LanesStyleKit.ResizingBehavior = .aspectFit, primaryColor: UIKit.UIColor = UIColor(red: 0.000, green: 0.000, blue: 0.000, alpha: 1.000), secondaryColor: UIKit.UIColor = UIColor(red: 0.618, green: 0.618, blue: 0.618, alpha: 1.000), size: CoreFoundation.CGSize = CGSize(width: 32, height: 32), flipHorizontally: Swift.Bool = false)
+  @objc dynamic public class func drawLaneStraightOrSlightTurnUsingStraight(frame targetFrame: CoreFoundation.CGRect = CGRect(x: 0, y: 0, width: 30, height: 30), resizing: MapboxNavigationUIKit.LanesStyleKit.ResizingBehavior = .aspectFit, primaryColor: UIKit.UIColor = UIColor(red: 0.000, green: 0.000, blue: 0.000, alpha: 1.000), secondaryColor: UIKit.UIColor = UIColor(red: 0.618, green: 0.618, blue: 0.618, alpha: 1.000), size: CoreFoundation.CGSize = CGSize(width: 32, height: 32), flipHorizontally: Swift.Bool = false)
+  @objc dynamic public class func drawLaneStraightOrSharpTurnUsingStraight(frame targetFrame: CoreFoundation.CGRect = CGRect(x: 0, y: 0, width: 30, height: 30), resizing: MapboxNavigationUIKit.LanesStyleKit.ResizingBehavior = .aspectFit, primaryColor: UIKit.UIColor = UIColor(red: 0.000, green: 0.000, blue: 0.000, alpha: 1.000), secondaryColor: UIKit.UIColor = UIColor(red: 0.618, green: 0.618, blue: 0.618, alpha: 1.000), size: CoreFoundation.CGSize = CGSize(width: 32, height: 32), flipHorizontally: Swift.Bool = false)
+  @objc dynamic public class func drawLaneStraightOrTurnUsingTurn(frame targetFrame: CoreFoundation.CGRect = CGRect(x: 0, y: 0, width: 30, height: 30), resizing: MapboxNavigationUIKit.LanesStyleKit.ResizingBehavior = .aspectFit, primaryColor: UIKit.UIColor = UIColor(red: 0.000, green: 0.000, blue: 0.000, alpha: 1.000), secondaryColor: UIKit.UIColor = UIColor(red: 0.618, green: 0.618, blue: 0.618, alpha: 1.000), size: CoreFoundation.CGSize = CGSize(width: 32, height: 32), flipHorizontally: Swift.Bool = false)
+  @objc dynamic public class func drawLaneSlightTurnOrTurnUsingTurn(frame targetFrame: CoreFoundation.CGRect = CGRect(x: 0, y: 0, width: 30, height: 30), resizing: MapboxNavigationUIKit.LanesStyleKit.ResizingBehavior = .aspectFit, primaryColor: UIKit.UIColor = UIColor(red: 0.000, green: 0.000, blue: 0.000, alpha: 1.000), secondaryColor: UIKit.UIColor = UIColor(red: 0.618, green: 0.618, blue: 0.618, alpha: 1.000), size: CoreFoundation.CGSize = CGSize(width: 32, height: 32), flipHorizontally: Swift.Bool = false)
+  @objc dynamic public class func drawLaneOppositeTurnOrSlightTurnUsingSlightTurn(frame targetFrame: CoreFoundation.CGRect = CGRect(x: 0, y: 0, width: 30, height: 30), resizing: MapboxNavigationUIKit.LanesStyleKit.ResizingBehavior = .aspectFit, primaryColor: UIKit.UIColor = UIColor(red: 0.000, green: 0.000, blue: 0.000, alpha: 1.000), secondaryColor: UIKit.UIColor = UIColor(red: 0.618, green: 0.618, blue: 0.618, alpha: 1.000), size: CoreFoundation.CGSize = CGSize(width: 32, height: 32), flipHorizontally: Swift.Bool = false)
+  @objc dynamic public class func drawLaneOppositeSlightTurnOrTurnUsingTurn(frame targetFrame: CoreFoundation.CGRect = CGRect(x: 0, y: 0, width: 30, height: 30), resizing: MapboxNavigationUIKit.LanesStyleKit.ResizingBehavior = .aspectFit, primaryColor: UIKit.UIColor = UIColor(red: 0.000, green: 0.000, blue: 0.000, alpha: 1.000), secondaryColor: UIKit.UIColor = UIColor(red: 0.618, green: 0.618, blue: 0.618, alpha: 1.000), size: CoreFoundation.CGSize = CGSize(width: 32, height: 32), flipHorizontally: Swift.Bool = false)
+  @objc dynamic public class func drawLaneStraightOrUturn(frame targetFrame: CoreFoundation.CGRect = CGRect(x: 0, y: 0, width: 30, height: 30), resizing: MapboxNavigationUIKit.LanesStyleKit.ResizingBehavior = .aspectFit, secondaryColor: UIKit.UIColor = UIColor(red: 0.618, green: 0.618, blue: 0.618, alpha: 1.000), size: CoreFoundation.CGSize = CGSize(width: 32, height: 32), flipHorizontally: Swift.Bool = false)
+  @objc dynamic public class func drawLaneStraightOrSlightTurn(frame targetFrame: CoreFoundation.CGRect = CGRect(x: 0, y: 0, width: 30, height: 30), resizing: MapboxNavigationUIKit.LanesStyleKit.ResizingBehavior = .aspectFit, secondaryColor: UIKit.UIColor = UIColor(red: 0.618, green: 0.618, blue: 0.618, alpha: 1.000), size: CoreFoundation.CGSize = CGSize(width: 32, height: 32), flipHorizontally: Swift.Bool = false)
+  @objc dynamic public class func drawLaneStraightOrSharpTurn(frame targetFrame: CoreFoundation.CGRect = CGRect(x: 0, y: 0, width: 30, height: 30), resizing: MapboxNavigationUIKit.LanesStyleKit.ResizingBehavior = .aspectFit, secondaryColor: UIKit.UIColor = UIColor(red: 0.618, green: 0.618, blue: 0.618, alpha: 1.000), size: CoreFoundation.CGSize = CGSize(width: 32, height: 32), flipHorizontally: Swift.Bool = false)
+  @objc dynamic public class func drawLaneStraightOrTurn(frame targetFrame: CoreFoundation.CGRect = CGRect(x: 0, y: 0, width: 30, height: 30), resizing: MapboxNavigationUIKit.LanesStyleKit.ResizingBehavior = .aspectFit, secondaryColor: UIKit.UIColor = UIColor(red: 0.618, green: 0.618, blue: 0.618, alpha: 1.000), size: CoreFoundation.CGSize = CGSize(width: 32, height: 32), flipHorizontally: Swift.Bool = false)
+  @objc dynamic public class func drawLaneSlightTurnOrTurn(frame targetFrame: CoreFoundation.CGRect = CGRect(x: 0, y: 0, width: 30, height: 30), resizing: MapboxNavigationUIKit.LanesStyleKit.ResizingBehavior = .aspectFit, secondaryColor: UIKit.UIColor = UIColor(red: 0.618, green: 0.618, blue: 0.618, alpha: 1.000), size: CoreFoundation.CGSize = CGSize(width: 32, height: 32), flipHorizontally: Swift.Bool = false)
+  @objc dynamic public class func drawLaneSlightTurnOrSharpTurn(frame targetFrame: CoreFoundation.CGRect = CGRect(x: 0, y: 0, width: 30, height: 30), resizing: MapboxNavigationUIKit.LanesStyleKit.ResizingBehavior = .aspectFit, secondaryColor: UIKit.UIColor = UIColor(red: 0.618, green: 0.618, blue: 0.618, alpha: 1.000), size: CoreFoundation.CGSize = CGSize(width: 32, height: 32), flipHorizontally: Swift.Bool = false)
+  @objc dynamic public class func drawLaneSlightTurnOrUturn(frame targetFrame: CoreFoundation.CGRect = CGRect(x: 0, y: 0, width: 30, height: 30), resizing: MapboxNavigationUIKit.LanesStyleKit.ResizingBehavior = .aspectFit, secondaryColor: UIKit.UIColor = UIColor(red: 0.618, green: 0.618, blue: 0.618, alpha: 1.000), size: CoreFoundation.CGSize = CGSize(width: 32, height: 32), flipHorizontally: Swift.Bool = false)
+  @objc dynamic public class func drawLaneTurnOrSharpTurn(frame targetFrame: CoreFoundation.CGRect = CGRect(x: 0, y: 0, width: 30, height: 30), resizing: MapboxNavigationUIKit.LanesStyleKit.ResizingBehavior = .aspectFit, secondaryColor: UIKit.UIColor = UIColor(red: 0.618, green: 0.618, blue: 0.618, alpha: 1.000), size: CoreFoundation.CGSize = CGSize(width: 32, height: 32), flipHorizontally: Swift.Bool = false)
+  @objc dynamic public class func drawLaneTurnOrUturn(frame targetFrame: CoreFoundation.CGRect = CGRect(x: 0, y: 0, width: 30, height: 30), resizing: MapboxNavigationUIKit.LanesStyleKit.ResizingBehavior = .aspectFit, secondaryColor: UIKit.UIColor = UIColor(red: 0.618, green: 0.618, blue: 0.618, alpha: 1.000), size: CoreFoundation.CGSize = CGSize(width: 32, height: 32), flipHorizontally: Swift.Bool = false)
+  @objc dynamic public class func drawLaneOppositeTurnOrSlightTurn(frame targetFrame: CoreFoundation.CGRect = CGRect(x: 0, y: 0, width: 30, height: 30), resizing: MapboxNavigationUIKit.LanesStyleKit.ResizingBehavior = .aspectFit, secondaryColor: UIKit.UIColor = UIColor(red: 0.618, green: 0.618, blue: 0.618, alpha: 1.000), size: CoreFoundation.CGSize = CGSize(width: 32, height: 32), flipHorizontally: Swift.Bool = false)
+  @objc dynamic public class func drawLaneOppositeTurnOrTurn(frame targetFrame: CoreFoundation.CGRect = CGRect(x: 0, y: 0, width: 30, height: 30), resizing: MapboxNavigationUIKit.LanesStyleKit.ResizingBehavior = .aspectFit, secondaryColor: UIKit.UIColor = UIColor(red: 0.618, green: 0.618, blue: 0.618, alpha: 1.000), size: CoreFoundation.CGSize = CGSize(width: 32, height: 32), flipHorizontally: Swift.Bool = false)
+  @objc dynamic public class func drawLaneOppositeSlightTurnOrSlightTurn(frame targetFrame: CoreFoundation.CGRect = CGRect(x: 0, y: 0, width: 30, height: 30), resizing: MapboxNavigationUIKit.LanesStyleKit.ResizingBehavior = .aspectFit, secondaryColor: UIKit.UIColor = UIColor(red: 0.618, green: 0.618, blue: 0.618, alpha: 1.000), size: CoreFoundation.CGSize = CGSize(width: 32, height: 32), flipHorizontally: Swift.Bool = false)
+  @objc dynamic public class func drawLaneOppositeSlightTurnOrTurn(frame targetFrame: CoreFoundation.CGRect = CGRect(x: 0, y: 0, width: 30, height: 30), resizing: MapboxNavigationUIKit.LanesStyleKit.ResizingBehavior = .aspectFit, secondaryColor: UIKit.UIColor = UIColor(red: 0.618, green: 0.618, blue: 0.618, alpha: 1.000), size: CoreFoundation.CGSize = CGSize(width: 32, height: 32), flipHorizontally: Swift.Bool = false)
+  @objc dynamic public class func drawLaneOppositeTurnOrStraightOrTurnUsingTurn(frame targetFrame: CoreFoundation.CGRect = CGRect(x: 0, y: 0, width: 30, height: 30), resizing: MapboxNavigationUIKit.LanesStyleKit.ResizingBehavior = .aspectFit, primaryColor: UIKit.UIColor = UIColor(red: 0.000, green: 0.000, blue: 0.000, alpha: 1.000), secondaryColor: UIKit.UIColor = UIColor(red: 0.618, green: 0.618, blue: 0.618, alpha: 1.000), size: CoreFoundation.CGSize = CGSize(width: 32, height: 32), flipHorizontally: Swift.Bool = false)
+  @objc dynamic public class func drawLaneOppositeTurnOrStraightOrTurnUsingStraight(frame targetFrame: CoreFoundation.CGRect = CGRect(x: 0, y: 0, width: 30, height: 30), resizing: MapboxNavigationUIKit.LanesStyleKit.ResizingBehavior = .aspectFit, primaryColor: UIKit.UIColor = UIColor(red: 0.000, green: 0.000, blue: 0.000, alpha: 1.000), secondaryColor: UIKit.UIColor = UIColor(red: 0.618, green: 0.618, blue: 0.618, alpha: 1.000), size: CoreFoundation.CGSize = CGSize(width: 32, height: 32), flipHorizontally: Swift.Bool = false)
+  @objc dynamic public class func drawLaneStraightOrTurnOrUturnUsingStraight(frame targetFrame: CoreFoundation.CGRect = CGRect(x: 0, y: 0, width: 30, height: 30), resizing: MapboxNavigationUIKit.LanesStyleKit.ResizingBehavior = .aspectFit, primaryColor: UIKit.UIColor = UIColor(red: 0.000, green: 0.000, blue: 0.000, alpha: 1.000), secondaryColor: UIKit.UIColor = UIColor(red: 0.618, green: 0.618, blue: 0.618, alpha: 1.000), size: CoreFoundation.CGSize = CGSize(width: 32, height: 32), flipHorizontally: Swift.Bool = false)
+  @objc dynamic public class func drawLaneStraightOrTurnOrUturnUsingTurn(frame targetFrame: CoreFoundation.CGRect = CGRect(x: 0, y: 0, width: 30, height: 30), resizing: MapboxNavigationUIKit.LanesStyleKit.ResizingBehavior = .aspectFit, primaryColor: UIKit.UIColor = UIColor(red: 0.000, green: 0.000, blue: 0.000, alpha: 1.000), secondaryColor: UIKit.UIColor = UIColor(red: 0.618, green: 0.618, blue: 0.618, alpha: 1.000), size: CoreFoundation.CGSize = CGSize(width: 32, height: 32), flipHorizontally: Swift.Bool = false)
+  @objc dynamic public class func drawLaneStraightOrTurnOrUturnUsingUturn(frame targetFrame: CoreFoundation.CGRect = CGRect(x: 0, y: 0, width: 30, height: 30), resizing: MapboxNavigationUIKit.LanesStyleKit.ResizingBehavior = .aspectFit, primaryColor: UIKit.UIColor = UIColor(red: 0.000, green: 0.000, blue: 0.000, alpha: 1.000), secondaryColor: UIKit.UIColor = UIColor(red: 0.618, green: 0.618, blue: 0.618, alpha: 1.000), size: CoreFoundation.CGSize = CGSize(width: 32, height: 32), flipHorizontally: Swift.Bool = false)
+  @objc dynamic public class func drawLaneStraightOrSlightTurnOrTurnUsingStraight(frame targetFrame: CoreFoundation.CGRect = CGRect(x: 0, y: 0, width: 30, height: 30), resizing: MapboxNavigationUIKit.LanesStyleKit.ResizingBehavior = .aspectFit, primaryColor: UIKit.UIColor = UIColor(red: 0.000, green: 0.000, blue: 0.000, alpha: 1.000), secondaryColor: UIKit.UIColor = UIColor(red: 0.618, green: 0.618, blue: 0.618, alpha: 1.000), size: CoreFoundation.CGSize = CGSize(width: 32, height: 32), flipHorizontally: Swift.Bool = false)
+  @objc dynamic public class func drawLaneStraightOrSlightTurnOrTurnUsingSlightTurn(frame targetFrame: CoreFoundation.CGRect = CGRect(x: 0, y: 0, width: 30, height: 30), resizing: MapboxNavigationUIKit.LanesStyleKit.ResizingBehavior = .aspectFit, primaryColor: UIKit.UIColor = UIColor(red: 0.000, green: 0.000, blue: 0.000, alpha: 1.000), secondaryColor: UIKit.UIColor = UIColor(red: 0.618, green: 0.618, blue: 0.618, alpha: 1.000), size: CoreFoundation.CGSize = CGSize(width: 32, height: 32), flipHorizontally: Swift.Bool = false)
+  @objc dynamic public class func drawLaneStraightOrSlightTurnOrTurnUsingTurn(frame targetFrame: CoreFoundation.CGRect = CGRect(x: 0, y: 0, width: 30, height: 30), resizing: MapboxNavigationUIKit.LanesStyleKit.ResizingBehavior = .aspectFit, primaryColor: UIKit.UIColor = UIColor(red: 0.000, green: 0.000, blue: 0.000, alpha: 1.000), secondaryColor: UIKit.UIColor = UIColor(red: 0.618, green: 0.618, blue: 0.618, alpha: 1.000), size: CoreFoundation.CGSize = CGSize(width: 32, height: 32), flipHorizontally: Swift.Bool = false)
+  @objc dynamic public class func drawLaneOppositeTurnOrStraightOrSlightTurnUsingStraight(frame targetFrame: CoreFoundation.CGRect = CGRect(x: 0, y: 0, width: 30, height: 30), resizing: MapboxNavigationUIKit.LanesStyleKit.ResizingBehavior = .aspectFit, primaryColor: UIKit.UIColor = UIColor(red: 0.000, green: 0.000, blue: 0.000, alpha: 1.000), secondaryColor: UIKit.UIColor = UIColor(red: 0.618, green: 0.618, blue: 0.618, alpha: 1.000), size: CoreFoundation.CGSize = CGSize(width: 32, height: 32), flipHorizontally: Swift.Bool = false)
+  @objc dynamic public class func drawLaneOppositeTurnOrStraightOrSlightTurnUsingSlightTurn(frame targetFrame: CoreFoundation.CGRect = CGRect(x: 0, y: 0, width: 30, height: 30), resizing: MapboxNavigationUIKit.LanesStyleKit.ResizingBehavior = .aspectFit, primaryColor: UIKit.UIColor = UIColor(red: 0.000, green: 0.000, blue: 0.000, alpha: 1.000), secondaryColor: UIKit.UIColor = UIColor(red: 0.618, green: 0.618, blue: 0.618, alpha: 1.000), size: CoreFoundation.CGSize = CGSize(width: 32, height: 32), flipHorizontally: Swift.Bool = false)
+  @objc dynamic public class func drawLaneOppositeSlightTurnOrStraightOrTurnUsingTurn(frame targetFrame: CoreFoundation.CGRect = CGRect(x: 0, y: 0, width: 30, height: 30), resizing: MapboxNavigationUIKit.LanesStyleKit.ResizingBehavior = .aspectFit, primaryColor: UIKit.UIColor = UIColor(red: 0.000, green: 0.000, blue: 0.000, alpha: 1.000), secondaryColor: UIKit.UIColor = UIColor(red: 0.618, green: 0.618, blue: 0.618, alpha: 1.000), size: CoreFoundation.CGSize = CGSize(width: 32, height: 32), flipHorizontally: Swift.Bool = false)
+  @objc dynamic public class func drawLaneOppositeSlightTurnOrStraightOrTurnUsingStraight(frame targetFrame: CoreFoundation.CGRect = CGRect(x: 0, y: 0, width: 30, height: 30), resizing: MapboxNavigationUIKit.LanesStyleKit.ResizingBehavior = .aspectFit, primaryColor: UIKit.UIColor = UIColor(red: 0.000, green: 0.000, blue: 0.000, alpha: 1.000), secondaryColor: UIKit.UIColor = UIColor(red: 0.618, green: 0.618, blue: 0.618, alpha: 1.000), size: CoreFoundation.CGSize = CGSize(width: 32, height: 32), flipHorizontally: Swift.Bool = false)
+  @objc dynamic public class func drawLaneOppositeSlightTurnOrStraightOrSlightTurnUsingStraight(frame targetFrame: CoreFoundation.CGRect = CGRect(x: 0, y: 0, width: 30, height: 30), resizing: MapboxNavigationUIKit.LanesStyleKit.ResizingBehavior = .aspectFit, primaryColor: UIKit.UIColor = UIColor(red: 0.000, green: 0.000, blue: 0.000, alpha: 1.000), secondaryColor: UIKit.UIColor = UIColor(red: 0.618, green: 0.618, blue: 0.618, alpha: 1.000), size: CoreFoundation.CGSize = CGSize(width: 32, height: 32), flipHorizontally: Swift.Bool = false)
+  @objc dynamic public class func drawLaneOppositeSlightTurnOrStraightOrSlightTurnUsingSlightTurn(frame targetFrame: CoreFoundation.CGRect = CGRect(x: 0, y: 0, width: 30, height: 30), resizing: MapboxNavigationUIKit.LanesStyleKit.ResizingBehavior = .aspectFit, primaryColor: UIKit.UIColor = UIColor(red: 0.000, green: 0.000, blue: 0.000, alpha: 1.000), secondaryColor: UIKit.UIColor = UIColor(red: 0.618, green: 0.618, blue: 0.618, alpha: 1.000), size: CoreFoundation.CGSize = CGSize(width: 32, height: 32), flipHorizontally: Swift.Bool = false)
+  @objc dynamic public class func drawLaneOppositeSlightTurnOrStraightOrSlightTurn(frame targetFrame: CoreFoundation.CGRect = CGRect(x: 0, y: 0, width: 30, height: 30), resizing: MapboxNavigationUIKit.LanesStyleKit.ResizingBehavior = .aspectFit, secondaryColor: UIKit.UIColor = UIColor(red: 0.618, green: 0.618, blue: 0.618, alpha: 1.000), size: CoreFoundation.CGSize = CGSize(width: 32, height: 32), flipHorizontally: Swift.Bool = false)
+  @objc dynamic public class func drawLaneOppositeTurnOrStraightOrSlightTurn(frame targetFrame: CoreFoundation.CGRect = CGRect(x: 0, y: 0, width: 30, height: 30), resizing: MapboxNavigationUIKit.LanesStyleKit.ResizingBehavior = .aspectFit, secondaryColor: UIKit.UIColor = UIColor(red: 0.618, green: 0.618, blue: 0.618, alpha: 1.000), size: CoreFoundation.CGSize = CGSize(width: 32, height: 32), flipHorizontally: Swift.Bool = false)
+  @objc dynamic public class func drawLaneOppositeTurnOrStraightOrTurn(frame targetFrame: CoreFoundation.CGRect = CGRect(x: 0, y: 0, width: 30, height: 30), resizing: MapboxNavigationUIKit.LanesStyleKit.ResizingBehavior = .aspectFit, secondaryColor: UIKit.UIColor = UIColor(red: 0.618, green: 0.618, blue: 0.618, alpha: 1.000), size: CoreFoundation.CGSize = CGSize(width: 32, height: 32), flipHorizontally: Swift.Bool = false)
+  @objc dynamic public class func drawLaneOppositeSlightTurnOrStraightOrTurn(frame targetFrame: CoreFoundation.CGRect = CGRect(x: 0, y: 0, width: 30, height: 30), resizing: MapboxNavigationUIKit.LanesStyleKit.ResizingBehavior = .aspectFit, secondaryColor: UIKit.UIColor = UIColor(red: 0.618, green: 0.618, blue: 0.618, alpha: 1.000), size: CoreFoundation.CGSize = CGSize(width: 32, height: 32), flipHorizontally: Swift.Bool = false)
+  @objc dynamic public class func drawLaneStraightOrTurnOrUturn(frame targetFrame: CoreFoundation.CGRect = CGRect(x: 0, y: 0, width: 30, height: 30), resizing: MapboxNavigationUIKit.LanesStyleKit.ResizingBehavior = .aspectFit, secondaryColor: UIKit.UIColor = UIColor(red: 0.618, green: 0.618, blue: 0.618, alpha: 1.000), size: CoreFoundation.CGSize = CGSize(width: 32, height: 32), flipHorizontally: Swift.Bool = false)
+  @objc dynamic public class func drawLaneStraightOrSlightTurnOrTurn(frame targetFrame: CoreFoundation.CGRect = CGRect(x: 0, y: 0, width: 30, height: 30), resizing: MapboxNavigationUIKit.LanesStyleKit.ResizingBehavior = .aspectFit, secondaryColor: UIKit.UIColor = UIColor(red: 0.618, green: 0.618, blue: 0.618, alpha: 1.000), size: CoreFoundation.CGSize = CGSize(width: 32, height: 32), flipHorizontally: Swift.Bool = false)
+  @objc(LanesStyleKitResizingBehavior) public enum ResizingBehavior : Swift.Int {
+    case aspectFit
+    case aspectFill
+    case stretch
+    case center
+    public func apply(rect: CoreFoundation.CGRect, target: CoreFoundation.CGRect) -> CoreFoundation.CGRect
+    public init?(rawValue: Swift.Int)
+    public typealias RawValue = Swift.Int
+    public var rawValue: Swift.Int {
+      get
+    }
+  }
+  @objc override dynamic public init()
+  @objc deinit
+}
+@objc @_inheritsConvenienceInitializers public class ManeuversStyleKit : ObjectiveC.NSObject {
+  @objc dynamic public class func drawArrow180right(frame targetFrame: CoreFoundation.CGRect = CGRect(x: 0, y: 0, width: 32, height: 32), resizing: MapboxNavigationUIKit.ManeuversStyleKit.ResizingBehavior = .aspectFit, primaryColor: UIKit.UIColor = UIColor(red: 0.000, green: 0.000, blue: 0.000, alpha: 1.000), size: CoreFoundation.CGSize = CGSize(width: 32, height: 32))
+  @objc dynamic public class func drawArrowright(frame targetFrame: CoreFoundation.CGRect = CGRect(x: 0, y: 0, width: 32, height: 32), resizing: MapboxNavigationUIKit.ManeuversStyleKit.ResizingBehavior = .aspectFit, primaryColor: UIKit.UIColor = UIColor(red: 0.000, green: 0.000, blue: 0.000, alpha: 1.000), size: CoreFoundation.CGSize = CGSize(width: 32, height: 32))
+  @objc dynamic public class func drawArrowslightright(frame targetFrame: CoreFoundation.CGRect = CGRect(x: 0, y: 0, width: 32, height: 32), resizing: MapboxNavigationUIKit.ManeuversStyleKit.ResizingBehavior = .aspectFit, primaryColor: UIKit.UIColor = UIColor(red: 0.000, green: 0.000, blue: 0.000, alpha: 1.000), size: CoreFoundation.CGSize = CGSize(width: 32, height: 32))
+  @objc dynamic public class func drawArrowstraight(frame targetFrame: CoreFoundation.CGRect = CGRect(x: 0, y: 0, width: 32, height: 32), resizing: MapboxNavigationUIKit.ManeuversStyleKit.ResizingBehavior = .aspectFit, primaryColor: UIKit.UIColor = UIColor(red: 0.000, green: 0.000, blue: 0.000, alpha: 1.000), size: CoreFoundation.CGSize = CGSize(width: 32, height: 32))
+  @objc dynamic public class func drawArrowsharpright(frame targetFrame: CoreFoundation.CGRect = CGRect(x: 0, y: 0, width: 32, height: 32), resizing: MapboxNavigationUIKit.ManeuversStyleKit.ResizingBehavior = .aspectFit, primaryColor: UIKit.UIColor = UIColor(red: 0.000, green: 0.000, blue: 0.000, alpha: 1.000), size: CoreFoundation.CGSize = CGSize(width: 32, height: 32))
+  @objc dynamic public class func drawArrive(frame targetFrame: CoreFoundation.CGRect = CGRect(x: 0, y: 0, width: 32, height: 32), resizing: MapboxNavigationUIKit.ManeuversStyleKit.ResizingBehavior = .aspectFit, primaryColor: UIKit.UIColor = UIColor(red: 0.000, green: 0.000, blue: 0.000, alpha: 1.000), size: CoreFoundation.CGSize = CGSize(width: 32, height: 32))
+  @objc dynamic public class func drawStarting(frame targetFrame: CoreFoundation.CGRect = CGRect(x: 0, y: 0, width: 32, height: 32), resizing: MapboxNavigationUIKit.ManeuversStyleKit.ResizingBehavior = .aspectFit, primaryColor: UIKit.UIColor = UIColor(red: 0.000, green: 0.000, blue: 0.000, alpha: 1.000), size: CoreFoundation.CGSize = CGSize(width: 32, height: 32))
+  @objc dynamic public class func drawDestination(frame targetFrame: CoreFoundation.CGRect = CGRect(x: 0, y: 0, width: 32, height: 32), resizing: MapboxNavigationUIKit.ManeuversStyleKit.ResizingBehavior = .aspectFit, primaryColor: UIKit.UIColor = UIColor(red: 0.000, green: 0.000, blue: 0.000, alpha: 1.000), size: CoreFoundation.CGSize = CGSize(width: 32, height: 32))
+  @objc dynamic public class func drawMerge(frame targetFrame: CoreFoundation.CGRect = CGRect(x: 0, y: 0, width: 32, height: 32), resizing: MapboxNavigationUIKit.ManeuversStyleKit.ResizingBehavior = .aspectFit, primaryColor: UIKit.UIColor = UIColor(red: 0.000, green: 0.000, blue: 0.000, alpha: 1.000), secondaryColor: UIKit.UIColor = UIColor(red: 0.618, green: 0.618, blue: 0.618, alpha: 1.000), size: CoreFoundation.CGSize = CGSize(width: 32, height: 32))
+  @objc dynamic public class func drawFork(frame targetFrame: CoreFoundation.CGRect = CGRect(x: 0, y: 0, width: 32, height: 32), resizing: MapboxNavigationUIKit.ManeuversStyleKit.ResizingBehavior = .aspectFit, primaryColor: UIKit.UIColor = UIColor(red: 0.000, green: 0.000, blue: 0.000, alpha: 1.000), secondaryColor: UIKit.UIColor = UIColor(red: 0.618, green: 0.618, blue: 0.618, alpha: 1.000), size: CoreFoundation.CGSize = CGSize(width: 32, height: 32))
+  @objc dynamic public class func drawOfframp(frame targetFrame: CoreFoundation.CGRect = CGRect(x: 0, y: 0, width: 32, height: 32), resizing: MapboxNavigationUIKit.ManeuversStyleKit.ResizingBehavior = .aspectFit, primaryColor: UIKit.UIColor = UIColor(red: 0.000, green: 0.000, blue: 0.000, alpha: 1.000), secondaryColor: UIKit.UIColor = UIColor(red: 0.618, green: 0.618, blue: 0.618, alpha: 1.000), size: CoreFoundation.CGSize = CGSize(width: 32, height: 32))
+  @objc dynamic public class func drawArriveright(frame targetFrame: CoreFoundation.CGRect = CGRect(x: 0, y: 0, width: 32, height: 32), resizing: MapboxNavigationUIKit.ManeuversStyleKit.ResizingBehavior = .aspectFit, primaryColor: UIKit.UIColor = UIColor(red: 0.000, green: 0.000, blue: 0.000, alpha: 1.000), size: CoreFoundation.CGSize = CGSize(width: 32, height: 32))
+  @objc dynamic public class func drawRoundabout(frame targetFrame: CoreFoundation.CGRect = CGRect(x: 0, y: 0, width: 32, height: 32), resizing: MapboxNavigationUIKit.ManeuversStyleKit.ResizingBehavior = .aspectFit, primaryColor: UIKit.UIColor = UIColor(red: 0.000, green: 0.000, blue: 0.000, alpha: 1.000), secondaryColor: UIKit.UIColor = UIColor(red: 0.618, green: 0.618, blue: 0.618, alpha: 1.000), size: CoreFoundation.CGSize = CGSize(width: 32, height: 32), roundabout_angle: CoreFoundation.CGFloat = 90, roundabout_radius: CoreFoundation.CGFloat = 6.5)
+  @objc dynamic public class func drawArriveright2(frame targetFrame: CoreFoundation.CGRect = CGRect(x: 0, y: 0, width: 32, height: 32), resizing: MapboxNavigationUIKit.ManeuversStyleKit.ResizingBehavior = .aspectFit, primaryColor: UIKit.UIColor = UIColor(red: 0.000, green: 0.000, blue: 0.000, alpha: 1.000), size: CoreFoundation.CGSize = CGSize(width: 32, height: 32))
+  @objc(MBManeuversStyleKitResizingBehavior) public enum ResizingBehavior : Swift.Int {
+    case aspectFit
+    case aspectFill
+    case stretch
+    case center
+    public func apply(rect: CoreFoundation.CGRect, target: CoreFoundation.CGRect) -> CoreFoundation.CGRect
+    public init?(rawValue: Swift.Int)
+    public typealias RawValue = Swift.Int
+    public var rawValue: Swift.Int {
+      get
+    }
+  }
+  @objc override dynamic public init()
+  @objc deinit
+}
+@objc @_inheritsConvenienceInitializers public class SpeedLimitStyleKit : ObjectiveC.NSObject {
+  @objc dynamic public class func drawMUTCD(frame targetFrame: CoreFoundation.CGRect = CGRect(x: 0, y: 0, width: 56, height: 66), resizing: MapboxNavigationUIKit.SpeedLimitStyleKit.ResizingBehavior = .aspectFit, signBackColor: UIKit.UIColor = UIColor(red: 1.000, green: 1.000, blue: 1.000, alpha: 1.000), strokeColor: UIKit.UIColor = UIColor(red: 0.000, green: 0.000, blue: 0.000, alpha: 1.000), limit: Swift.String = "50", legend: Swift.String = "MAX")
+  @objc dynamic public class func drawVienna(frame targetFrame: CoreFoundation.CGRect = CGRect(x: 0, y: 0, width: 70, height: 70), resizing: MapboxNavigationUIKit.SpeedLimitStyleKit.ResizingBehavior = .aspectFit, signBackColor: UIKit.UIColor = UIColor(red: 1.000, green: 1.000, blue: 1.000, alpha: 1.000), strokeColor: UIKit.UIColor = UIColor(red: 0.000, green: 0.000, blue: 0.000, alpha: 1.000), regulatoryColor: UIKit.UIColor = UIColor(red: 0.800, green: 0.000, blue: 0.000, alpha: 1.000), limit: Swift.String = "50")
+  @objc(SpeedLimitStyleKitResizingBehavior) public enum ResizingBehavior : Swift.Int {
+    case aspectFit
+    case aspectFill
+    case stretch
+    case center
+    public func apply(rect: CoreFoundation.CGRect, target: CoreFoundation.CGRect) -> CoreFoundation.CGRect
+    public init?(rawValue: Swift.Int)
+    public typealias RawValue = Swift.Int
+    public var rawValue: Swift.Int {
+      get
+    }
+  }
+  @objc override dynamic public init()
+  @objc deinit
+}
+public struct PreviewOptions {
+  public var styles: [MapboxNavigationUIKit.Style]? {
+    get
+  }
+  public init(styles: [MapboxNavigationUIKit.Style]? = nil, locationMatching: Combine.AnyPublisher<MapboxNavigationCore.MapMatchingState, Swift.Never>, routeProgress: Combine.AnyPublisher<MapboxNavigationCore.RouteProgress?, Swift.Never>, predictiveCacheManager: MapboxNavigationCore.PredictiveCacheManager? = nil)
+}
+@objc @_Concurrency.MainActor(unsafe) public class PreviewViewController : UIKit.UIViewController {
+  @_Concurrency.MainActor(unsafe) public var navigationView: MapboxNavigationUIKit.NavigationView {
+    get
+  }
+  @_Concurrency.MainActor(unsafe) weak public var delegate: (any MapboxNavigationUIKit.PreviewViewControllerDelegate)?
+  @_Concurrency.MainActor(unsafe) public var navigationMapView: MapboxNavigationCore.NavigationMapView {
+    get
+    set
+  }
+  @_Concurrency.MainActor(unsafe) public init(_ previewOptions: MapboxNavigationUIKit.PreviewOptions)
+  @_Concurrency.MainActor(unsafe) @objc required dynamic public init?(coder: Foundation.NSCoder)
+  @_Concurrency.MainActor(unsafe) @objc override dynamic public func loadView()
+  @_Concurrency.MainActor(unsafe) @objc override dynamic public func viewWillAppear(_ animated: Swift.Bool)
+  @_Concurrency.MainActor(unsafe) @objc override dynamic public func viewDidAppear(_ animated: Swift.Bool)
+  @_Concurrency.MainActor(unsafe) @objc override dynamic public func viewSafeAreaInsetsDidChange()
+  @discardableResult
+  @_Concurrency.MainActor(unsafe) public func dismissBanner(at position: MapboxNavigationUIKit.BannerPosition, animated: Swift.Bool = true, duration: Foundation.TimeInterval = 0.2, animations: (() -> Swift.Void)? = nil, completion: (() -> Swift.Void)? = nil) -> (any MapboxNavigationUIKit.Banner)?
+  @_Concurrency.MainActor(unsafe) public func dismissAllExceptFirst(at position: MapboxNavigationUIKit.BannerPosition, animated: Swift.Bool = true, duration: Foundation.TimeInterval = 0.2, animations: (() -> Swift.Void)? = nil, completion: (() -> Swift.Void)? = nil)
+  @_Concurrency.MainActor(unsafe) public func present(_ banner: any MapboxNavigationUIKit.Banner, animated: Swift.Bool = true, duration: Foundation.TimeInterval = 0.2, animations: (() -> Swift.Void)? = nil, completion: (() -> Swift.Void)? = nil)
+  @_Concurrency.MainActor(unsafe) public func topBanner(at position: MapboxNavigationUIKit.BannerPosition) -> (any MapboxNavigationUIKit.Banner)?
+  @objc deinit
+}
+extension MapboxNavigationUIKit.PreviewViewController : MapboxNavigationUIKit.StyleManagerDelegate {
+  @_Concurrency.MainActor(unsafe) public func location(for styleManager: MapboxNavigationUIKit.StyleManager) -> CoreLocation.CLLocation?
+  @_Concurrency.MainActor(unsafe) public func styleManager(_ styleManager: MapboxNavigationUIKit.StyleManager, didApply style: MapboxNavigationUIKit.Style)
+}
+public protocol PreviewViewControllerDelegate : AnyObject, MapboxNavigationCore.UnimplementedLogging {
+  func previewViewController(_ previewViewController: MapboxNavigationUIKit.PreviewViewController, willPresent banner: any MapboxNavigationUIKit.Banner)
+  func previewViewController(_ previewViewController: MapboxNavigationUIKit.PreviewViewController, didPresent banner: any MapboxNavigationUIKit.Banner)
+  func previewViewController(_ previewViewController: MapboxNavigationUIKit.PreviewViewController, willDismiss banner: any MapboxNavigationUIKit.Banner)
+  func previewViewController(_ previewViewController: MapboxNavigationUIKit.PreviewViewController, didDismiss banner: any MapboxNavigationUIKit.Banner)
+}
+extension MapboxNavigationUIKit.PreviewViewControllerDelegate {
+  public func previewViewController(_ previewViewController: MapboxNavigationUIKit.PreviewViewController, willPresent banner: any MapboxNavigationUIKit.Banner)
+  public func previewViewController(_ previewViewController: MapboxNavigationUIKit.PreviewViewController, didPresent banner: any MapboxNavigationUIKit.Banner)
+  public func previewViewController(_ previewViewController: MapboxNavigationUIKit.PreviewViewController, willDismiss banner: any MapboxNavigationUIKit.Banner)
+  public func previewViewController(_ previewViewController: MapboxNavigationUIKit.PreviewViewController, didDismiss banner: any MapboxNavigationUIKit.Banner)
+}
+public struct RecentItem : Swift.Equatable, Swift.Codable {
+  public var navigationGeocodedPlacemark: MapboxNavigationUIKit.NavigationGeocodedPlacemark {
+    get
+  }
+  public init(_ navigationGeocodedPlacemark: MapboxNavigationUIKit.NavigationGeocodedPlacemark)
+  public static func loadDefaults() -> [MapboxNavigationUIKit.RecentItem]
+  public func matches(_ searchText: Swift.String) -> Swift.Bool
+  public static func == (lhs: MapboxNavigationUIKit.RecentItem, rhs: MapboxNavigationUIKit.RecentItem) -> Swift.Bool
+  public func encode(to encoder: any Swift.Encoder) throws
+  public init(from decoder: any Swift.Decoder) throws
+}
+extension Swift.Array where Element == MapboxNavigationUIKit.RecentItem {
+  @discardableResult
+  public func save() -> Swift.Bool
+  public mutating func add(_ recentItem: MapboxNavigationUIKit.RecentItem)
+  public mutating func remove(_ recentItem: MapboxNavigationUIKit.RecentItem)
+}
+@_inheritsConvenienceInitializers @IBDesignable @objc(MBResumeButton) @_Concurrency.MainActor(unsafe) public class ResumeButton : UIKit.UIControl {
+  @_Concurrency.MainActor(unsafe) @objc override dynamic public var tintColor: UIKit.UIColor! {
+    @objc get
+    @objc set
+  }
+  @objc @_Concurrency.MainActor(unsafe) dynamic public var borderWidth: CoreFoundation.CGFloat {
+    @objc get
+    @objc set
+  }
+  @objc @_Concurrency.MainActor(unsafe) dynamic public var cornerRadius: CoreFoundation.CGFloat {
+    @objc get
+    @objc set
+  }
+  @objc @_Concurrency.MainActor(unsafe) dynamic public var borderColor: UIKit.UIColor? {
+    @objc get
+    @objc set
+  }
+  @_Concurrency.MainActor(unsafe) @objc override dynamic public init(frame: CoreFoundation.CGRect)
+  @_Concurrency.MainActor(unsafe) @objc required dynamic public init?(coder aDecoder: Foundation.NSCoder)
+  @_Concurrency.MainActor(unsafe) @objc override dynamic public func prepareForInterfaceBuilder()
+  @objc deinit
+}
+public protocol RoutePreviewDataSource : AnyObject {
+  var routePreviewOptions: MapboxNavigationUIKit.RoutePreviewOptions { get }
+}
+public struct RoutePreviewOptions {
+  public let navigationRoutes: MapboxNavigationCore.NavigationRoutes
+  public let routeId: MapboxNavigationCore.RouteId
+  public init(navigationRoutes: MapboxNavigationCore.NavigationRoutes, routeId: MapboxNavigationCore.RouteId)
+}
+@objc @_hasMissingDesignatedInitializers @_Concurrency.MainActor(unsafe) public class RoutePreviewViewController : UIKit.UIViewController, MapboxNavigationUIKit.Banner, MapboxNavigationUIKit.RoutePreviewDataSource {
+  @_Concurrency.MainActor(unsafe) weak public var delegate: (any MapboxNavigationUIKit.RoutePreviewViewControllerDelegate)?
+  @_Concurrency.MainActor(unsafe) final public let bannerConfiguration: MapboxNavigationUIKit.BannerConfiguration
+  @_Concurrency.MainActor(unsafe) public var routePreviewOptions: MapboxNavigationUIKit.RoutePreviewOptions {
+    get
+    set
+  }
+  @_Concurrency.MainActor(unsafe) required public init(_ routePreviewOptions: MapboxNavigationUIKit.RoutePreviewOptions, bannerConfiguration: MapboxNavigationUIKit.BannerConfiguration = BannerConfiguration(position: .bottomLeading))
+  @objc deinit
+}
+public protocol RoutePreviewViewControllerDelegate : AnyObject {
+  func didPressBeginActiveNavigationButton(_ routePreviewViewController: MapboxNavigationUIKit.RoutePreviewViewController)
+}
+@_inheritsConvenienceInitializers @objc(MBSeparatorView) @_Concurrency.MainActor(unsafe) public class SeparatorView : UIKit.UIView {
+  @_Concurrency.MainActor(unsafe) @objc override dynamic public init(frame: CoreFoundation.CGRect)
+  @_Concurrency.MainActor(unsafe) @objc required dynamic public init?(coder: Foundation.NSCoder)
+  @objc deinit
+}
+@objc @_inheritsConvenienceInitializers @_hasMissingDesignatedInitializers @_Concurrency.MainActor(unsafe) public class SpeedLimitView : UIKit.UIView {
+  @objc @_Concurrency.MainActor(unsafe) dynamic public var signBackColor: UIKit.UIColor {
+    @objc get
+    @objc set
+  }
+  @objc @_Concurrency.MainActor(unsafe) dynamic public var textColor: UIKit.UIColor {
+    @objc get
+    @objc set
+  }
+  @objc @_Concurrency.MainActor(unsafe) dynamic public var regulatoryBorderColor: UIKit.UIColor {
+    @objc get
+    @objc set
+  }
+  @_Concurrency.MainActor(unsafe) public var speedLimit: Foundation.Measurement<Foundation.UnitSpeed>? {
+    get
+    set
+  }
+  @_Concurrency.MainActor(unsafe) public var currentSpeed: CoreLocation.CLLocationSpeed?
+  @_Concurrency.MainActor(unsafe) public var signStandard: MapboxDirections.SignStandard? {
+    get
+    set
+  }
+  @_Concurrency.MainActor(unsafe) public var isAlwaysHidden: Swift.Bool {
+    get
+    set
+  }
+  @_Concurrency.MainActor(unsafe) public var shouldShowUnknownSpeedLimit: Swift.Bool {
+    get
+    set
+  }
+  @_Concurrency.MainActor(unsafe) @objc override dynamic public func draw(_ rect: CoreFoundation.CGRect)
+  @objc deinit
+}
+@objc @_inheritsConvenienceInitializers @IBDesignable @_Concurrency.MainActor(unsafe) public class StatusView : UIKit.UIControl {
+  public struct Status {
+    public var identifier: Swift.String
+    public let title: Swift.String
+    public var spinner: Swift.Bool
+    public let duration: Foundation.TimeInterval
+    public var animated: Swift.Bool
+    public var interactive: Swift.Bool
+    public var priority: MapboxNavigationUIKit.StatusView.Priority
+  }
+  public typealias Priority = Swift.Int
+  @_Concurrency.MainActor(unsafe) @objc override dynamic public init(frame: CoreFoundation.CGRect)
+  @_Concurrency.MainActor(unsafe) @objc required dynamic public init?(coder aDecoder: Foundation.NSCoder)
+  @_Concurrency.MainActor(unsafe) public func show(status: MapboxNavigationUIKit.StatusView.Status)
+  @_Concurrency.MainActor(unsafe) public func hide(with status: MapboxNavigationUIKit.StatusView.Status? = nil, delay: Foundation.TimeInterval = 0, animated: Swift.Bool = true)
+  @objc deinit
+}
+@_inheritsConvenienceInitializers @objc(MBDraggableView) @_Concurrency.MainActor(unsafe) open class StepListIndicatorView : UIKit.UIView {
+  @objc @_Concurrency.MainActor(unsafe) dynamic open var gradientColors: [UIKit.UIColor] {
+    @objc get
+    @objc set
+  }
+  @_Concurrency.MainActor(unsafe) @objc override dynamic open func layoutSubviews()
+  @_Concurrency.MainActor(unsafe) @objc override dynamic public init(frame: CoreFoundation.CGRect)
+  @_Concurrency.MainActor(unsafe) @objc required dynamic public init?(coder: Foundation.NSCoder)
+  @objc deinit
+}
+@objc @_inheritsConvenienceInitializers @_Concurrency.MainActor(unsafe) open class StepInstructionsView : MapboxNavigationUIKit.BaseInstructionsBannerView {
+  @_Concurrency.MainActor(unsafe) @objc override dynamic public init(frame: CoreFoundation.CGRect)
+  @_Concurrency.MainActor(unsafe) @objc required dynamic public init?(coder aDecoder: Foundation.NSCoder)
+  @objc deinit
+}
+@objc @_inheritsConvenienceInitializers @_hasMissingDesignatedInitializers @_Concurrency.MainActor(unsafe) open class StepTableViewCell : UIKit.UITableViewCell {
+  @_Concurrency.MainActor(unsafe) @objc required dynamic public init?(coder aDecoder: Foundation.NSCoder)
+  @_Concurrency.MainActor(unsafe) @objc override dynamic open func prepareForReuse()
+  @objc deinit
+}
+@objc @_inheritsConvenienceInitializers @_Concurrency.MainActor(unsafe) open class StepsBackgroundView : UIKit.UIView {
+  @_Concurrency.MainActor(unsafe) @objc override dynamic public init(frame: CoreFoundation.CGRect)
+  @_Concurrency.MainActor(unsafe) @objc required dynamic public init?(coder: Foundation.NSCoder)
+  @objc deinit
+}
+@objc @_inheritsConvenienceInitializers @_Concurrency.MainActor(unsafe) public class StepsViewController : UIKit.UIViewController, MapboxNavigationUIKit.NavigationComponent {
+  @_Concurrency.MainActor(unsafe) weak public var delegate: (any MapboxNavigationUIKit.StepsViewControllerDelegate)?
+  @_Concurrency.MainActor(unsafe) convenience public init(routeProgress: MapboxNavigationCore.RouteProgress)
+  @_Concurrency.MainActor(unsafe) @objc override dynamic open func viewDidLoad()
+  @_Concurrency.MainActor(unsafe) public func onRouteProgressUpdated(_ progress: MapboxNavigationCore.RouteProgress)
+  @_Concurrency.MainActor(unsafe) public func dismiss(completion: MapboxNavigationUIKit.CompletionHandler? = nil)
+  @_Concurrency.MainActor(unsafe) @objc override dynamic public init(nibName nibNameOrNil: Swift.String?, bundle nibBundleOrNil: Foundation.Bundle?)
+  @_Concurrency.MainActor(unsafe) @objc required dynamic public init?(coder: Foundation.NSCoder)
+  @objc deinit
+}
+extension MapboxNavigationUIKit.StepsViewController : UIKit.UITableViewDelegate {
+  @_Concurrency.MainActor(unsafe) @objc dynamic public func tableView(_ tableView: UIKit.UITableView, didSelectRowAt indexPath: Foundation.IndexPath)
+}
+extension MapboxNavigationUIKit.StepsViewController : UIKit.UITableViewDataSource {
+  @_Concurrency.MainActor(unsafe) @objc dynamic public func numberOfSections(in tableView: UIKit.UITableView) -> Swift.Int
+  @_Concurrency.MainActor(unsafe) @objc dynamic public func tableView(_ tableView: UIKit.UITableView, numberOfRowsInSection section: Swift.Int) -> Swift.Int
+  @_Concurrency.MainActor(unsafe) @objc dynamic public func tableView(_ tableView: UIKit.UITableView, heightForRowAt indexPath: Foundation.IndexPath) -> CoreFoundation.CGFloat
+  @_Concurrency.MainActor(unsafe) @objc dynamic public func tableView(_ tableView: UIKit.UITableView, cellForRowAt indexPath: Foundation.IndexPath) -> UIKit.UITableViewCell
+  @_Concurrency.MainActor(unsafe) @objc dynamic public func tableView(_ tableView: UIKit.UITableView, willDisplay cell: UIKit.UITableViewCell, forRowAt indexPath: Foundation.IndexPath)
+  @_Concurrency.MainActor(unsafe) @objc dynamic public func tableView(_ tableView: UIKit.UITableView, heightForHeaderInSection section: Swift.Int) -> CoreFoundation.CGFloat
+  @_Concurrency.MainActor(unsafe) @objc dynamic public func tableView(_ tableView: UIKit.UITableView, viewForHeaderInSection section: Swift.Int) -> UIKit.UIView?
+}
+public protocol StepsViewControllerDelegate : AnyObject {
+  func stepsViewController(_ viewController: MapboxNavigationUIKit.StepsViewController, didSelect legIndex: Swift.Int, stepIndex: Swift.Int, cell: MapboxNavigationUIKit.StepTableViewCell)
+  func didDismissStepsViewController(_ viewController: MapboxNavigationUIKit.StepsViewController)
+}
+@_inheritsConvenienceInitializers @objc(MBStylableButton) @_Concurrency.MainActor(unsafe) open class StylableButton : UIKit.UIButton {
+  @objc @_Concurrency.MainActor(unsafe) dynamic open var textFont: UIKit.UIFont {
+    @objc get
+    @objc set
+  }
+  @objc @_Concurrency.MainActor(unsafe) dynamic open var textColor: UIKit.UIColor {
+    @objc get
+    @objc set
+  }
+  @objc @_Concurrency.MainActor(unsafe) dynamic open var borderColor: UIKit.UIColor {
+    @objc get
+    @objc set
+  }
+  @objc @_Concurrency.MainActor(unsafe) dynamic open var borderWidth: CoreFoundation.CGFloat {
+    @objc get
+    @objc set
+  }
+  @objc @_Concurrency.MainActor(unsafe) dynamic open var cornerRadius: CoreFoundation.CGFloat {
+    @objc get
+    @objc set
+  }
+  @_Concurrency.MainActor(unsafe) @objc override dynamic public init(frame: CoreFoundation.CGRect)
+  @_Concurrency.MainActor(unsafe) @objc required dynamic public init?(coder: Foundation.NSCoder)
+  @objc deinit
+}
+@_inheritsConvenienceInitializers @objc(MBButton) @_Concurrency.MainActor(unsafe) open class Button : MapboxNavigationUIKit.StylableButton {
+  @_Concurrency.MainActor(unsafe) @objc override dynamic public init(frame: CoreFoundation.CGRect)
+  @_Concurrency.MainActor(unsafe) @objc required dynamic public init?(coder: Foundation.NSCoder)
+  @objc deinit
+}
+@_inheritsConvenienceInitializers @objc(MBCancelButton) @_Concurrency.MainActor(unsafe) open class CancelButton : MapboxNavigationUIKit.Button {
+  @_Concurrency.MainActor(unsafe) @objc override dynamic public init(frame: CoreFoundation.CGRect)
+  @_Concurrency.MainActor(unsafe) @objc required dynamic public init?(coder: Foundation.NSCoder)
+  @objc deinit
+}
+@_inheritsConvenienceInitializers @objc(MBDismissButton) @_Concurrency.MainActor(unsafe) open class DismissButton : MapboxNavigationUIKit.Button {
+  @_Concurrency.MainActor(unsafe) @objc override dynamic public init(frame: CoreFoundation.CGRect)
+  @_Concurrency.MainActor(unsafe) @objc required dynamic public init?(coder: Foundation.NSCoder)
+  @objc deinit
+}
+@objc @_inheritsConvenienceInitializers @_Concurrency.MainActor(unsafe) public class BackButton : MapboxNavigationUIKit.Button {
+  @_Concurrency.MainActor(unsafe) @objc override dynamic public init(frame: CoreFoundation.CGRect)
+  @_Concurrency.MainActor(unsafe) @objc required dynamic public init?(coder: Foundation.NSCoder)
+  @objc deinit
+}
+@objc @_inheritsConvenienceInitializers @_Concurrency.MainActor(unsafe) public class PreviewButton : MapboxNavigationUIKit.Button {
+  @_Concurrency.MainActor(unsafe) @objc override dynamic public init(frame: CoreFoundation.CGRect)
+  @_Concurrency.MainActor(unsafe) @objc required dynamic public init?(coder: Foundation.NSCoder)
+  @objc deinit
+}
+@objc @_inheritsConvenienceInitializers @_Concurrency.MainActor(unsafe) public class StartButton : MapboxNavigationUIKit.Button {
+  @_Concurrency.MainActor(unsafe) @objc override dynamic public init(frame: CoreFoundation.CGRect)
+  @_Concurrency.MainActor(unsafe) @objc required dynamic public init?(coder: Foundation.NSCoder)
+  @objc deinit
+}
+@_inheritsConvenienceInitializers @objc(MBStylableLabel) @_Concurrency.MainActor(unsafe) open class StylableLabel : UIKit.UILabel {
+  @objc @_Concurrency.MainActor(unsafe) dynamic open var normalTextColor: UIKit.UIColor {
+    @objc get
+    @objc set
+  }
+  @objc @_Concurrency.MainActor(unsafe) dynamic open var normalFont: UIKit.UIFont {
+    @objc get
+    @objc set
+  }
+  @objc @_Concurrency.MainActor(unsafe) dynamic public var textColorHighlighted: UIKit.UIColor {
+    @objc get
+    @objc set
+  }
+  @objc @_Concurrency.MainActor(unsafe) public var showHighlightedTextColor: Swift.Bool {
+    @objc get
+    @objc set
+  }
+  @_Concurrency.MainActor(unsafe) open func update()
+  @_Concurrency.MainActor(unsafe) @objc override dynamic public init(frame: CoreFoundation.CGRect)
+  @_Concurrency.MainActor(unsafe) @objc required dynamic public init?(coder: Foundation.NSCoder)
+  @objc deinit
+}
+@_inheritsConvenienceInitializers @objc(MBTimeRemainingLabel) @_Concurrency.MainActor(unsafe) open class TimeRemainingLabel : MapboxNavigationUIKit.StylableLabel {
+  @objc @_Concurrency.MainActor(unsafe) dynamic public var trafficUnknownColor: UIKit.UIColor {
+    @objc get
+    @objc set
+  }
+  @objc @_Concurrency.MainActor(unsafe) dynamic public var trafficLowColor: UIKit.UIColor
+  @objc @_Concurrency.MainActor(unsafe) dynamic public var trafficModerateColor: UIKit.UIColor
+  @objc @_Concurrency.MainActor(unsafe) dynamic public var trafficHeavyColor: UIKit.UIColor
+  @objc @_Concurrency.MainActor(unsafe) dynamic public var trafficSevereColor: UIKit.UIColor
+  @_Concurrency.MainActor(unsafe) @objc override dynamic public init(frame: CoreFoundation.CGRect)
+  @_Concurrency.MainActor(unsafe) @objc required dynamic public init?(coder: Foundation.NSCoder)
+  @objc deinit
+}
+@_inheritsConvenienceInitializers @objc(MBDistanceRemainingLabel) @_Concurrency.MainActor(unsafe) open class DistanceRemainingLabel : MapboxNavigationUIKit.StylableLabel {
+  @_Concurrency.MainActor(unsafe) @objc override dynamic public init(frame: CoreFoundation.CGRect)
+  @_Concurrency.MainActor(unsafe) @objc required dynamic public init?(coder: Foundation.NSCoder)
+  @objc deinit
+}
+@_inheritsConvenienceInitializers @objc(MBArrivalTimeLabel) @_Concurrency.MainActor(unsafe) open class ArrivalTimeLabel : MapboxNavigationUIKit.StylableLabel {
+  @_Concurrency.MainActor(unsafe) @objc override dynamic public init(frame: CoreFoundation.CGRect)
+  @_Concurrency.MainActor(unsafe) @objc required dynamic public init?(coder: Foundation.NSCoder)
+  @objc deinit
+}
+@objc @_inheritsConvenienceInitializers @_Concurrency.MainActor(unsafe) public class DestinationLabel : MapboxNavigationUIKit.StylableLabel {
+  @_Concurrency.MainActor(unsafe) @objc override dynamic public init(frame: CoreFoundation.CGRect)
+  @_Concurrency.MainActor(unsafe) @objc required dynamic public init?(coder: Foundation.NSCoder)
+  @objc deinit
+}
+@_inheritsConvenienceInitializers @objc(MBStylableTextView) @_Concurrency.MainActor(unsafe) open class StylableTextView : UIKit.UITextView {
+  @objc @_Concurrency.MainActor(unsafe) dynamic open var normalTextColor: UIKit.UIColor {
+    @objc get
+    @objc set
+  }
+  @available(iOS 7.0, *)
+  @_Concurrency.MainActor(unsafe) @objc override dynamic public init(frame: CoreFoundation.CGRect, textContainer: UIKit.NSTextContainer?)
+  @_Concurrency.MainActor(unsafe) @objc required dynamic public init?(coder: Foundation.NSCoder)
+  @objc deinit
+}
+@_inheritsConvenienceInitializers @objc(MBStylableView) @_Concurrency.MainActor(unsafe) open class StylableView : UIKit.UIView {
+  @objc @_Concurrency.MainActor(unsafe) dynamic public var borderWidth: CoreFoundation.CGFloat {
+    @objc get
+    @objc set
+  }
+  @objc @_Concurrency.MainActor(unsafe) dynamic public var cornerRadius: CoreFoundation.CGFloat {
+    @objc get
+    @objc set
+  }
+  @objc @_Concurrency.MainActor(unsafe) dynamic public var borderColor: UIKit.UIColor? {
+    @objc get
+    @objc set
+  }
+  @_Concurrency.MainActor(unsafe) @objc override dynamic public init(frame: CoreFoundation.CGRect)
+  @_Concurrency.MainActor(unsafe) @objc required dynamic public init?(coder: Foundation.NSCoder)
+  @objc deinit
+}
+@_inheritsConvenienceInitializers @objc(MBStyle) open class Style : ObjectiveC.NSObject {
+  @objc public var tintColor: UIKit.UIColor?
+  public var statusBarStyle: UIKit.UIStatusBarStyle?
+  @objc public var fontFamily: Swift.String?
+  @objc public var styleType: MapboxNavigationUIKit.StyleType
+  @objc open var mapStyleURL: Foundation.URL
+  @objc open var previewMapStyleURL: Foundation.URL
+  @objc open func apply()
+  @_Concurrency.MainActor @objc open func applyMapStyle(to navigationMapView: MapboxNavigationCore.NavigationMapView)
+  @objc required override dynamic public init()
+  @objc deinit
+}
+@_hasMissingDesignatedInitializers open class StyleManager {
+  weak public var delegate: (any MapboxNavigationUIKit.StyleManagerDelegate)?
+  public var automaticallyAdjustsStyleForTimeOfDay: Swift.Bool {
+    get
+    set
+  }
+  public var styles: [MapboxNavigationUIKit.Style] {
+    get
+    set
+  }
+  public var currentStyleType: MapboxNavigationUIKit.StyleType? {
+    get
+  }
+  public var currentStyle: MapboxNavigationUIKit.Style? {
+    get
+  }
+  public init()
+  @objc deinit
+  public func applyStyle(type styleType: MapboxNavigationUIKit.StyleType)
+  @_Concurrency.MainActor public func applyMapStyle(type styleType: MapboxNavigationUIKit.StyleType, to mapView: MapboxNavigationCore.NavigationMapView)
+}
+public protocol StyleManagerDelegate : AnyObject {
+  func location(for styleManager: MapboxNavigationUIKit.StyleManager) -> CoreLocation.CLLocation?
+  @available(*, deprecated, message: "All views appearance will be refreshed without the `UITextEffectsWindow`.")
+  func styleManager(_ styleManager: MapboxNavigationUIKit.StyleManager, viewForApplying currentStyle: MapboxNavigationUIKit.Style?) -> UIKit.UIView?
+  func styleManager(_ styleManager: MapboxNavigationUIKit.StyleManager, didApply style: MapboxNavigationUIKit.Style)
+  func styleManagerDidRefreshAppearance(_ styleManager: MapboxNavigationUIKit.StyleManager)
+}
+extension MapboxNavigationUIKit.StyleManagerDelegate {
+  public func location(for styleManager: MapboxNavigationUIKit.StyleManager) -> CoreLocation.CLLocation?
+  public func styleManager(_ styleManager: MapboxNavigationUIKit.StyleManager, didApply style: MapboxNavigationUIKit.Style)
+  public func styleManagerDidRefreshAppearance(_ styleManager: MapboxNavigationUIKit.StyleManager)
+  @available(*, deprecated, message: "All views appearance will be refreshed without the `UITextEffectsWindow`.")
+  public func styleManager(_ styleManager: MapboxNavigationUIKit.StyleManager, viewForApplying currentStyle: MapboxNavigationUIKit.Style?) -> UIKit.UIView?
+}
+@objc public enum StyleType : Swift.Int, Swift.CustomStringConvertible {
+  case day
+  case night
+  public init?(description: Swift.String)
+  public var description: Swift.String {
+    get
+  }
+  public init?(rawValue: Swift.Int)
+  public typealias RawValue = Swift.Int
+  public var rawValue: Swift.Int {
+    get
+  }
+}
+@objc @_inheritsConvenienceInitializers open class DayStyle : MapboxNavigationUIKit.Style {
+  @objc required dynamic public init()
+  @objc override open func apply()
+  @objc deinit
+}
+@objc @_inheritsConvenienceInitializers open class NightStyle : MapboxNavigationUIKit.DayStyle {
+  @objc required dynamic public init()
+  @objc override open func apply()
+  @objc deinit
+}
+@objc @_inheritsConvenienceInitializers open class StandardDayStyle : MapboxNavigationUIKit.DayStyle {
+  @objc required dynamic public init()
+  @_Concurrency.MainActor @objc override open func applyMapStyle(to navigationMapView: MapboxNavigationCore.NavigationMapView)
+  @objc deinit
+}
+@objc @_inheritsConvenienceInitializers open class StandardNightStyle : MapboxNavigationUIKit.NightStyle {
+  @objc required dynamic public init()
+  @_Concurrency.MainActor @objc override open func applyMapStyle(to navigationMapView: MapboxNavigationCore.NavigationMapView)
+  @objc deinit
+}
+@objc @_inheritsConvenienceInitializers @_hasMissingDesignatedInitializers @_Concurrency.MainActor(unsafe) open class TopBannerViewController : UIKit.UIViewController {
+  @_Concurrency.MainActor(unsafe) weak public var delegate: (any MapboxNavigationUIKit.TopBannerViewControllerDelegate)?
+  @_Concurrency.MainActor(unsafe) public var instructionsBannerView: MapboxNavigationUIKit.InstructionsBannerView {
+    get
+  }
+  @_Concurrency.MainActor(unsafe) public var lanesView: MapboxNavigationUIKit.LanesView
+  @_Concurrency.MainActor(unsafe) public var nextBannerView: MapboxNavigationUIKit.NextBannerView
+  @_Concurrency.MainActor(unsafe) public var statusView: MapboxNavigationUIKit.StatusView
+  @_Concurrency.MainActor(unsafe) public var junctionView: MapboxNavigationUIKit.JunctionView
+  @_Concurrency.MainActor(unsafe) @objc required dynamic public init?(coder aDecoder: Foundation.NSCoder)
+  @_Concurrency.MainActor(unsafe) @objc override dynamic open func viewDidLoad()
+  @_Concurrency.MainActor(unsafe) public var isDisplayingPreviewInstructions: Swift.Bool {
+    get
+  }
+  @_Concurrency.MainActor(unsafe) public func preview(step stepOverride: MapboxDirections.RouteStep? = nil, maneuverStep: MapboxDirections.RouteStep, distance: CoreLocation.CLLocationDistance, steps: [MapboxDirections.RouteStep], completion: MapboxNavigationUIKit.CompletionHandler? = nil)
+  @_Concurrency.MainActor(unsafe) public func stopPreviewing(showingSecondaryChildren: Swift.Bool = true)
+  @_Concurrency.MainActor(unsafe) public var isDisplayingSteps: Swift.Bool {
+    get
+  }
+  @_Concurrency.MainActor(unsafe) public func displayStepsTable()
+  @_Concurrency.MainActor(unsafe) public func dismissStepsTable(completion: MapboxNavigationUIKit.CompletionHandler? = nil)
+  @objc deinit
+}
+extension MapboxNavigationUIKit.TopBannerViewController : MapboxNavigationUIKit.NavigationComponent {
+  @_Concurrency.MainActor(unsafe) public func onRouteProgressUpdated(_ progress: MapboxNavigationCore.RouteProgress)
+  @_Concurrency.MainActor(unsafe) public func onWillReroute()
+  @_Concurrency.MainActor(unsafe) public func onDidReroute()
+  @_Concurrency.MainActor(unsafe) public func onFasterRoute()
+  @_Concurrency.MainActor(unsafe) public func onSwitchingToOnline()
+  @_Concurrency.MainActor(unsafe) public func onDidBeginSimulating()
+  @_Concurrency.MainActor(unsafe) public func onWillEndSimulating()
+}
+extension MapboxNavigationUIKit.TopBannerViewController : MapboxNavigationUIKit.InstructionsBannerViewDelegate {
+  @_Concurrency.MainActor(unsafe) public func didTapInstructionsBanner(_ sender: MapboxNavigationUIKit.BaseInstructionsBannerView)
+  @_Concurrency.MainActor(unsafe) public func didSwipeInstructionsBanner(_ sender: MapboxNavigationUIKit.BaseInstructionsBannerView, swipeDirection direction: UIKit.UISwipeGestureRecognizer.Direction)
+  @_Concurrency.MainActor(unsafe) public func label(_ label: MapboxNavigationUIKit.InstructionLabel, willPresent instruction: MapboxDirections.VisualInstruction, as presented: Foundation.NSAttributedString) -> Foundation.NSAttributedString?
+}
+extension MapboxNavigationUIKit.TopBannerViewController : MapboxNavigationUIKit.StepsViewControllerDelegate {
+  @_Concurrency.MainActor(unsafe) public func stepsViewController(_ viewController: MapboxNavigationUIKit.StepsViewController, didSelect legIndex: Swift.Int, stepIndex: Swift.Int, cell: MapboxNavigationUIKit.StepTableViewCell)
+  @_Concurrency.MainActor(unsafe) public func didDismissStepsViewController(_ viewController: MapboxNavigationUIKit.StepsViewController)
+}
+extension MapboxNavigationUIKit.TopBannerViewController : MapboxNavigationUIKit.CarPlayConnectionObserver {
+  @_Concurrency.MainActor(unsafe) public func didConnectToCarPlay()
+  @_Concurrency.MainActor(unsafe) public func didDisconnectFromCarPlay()
+}
+extension MapboxNavigationUIKit.TopBannerViewController : MapboxNavigationUIKit.NavigationStatusPresenter {
+  @_Concurrency.MainActor(unsafe) public func show(_ status: MapboxNavigationUIKit.StatusView.Status)
+  @_Concurrency.MainActor(unsafe) public func hide(_ status: MapboxNavigationUIKit.StatusView.Status)
+}
+extension MapboxNavigationUIKit.TopBannerViewController : MapboxNavigationUIKit.NavigationMapInteractionObserver {
+  @_Concurrency.MainActor(unsafe) public func navigationViewController(didCenterOn location: CoreLocation.CLLocation)
+}
+public protocol TopBannerViewControllerDelegate : MapboxNavigationUIKit.VisualInstructionDelegate {
+  func topBanner(_ banner: MapboxNavigationUIKit.TopBannerViewController, didSwipeInDirection direction: UIKit.UISwipeGestureRecognizer.Direction)
+  func topBanner(_ banner: MapboxNavigationUIKit.TopBannerViewController, didSelect legIndex: Swift.Int, stepIndex: Swift.Int, cell: MapboxNavigationUIKit.StepTableViewCell)
+  func topBanner(_ banner: MapboxNavigationUIKit.TopBannerViewController, willDisplayStepsController: MapboxNavigationUIKit.StepsViewController)
+  func topBanner(_ banner: MapboxNavigationUIKit.TopBannerViewController, didDisplayStepsController: MapboxNavigationUIKit.StepsViewController)
+  func topBanner(_ banner: MapboxNavigationUIKit.TopBannerViewController, willDismissStepsController: MapboxNavigationUIKit.StepsViewController)
+  func topBanner(_ banner: MapboxNavigationUIKit.TopBannerViewController, didDismissStepsController: MapboxNavigationUIKit.StepsViewController)
+}
+extension MapboxNavigationUIKit.TopBannerViewControllerDelegate {
+  public func topBanner(_ banner: MapboxNavigationUIKit.TopBannerViewController, didSwipeInDirection direction: UIKit.UISwipeGestureRecognizer.Direction)
+  public func topBanner(_ banner: MapboxNavigationUIKit.TopBannerViewController, didSelect legIndex: Swift.Int, stepIndex: Swift.Int, cell: MapboxNavigationUIKit.StepTableViewCell)
+  public func topBanner(_ banner: MapboxNavigationUIKit.TopBannerViewController, willDisplayStepsController: MapboxNavigationUIKit.StepsViewController)
+  public func topBanner(_ banner: MapboxNavigationUIKit.TopBannerViewController, didDisplayStepsController: MapboxNavigationUIKit.StepsViewController)
+  public func topBanner(_ banner: MapboxNavigationUIKit.TopBannerViewController, willDismissStepsController: MapboxNavigationUIKit.StepsViewController)
+  public func topBanner(_ banner: MapboxNavigationUIKit.TopBannerViewController, didDismissStepsController: MapboxNavigationUIKit.StepsViewController)
+}
+@objc @_inheritsConvenienceInitializers open class DistanceFormatter : Foundation.Formatter, Foundation.NSSecureCoding {
+  @objc public static var supportsSecureCoding: Swift.Bool
+  open var unitOptions: Foundation.MeasurementFormatter.UnitOptions {
+    get
+    set
+  }
+  open var unitStyle: Foundation.Formatter.UnitStyle {
+    get
+    set
+  }
+  open var locale: Foundation.Locale {
+    get
+    set
+  }
+  @NSCopying open var measurementFormatter: Foundation.MeasurementFormatter
+  @objc override dynamic public init()
+  @objc required dynamic public init?(coder decoder: Foundation.NSCoder)
+  open func string(from distance: CoreLocation.CLLocationDistance) -> Swift.String
+  open func attributedString(from distance: CoreLocation.CLLocationDistance, defaultAttributes attributes: [Foundation.NSAttributedString.Key : Any]? = nil) -> Foundation.NSAttributedString
+  open func string(from measurement: Foundation.Measurement<Foundation.UnitLength>) -> Swift.String
+  open func attributedString(from measurement: Foundation.Measurement<Foundation.UnitLength>, defaultAttributes attributes: [Foundation.NSAttributedString.Key : Any]? = nil) -> Foundation.NSAttributedString
+  @objc override dynamic open func string(for obj: Any?) -> Swift.String?
+  @objc override dynamic open func attributedString(for obj: Any, withDefaultAttributes attrs: [Foundation.NSAttributedString.Key : Any]? = nil) -> Foundation.NSAttributedString?
+  @objc deinit
+}
+extension Foundation.Measurement where UnitType == Foundation.UnitLength {
+  public init(distance: CoreLocation.CLLocationDistance)
+  public var distance: CoreLocation.CLLocationDistance {
+    get
+  }
+  public func localized(into locale: Foundation.Locale = .nationalizedCurrent) -> Foundation.Measurement<Foundation.UnitLength>
+}
+public struct RoundingTable {
+  public struct Threshold {
+    public let maximumDistance: Foundation.Measurement<Foundation.UnitLength>
+    public let roundingIncrement: Swift.Double
+    public let maximumFractionDigits: Swift.Int
+    public init(maximumDistance: Foundation.Measurement<Foundation.UnitLength>, roundingIncrement: Swift.Double, maximumFractionDigits: Swift.Int)
+    public func measurement(of distance: CoreLocation.CLLocationDistance) -> Foundation.Measurement<Foundation.UnitLength>
+  }
+  public let thresholds: [MapboxNavigationUIKit.RoundingTable.Threshold]
+  public func threshold(for distance: CoreLocation.CLLocationDistance) -> MapboxNavigationUIKit.RoundingTable.Threshold
+  public init(thresholds: [MapboxNavigationUIKit.RoundingTable.Threshold])
+  public static var metric: MapboxNavigationUIKit.RoundingTable
+  public static var uk: MapboxNavigationUIKit.RoundingTable
+  public static var us: MapboxNavigationUIKit.RoundingTable
+}
+extension MapboxDirections.VisualInstruction {
+  public func maneuverImageSet(side: MapboxDirections.DrivingSide, visualInstruction: MapboxDirections.VisualInstruction? = nil) -> CarPlay.CPImageSet?
+  public func shouldFlipImage(side: MapboxDirections.DrivingSide) -> Swift.Bool
+  public func carPlayManeuverLabelAttributedText<T>(bounds: @escaping () -> (CoreFoundation.CGRect), shieldHeight: CoreFoundation.CGFloat, window: UIKit.UIWindow?, traitCollection: UIKit.UITraitCollection? = nil, instructionLabelType: T.Type? = nil) -> Foundation.NSAttributedString? where T : MapboxNavigationUIKit.InstructionLabel
+  public func lanesImageSet(side: MapboxDirections.DrivingSide, direction: MapboxDirections.ManeuverDirection?, scale: CoreFoundation.CGFloat) -> CarPlay.CPImageSet?
+}
+public protocol VisualInstructionDelegate : AnyObject, MapboxNavigationCore.UnimplementedLogging {
+  func label(_ label: MapboxNavigationUIKit.InstructionLabel, willPresent instruction: MapboxDirections.VisualInstruction, as presented: Foundation.NSAttributedString) -> Foundation.NSAttributedString?
+}
+extension MapboxNavigationUIKit.VisualInstructionDelegate {
+  public func label(_ label: MapboxNavigationUIKit.InstructionLabel, willPresent instruction: MapboxDirections.VisualInstruction, as presented: Foundation.NSAttributedString) -> Foundation.NSAttributedString?
+}
+@_inheritsConvenienceInitializers @objc(MBWayNameLabel) @_Concurrency.MainActor(unsafe) open class WayNameLabel : MapboxNavigationUIKit.StylableLabel {
+  @objc @_Concurrency.MainActor(unsafe) dynamic public var roadShieldBlackColor: UIKit.UIColor
+  @objc @_Concurrency.MainActor(unsafe) dynamic public var roadShieldBlueColor: UIKit.UIColor
+  @objc @_Concurrency.MainActor(unsafe) dynamic public var roadShieldGreenColor: UIKit.UIColor
+  @objc @_Concurrency.MainActor(unsafe) dynamic public var roadShieldRedColor: UIKit.UIColor
+  @objc @_Concurrency.MainActor(unsafe) dynamic public var roadShieldWhiteColor: UIKit.UIColor
+  @objc @_Concurrency.MainActor(unsafe) dynamic public var roadShieldYellowColor: UIKit.UIColor
+  @objc @_Concurrency.MainActor(unsafe) dynamic public var roadShieldOrangeColor: UIKit.UIColor
+  @objc @_Concurrency.MainActor(unsafe) dynamic public var roadShieldDefaultColor: UIKit.UIColor
+  @_Concurrency.MainActor(unsafe) @objc override dynamic public init(frame: CoreFoundation.CGRect)
+  @_Concurrency.MainActor(unsafe) @objc required dynamic public init?(coder: Foundation.NSCoder)
+  @objc deinit
+}
+@_inheritsConvenienceInitializers @objc(MBWayNameView) @_Concurrency.MainActor(unsafe) open class WayNameView : UIKit.UIView {
+  @_Concurrency.MainActor(unsafe) @objc override dynamic open var layer: QuartzCore.CALayer {
+    @objc get
+  }
+  @_Concurrency.MainActor(unsafe) @objc dynamic override public var backgroundColor: UIKit.UIColor? {
+    @objc get
+    @objc set
+  }
+  @objc @_Concurrency.MainActor(unsafe) dynamic public var borderColor: UIKit.UIColor? {
+    @objc get
+    @objc set
+  }
+  @objc @_Concurrency.MainActor(unsafe) dynamic public var borderWidth: CoreFoundation.CGFloat {
+    @objc get
+    @objc set
+  }
+  @objc @_Concurrency.MainActor(unsafe) dynamic public var cornerRadius: CoreFoundation.CGFloat {
+    @objc get
+    @objc set
+  }
+  @_Concurrency.MainActor(unsafe) @objc override dynamic public init(frame: CoreFoundation.CGRect)
+  @_Concurrency.MainActor(unsafe) @objc required dynamic public init?(coder decoder: Foundation.NSCoder)
+  @_Concurrency.MainActor(unsafe) @objc override dynamic open func layoutSubviews()
+  @objc deinit
+}
+public enum WaypointStyle : Swift.Int {
+  case annotation
+  case building
+  case extrudedBuilding
+  public init?(rawValue: Swift.Int)
+  public typealias RawValue = Swift.Int
+  public var rawValue: Swift.Int {
+    get
+  }
+}
+extension MapboxNavigationUIKit.BannerPosition : Swift.Equatable {}
+extension MapboxNavigationUIKit.BannerPosition : Swift.Hashable {}
+extension MapboxNavigationUIKit.BannerContainerView.State : Swift.Equatable {}
+extension MapboxNavigationUIKit.BannerContainerView.State : Swift.Hashable {}
+extension MapboxNavigationUIKit.CarPlayActivity : Swift.Equatable {}
+extension MapboxNavigationUIKit.CarPlayActivity : Swift.Hashable {}
+extension MapboxNavigationUIKit.CarPlayActivity : Swift.RawRepresentable {}
+extension MapboxNavigationUIKit.MapOrnamentPosition : Swift.Equatable {}
+extension MapboxNavigationUIKit.MapOrnamentPosition : Swift.Hashable {}
+extension CoreLocation.CLLocation.CodingKeys : Swift.Equatable {}
+extension CoreLocation.CLLocation.CodingKeys : Swift.Hashable {}
+extension CoreLocation.CLLocation.CodingKeys : Swift.RawRepresentable {}
+extension MapboxNavigationUIKit.NavigationViewController : MapboxNavigationUIKit.InstructionsBannerViewDelegate {}
+extension MapboxNavigationUIKit.LanesStyleKit.ResizingBehavior : Swift.Equatable {}
+extension MapboxNavigationUIKit.LanesStyleKit.ResizingBehavior : Swift.Hashable {}
+extension MapboxNavigationUIKit.LanesStyleKit.ResizingBehavior : Swift.RawRepresentable {}
+extension MapboxNavigationUIKit.ManeuversStyleKit.ResizingBehavior : Swift.Equatable {}
+extension MapboxNavigationUIKit.ManeuversStyleKit.ResizingBehavior : Swift.Hashable {}
+extension MapboxNavigationUIKit.ManeuversStyleKit.ResizingBehavior : Swift.RawRepresentable {}
+extension MapboxNavigationUIKit.SpeedLimitStyleKit.ResizingBehavior : Swift.Equatable {}
+extension MapboxNavigationUIKit.SpeedLimitStyleKit.ResizingBehavior : Swift.Hashable {}
+extension MapboxNavigationUIKit.SpeedLimitStyleKit.ResizingBehavior : Swift.RawRepresentable {}
+extension MapboxNavigationUIKit.StyleType : Swift.Equatable {}
+extension MapboxNavigationUIKit.StyleType : Swift.Hashable {}
+extension MapboxNavigationUIKit.StyleType : Swift.RawRepresentable {}
+extension MapboxNavigationUIKit.WaypointStyle : Swift.Equatable {}
+extension MapboxNavigationUIKit.WaypointStyle : Swift.Hashable {}
+extension MapboxNavigationUIKit.WaypointStyle : Swift.RawRepresentable {}

@@ -1,0 +1,4 @@
+framework module _MapboxNavigationUXPrivate {
+    header "_MapboxNavigationUXPrivate-Swift.h"
+    export *
+}

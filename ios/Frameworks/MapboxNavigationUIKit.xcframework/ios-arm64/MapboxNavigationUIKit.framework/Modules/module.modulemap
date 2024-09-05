@@ -1,0 +1,4 @@
+framework module MapboxNavigationUIKit {
+    header "MapboxNavigationUIKit-Swift.h"
+    export *
+}

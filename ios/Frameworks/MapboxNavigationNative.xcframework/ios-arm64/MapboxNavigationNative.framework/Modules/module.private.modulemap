@@ -1,0 +1,7 @@
+framework module MapboxNavigationNative_Private {
+  umbrella header "MapboxNavigationNative_Internal.h"
+
+  export *
+  module * { export * }
+  link "c++"
+}

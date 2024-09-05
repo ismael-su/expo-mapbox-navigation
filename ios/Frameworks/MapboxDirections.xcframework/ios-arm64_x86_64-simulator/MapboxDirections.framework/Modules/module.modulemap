@@ -1,0 +1,4 @@
+framework module MapboxDirections {
+    header "MapboxDirections-Swift.h"
+    export *
+}
